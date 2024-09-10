@@ -1,6 +1,7 @@
 import React from "react";
 import logo from "../assets/images/logo.png";
 import { MdDoubleArrow } from "react-icons/md";
+import { Link } from "react-router-dom";
 
 const Navbar: React.FC = () => {
   return (
@@ -17,11 +18,14 @@ const Navbar: React.FC = () => {
         <p className="p-2 px-10 rounded-full ">Shift</p>
       </div>
       <div className="flex items-center gap-8 ">
-        <button>Login</button>
-        <button className="bg-blue-800 text-white font-bold flex items-center gap-1 p-2 px-4 rounded-full">
+        <Link to={"/login"}>Login</Link>
+        <Link
+          to={"/register"}
+          className="bg-blue-800 text-white font-bold flex items-center gap-1 p-2 px-4 rounded-full"
+        >
           <MdDoubleArrow className="text-blue-200" />
           Join Curaflux
-        </button>
+        </Link>
       </div>
     </nav>
   );
