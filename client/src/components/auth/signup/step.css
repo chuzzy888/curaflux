@@ -1,0 +1,13 @@
+.step2 {
+  background-image: url("../../../assets/images/step2.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.step3 {
+  background-image: url("../../../assets/images/step3.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
