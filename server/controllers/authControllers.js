@@ -8,7 +8,16 @@ import randomstring from "randomstring";
 
 // Sign Up Handler
 export const signUp = expressAsyncHandler(async (req, res) => {
-  const { email, password, firstName, lastName, photo, role } = req.body;
+  const {
+    email,
+    password,
+    fullName,
+    nickname,
+    photo,
+    role,
+    birthdate,
+    gender,
+  } = req.body;
 
   // Check if user already exists
   const existingUser = await User.findOne({ email });
@@ -21,8 +30,10 @@ export const signUp = expressAsyncHandler(async (req, res) => {
   const newUser = new User({
     email,
     password: hashedPassword,
-    firstName,
-    lastName,
+    fullName,
+    nickname,
+    birthdate,
+    gender,
     photo,
     role,
   });
@@ -32,8 +43,10 @@ export const signUp = expressAsyncHandler(async (req, res) => {
   const token = jwt.sign(
     {
       id: newUser._id,
-      firstName: newUser.firstName,
-      lastName: newUser.lastName,
+      fullName: newUser.fullName,
+      nickname: newUser.nickname,
+      birthdate: newUser.birthdate,
+      gender: newUser.gender,
       role: newUser.role,
       email: newUser.email,
     },
@@ -68,8 +81,10 @@ export const signIn = expressAsyncHandler(async (req, res) => {
   const token = jwt.sign(
     {
       id: user._id,
-      firstName: user.firstName,
-      lastName: user.lastName,
+      fullName: user.fullName,
+      nickname: user.nickname,
+      birthdate: newUser.birthdate,
+      gender: newUser.gender,
       role: user.role,
       email: user.email,
     },
@@ -97,7 +112,7 @@ export const sendOTP = async (email) => {
     const otp = generateOTP(); // Generate a 6-digit OTP
 
     // Await the hashing of OTP
-    const hashedOtp = await bcrypt.hash(otp, 10);
+    // const hashedOtp = await bcrypt.hash(otp, 10);
 
     const newOTP = new Otp({
       email,
