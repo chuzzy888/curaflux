@@ -12,9 +12,9 @@ const Login = () => {
   return (
     <ScreenLayout>
       <main className="h-screen flex justify-center flex-col">
-        <section className=" flex justify-between items-center  w-full">
+        <section className=" flex justify-between items-center  gap-20">
           <section className=" w-full">
-            <img src={signupImg} alt="" />
+            <img src={signupImg} alt="" className=" w-full" />
           </section>
 
           <section className=" w-[60%] border py-10 px-20 border-black rounded-2xl">

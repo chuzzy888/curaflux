@@ -29,9 +29,9 @@ export const Step2 = ({ nextStep, prevStep, currentStep }: Step2Props) => {
     <ScreenLayout>
       {" "}
       <main className="h-screen flex justify-center flex-col">
-        <section className=" flex justify-between items-center  w-full">
+        <section className=" flex justify-between items-center gap-20">
           <section className=" w-full">
-            <img src={signin} alt="" />
+            <img src={signin} alt="" className=" w-full" />
           </section>
 
           <section className=" w-[60%] border-4 p-10  border-blue-500 rounded-2xl">

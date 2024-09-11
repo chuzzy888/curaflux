@@ -2,15 +2,21 @@ import User from "../models/user.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import expressAsyncHandler from "express-async-handler";
+import { Otp } from "../models/otpModel.js";
+import { sendEmail } from "../utils/sendVerificationOtp.js";
+import randomstring from "randomstring";
 
+// Sign Up Handler
 export const signUp = expressAsyncHandler(async (req, res) => {
   const { email, password, firstName, lastName, photo, role } = req.body;
 
+  // Check if user already exists
   const existingUser = await User.findOne({ email });
   if (existingUser) {
     return res.status(400).json({ message: "User already exists" });
   }
 
+  // Hash the password and create the new user
   const hashedPassword = await bcrypt.hash(password, 10);
   const newUser = new User({
     email,
@@ -22,6 +28,7 @@ export const signUp = expressAsyncHandler(async (req, res) => {
   });
   await newUser.save();
 
+  // Generate JWT token
   const token = jwt.sign(
     {
       id: newUser._id,
@@ -36,30 +43,28 @@ export const signUp = expressAsyncHandler(async (req, res) => {
     }
   );
 
-  // res.cookie("token", token, {
-  //   // httpOnly: true,
-  //   secure: process.env.NODE_ENV === "production",
-  //   maxAge: 3600000, // 1 hour
-  // });
+  // Generate and send OTP after saving user details
+  await sendOTP(email);
 
   res.status(201).json({ message: "Successful registration", token });
-
-  res.status(500).json({ message: "Server error" });
 });
 
+// Sign In Handler
 export const signIn = expressAsyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
+  // Find user and validate password
   const user = await User.findOne({ email });
   if (!user) {
     return res.status(400).json({ message: "User not found" });
   }
 
-  const isPasswordCorrect = bcrypt.compare(password, user.password);
+  const isPasswordCorrect = await bcrypt.compare(password, user.password);
   if (!isPasswordCorrect) {
     return res.status(400).json({ message: "Invalid credentials" });
   }
 
+  // Generate JWT token
   const token = jwt.sign(
     {
       id: user._id,
@@ -74,13 +79,92 @@ export const signIn = expressAsyncHandler(async (req, res) => {
     }
   );
 
-  // res.cookie("token", token, {
-  //   // httpOnly: true,
-  //   secure: process.env.NODE_ENV === "production",
-  //   maxAge: 3600000, // 1 hour
-  // });
-
   res.status(200).json({ message: "Successful login", token });
+});
 
-  res.status(500).json({ message: "Server error" });
+// Generate OTP
+function generateOTP() {
+  return randomstring.generate({
+    length: 6,
+    charset: "numeric",
+  });
+}
+
+// Send OTP to the provided email
+// Send OTP to the provided email
+export const sendOTP = async (email) => {
+  try {
+    const otp = generateOTP(); // Generate a 6-digit OTP
+
+    // Await the hashing of OTP
+    const hashedOtp = await bcrypt.hash(otp, 10);
+
+    const newOTP = new Otp({
+      email,
+      otp,
+      createdAt: Date.now(),
+      expiresAt: Date.now() + 3600000, // OTP valid for 1 hour
+    });
+    await newOTP.save();
+
+    // Send OTP via email
+    await sendEmail({
+      to: email,
+      subject: "Your OTP",
+      html: `<p>Your OTP is: <strong>${otp}</strong></p>`,
+    });
+
+    // You can log the success or perform other actions here if needed
+    console.log("OTP sent successfully to:", email);
+  } catch (error) {
+    console.error("Error sending OTP:", error);
+    throw new Error("Failed to send OTP");
+  }
+};
+
+export const verifyOTP = async (req, res, next) => {
+  try {
+    const { otp } = req.body;
+
+    if (!otp) {
+      throw Error("Please verify your otp");
+    }
+
+    const existingOTP = await Otp.findOneAndDelete({ otp });
+
+    if (existingOTP) {
+      // OTP is valid
+      res
+        .status(200)
+        .json({ success: true, message: "OTP verification successful" });
+    } else {
+      // OTP is invalid
+      res.status(400).json({ success: false, error: "Invalid OTP" });
+    }
+  } catch (error) {
+    console.error("Error verifying OTP:", error);
+    res.status(500).json({ success: false, error: "Internal server error" });
+  }
+};
+
+export const resendOtp = expressAsyncHandler(async (req, res) => {
+  const { email } = req.body;
+
+  if (!email) {
+    throw Error("Input your email address");
+  }
+
+  try {
+    const existingUser = await User.findOne({ email });
+    if (!existingUser) {
+      res.status(400).json({ message: "Invalid Email Address" });
+    }
+
+    await sendOTP(email);
+
+    res.status(200).json({ success: true, message: "your otp has been sent" });
+  } catch (error) {
+    console.error("Error sending OTP:", error);
+    res.status(500).json({ success: false, error: "Internal server error" });
+  }
 });
