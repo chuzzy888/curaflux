@@ -15,16 +15,35 @@ import {
   SelectValue,
 } from "../../../components/ui/select";
 import { IoArrowUndoSharp } from "react-icons/io5";
+import { InputTypes } from "../../../types/types";
+import {
+  Control,
+  Controller,
+  FieldErrors,
+  UseFormRegister,
+} from "react-hook-form";
+// import { useAuth } from "../../../context/authContext";
 
 interface Step2Props {
   nextStep: () => void;
   prevStep: () => void;
   currentStep: number;
-  //   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  //   formData: { email: string; password: string };
+  register: UseFormRegister<InputTypes>;
+  errors: FieldErrors<InputTypes>;
+  control: Control<InputTypes>;
+  handleSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>;
+  isValid: boolean;
 }
 
-export const Step2 = ({ nextStep, prevStep, currentStep }: Step2Props) => {
+export const Step2 = ({
+  // nextStep,
+  prevStep,
+  currentStep,
+  errors,
+  register,
+  control,
+  handleSubmit,
+}: Step2Props) => {
   return (
     <ScreenLayout>
       {" "}
@@ -37,7 +56,7 @@ export const Step2 = ({ nextStep, prevStep, currentStep }: Step2Props) => {
           <section className=" w-[60%] border-4 p-10  border-blue-500 rounded-2xl">
             <div className=" step2 h-[4px] w-full mb-5">{/* stepper */}</div>
 
-            <form>
+            <form onSubmit={handleSubmit}>
               <div className=" flex gap-1 items-center">
                 <div>
                   <button onClick={prevStep} className=" text-[11px]">
@@ -61,7 +80,13 @@ export const Step2 = ({ nextStep, prevStep, currentStep }: Step2Props) => {
                   type="text"
                   placeholder="Full name"
                   className=" placeholder:text-[#D9D9D9]"
+                  {...register("fullName", { required: true })}
                 />
+                {errors.fullName && (
+                  <p className="text-red-500 text-[11px]">
+                    Please input your full name
+                  </p>
+                )}
               </div>
 
               <div className=" space-y-1 mt-3">
@@ -75,7 +100,13 @@ export const Step2 = ({ nextStep, prevStep, currentStep }: Step2Props) => {
                   type="text"
                   placeholder="Nickname"
                   className=" placeholder:text-[#D9D9D9]"
+                  {...register("nickName", { required: true })}
                 />
+                {errors.nickName && (
+                  <p className="text-red-500 text-[11px]">
+                    Please enter your nick name
+                  </p>
+                )}
               </div>
 
               <div className=" space-y-1 mt-3">
@@ -90,7 +121,13 @@ export const Step2 = ({ nextStep, prevStep, currentStep }: Step2Props) => {
                   type="text"
                   placeholder="MM/DD/YYY"
                   className=" placeholder:text-[#D9D9D9]"
+                  {...register("birthdate", { required: true })}
                 />
+                {errors.birthdate && (
+                  <p className="text-red-500 text-[11px]">
+                    Please enter your date of birth (MM/DD/YYY)
+                  </p>
+                )}
               </div>
 
               <div className=" space-y-1 mt-3">
@@ -98,21 +135,37 @@ export const Step2 = ({ nextStep, prevStep, currentStep }: Step2Props) => {
                   Gender
                 </Label>
 
-                <Select>
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Gender" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="male">Male</SelectItem>
-                    <SelectItem value="female">Female</SelectItem>
-                  </SelectContent>
-                </Select>
+                <Controller
+                  name="gender"
+                  control={control}
+                  rules={{ required: "Gender is required" }}
+                  render={({ field }) => (
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select gender" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="male">Male</SelectItem>
+                        <SelectItem value="female">Female</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
+                {errors.gender && (
+                  <p className="text-red-500 text-[11px] mt-1">
+                    {errors.gender.message}
+                  </p>
+                )}
               </div>
 
               <Button
                 className=" w-full bg-[#009FF5] rounded-full mt-10"
-                type="button"
-                onClick={nextStep}
+                // type="button"
+                // disabled={!isValid}
+                // onClick={handleNextStep}
               >
                 Next
               </Button>

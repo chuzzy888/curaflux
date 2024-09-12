@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { ScreenLayout } from "../../components/layout/ScreenLayout";
 import { Button } from "../../components/ui/button";
 import { Label } from "../../components/ui/label";
@@ -7,8 +7,38 @@ import { Link } from "react-router-dom";
 import signupImg from "../../assets/images/signUp.png";
 import google from "../../assets/images/Google.png";
 import AuthFooter from "../../components/footer/AuthFooter";
+import { SubmitHandler, useForm } from "react-hook-form";
+import axios from "axios";
+import Cookies from "js-cookie";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
+
+type loginType = {
+  email: string;
+  password: string;
+};
 
 const Login = () => {
+  const {
+    register,
+    formState: { errors, isValid },
+    handleSubmit,
+
+    // reset,
+  } = useForm<loginType>();
+  const [show, setShow] = useState(false);
+
+  const handleLogin: SubmitHandler<loginType> = async (form) => {
+    console.log(form);
+
+    const { data } = await axios.post(
+      "http://localhost:3000/auth/signin",
+      form
+    );
+
+    console.log(data);
+    Cookies.set("token", data.token);
+  };
+
   return (
     <ScreenLayout>
       <main className="h-screen flex justify-center flex-col">
@@ -18,7 +48,7 @@ const Login = () => {
           </section>
 
           <section className=" w-[60%] border py-10 px-20 border-black rounded-2xl">
-            <form>
+            <form onSubmit={handleSubmit(handleLogin)}>
               <div className=" flex justify-center flex-col items-center">
                 <h1 className="text-xl font-black">Welcome Back! Sign In</h1>
                 <button type="button" className="my-4">
@@ -35,26 +65,50 @@ const Login = () => {
                 <Input
                   type="email"
                   placeholder="Email or Phone number"
-                  className=" placeholder:text-[#D9D9D9]"
+                  className=" placeholder:text-[#D9D9D9] "
+                  {...register("email", { required: true })}
                 />
+                {errors.email && (
+                  <p className="text-red-500 text-[11px]">
+                    Please enter your email address
+                  </p>
+                )}
               </div>
 
-              <div className=" space-y-1 mt-3">
+              <div className=" space-y-1 mt-3 relative">
                 <Label htmlFor="" className=" font-semibold text-sm">
                   Password
                 </Label>
                 <Input
-                  type="email"
+                  type={!show ? "password" : "text"}
                   placeholder="Password"
-                  className=" placeholder:text-[#D9D9D9]"
+                  className=" placeholder:text-[#D9D9D9] relative"
+                  {...register("password", { required: true })}
                 />
+                {errors.password && (
+                  <p className="text-red-500 text-[11px]">
+                    Please enter your password
+                  </p>
+                )}
+
+                <div className=" absolute top-[30px] right-2">
+                  {!show ? (
+                    <button type="button" onClick={() => setShow(!show)}>
+                      <FaRegEye size={16} />
+                    </button>
+                  ) : (
+                    <button type="button" onClick={() => setShow(!show)}>
+                      <FaRegEyeSlash size={16} />
+                    </button>
+                  )}
+                </div>
               </div>
 
               <div className=" mt-3 flex justify-between items-center">
                 <div className=" flex items-center gap-1">
                   <label
                     htmlFor="AcceptConditions"
-                    className="relative inline-block h-6 w-14 cursor-pointer rounded-full bg-gray-300 transition [-webkit-tap-highlight-color:_transparent] has-[:checked]:bg-sky-500"
+                    className="relative inline-block h-5 w-10 cursor-pointer rounded-full bg-gray-300 transition [-webkit-tap-highlight-color:_transparent] has-[:checked]:bg-sky-500"
                   >
                     <input
                       type="checkbox"
@@ -62,7 +116,7 @@ const Login = () => {
                       className="peer sr-only"
                     />
 
-                    <span className="absolute inset-y-0 start-0 m-1 size-4 rounded-full bg-white transition-all peer-checked:start-8"></span>
+                    <span className="absolute inset-y-0 start-0 m-0.5 size-4 rounded-full bg-white transition-all peer-checked:start-5"></span>
                   </label>
                   <Label className=" text-xs">Remember me</Label>
                 </div>
@@ -74,7 +128,10 @@ const Login = () => {
                 </Link>
               </div>
 
-              <Button className=" w-full bg-[#009FF5] rounded-full mt-7">
+              <Button
+                className=" w-full bg-[#009FF5] rounded-full mt-7"
+                disabled={!isValid}
+              >
                 Login
               </Button>
 

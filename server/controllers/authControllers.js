@@ -10,9 +10,9 @@ import randomstring from "randomstring";
 export const signUp = expressAsyncHandler(async (req, res) => {
   const {
     email,
-    password,
+    // password,
     fullName,
-    nickname,
+    nickName,
     photo,
     role,
     birthdate,
@@ -26,12 +26,12 @@ export const signUp = expressAsyncHandler(async (req, res) => {
   }
 
   // Hash the password and create the new user
-  const hashedPassword = await bcrypt.hash(password, 10);
+  // const hashedPassword = await bcrypt.hash(password, 10);
   const newUser = new User({
     email,
-    password: hashedPassword,
+    // password: hashedPassword,
     fullName,
-    nickname,
+    nickName,
     birthdate,
     gender,
     photo,
@@ -44,7 +44,7 @@ export const signUp = expressAsyncHandler(async (req, res) => {
     {
       id: newUser._id,
       fullName: newUser.fullName,
-      nickname: newUser.nickname,
+      nickName: newUser.nickName,
       birthdate: newUser.birthdate,
       gender: newUser.gender,
       role: newUser.role,
@@ -82,7 +82,7 @@ export const signIn = expressAsyncHandler(async (req, res) => {
     {
       id: user._id,
       fullName: user.fullName,
-      nickname: user.nickname,
+      nickName: user.nickName,
       birthdate: newUser.birthdate,
       gender: newUser.gender,
       role: user.role,
