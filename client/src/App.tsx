@@ -9,6 +9,7 @@ import {
   Routes,
   useLocation,
 } from "react-router-dom";
+import Verification from "./pages/Verification";
 import { AuthProvider } from "./context/authContext";
 import { Toaster } from "./components/ui/sonner";
 
@@ -23,9 +24,16 @@ function AppWrapper() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/verify" element={<Verification />} />
         </Routes>
         <Toaster />
       </AuthProvider>
+      {/* {location.pathname === "/" && <Navbar />}
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+      </Routes> */}
     </>
   );
 }

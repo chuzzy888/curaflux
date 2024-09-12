@@ -59,7 +59,7 @@ function Footer() {
         <div className="container mx-auto px-4"></div>
       </div>
 
-      <div className="text-center text-white py-5 flex justify-between items-center px-8">
+      <div className="text-center text-white py-5 flex justify-between md:flex-row flex-col items-center px-8">
         <p className="text-sm">
           Copyright © 2024 CuraFlux. All rights reserved.
         </p>

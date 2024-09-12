@@ -46,7 +46,7 @@ export const Step3 = ({ prevStep, currentStep }: Step3Props) => {
 
     if (data) {
       setTimeout(() => {
-        navigate("/");
+        navigate("/verify");
       }, 2000);
     }
 
