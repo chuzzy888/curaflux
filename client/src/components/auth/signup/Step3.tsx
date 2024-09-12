@@ -41,7 +41,7 @@ export const Step3 = ({ prevStep, currentStep }: Step3Props) => {
 
   const handleSubmitOtp: SubmitHandler<otpTypes> = async (form) => {
     const { data } = await axios.post(
-      "http://localhost:3000/auth/verify-otp",
+      `${import.meta.env.VITE_BASE_URL}/auth/verify-otp`,
       form
     );
 
@@ -55,9 +55,12 @@ export const Step3 = ({ prevStep, currentStep }: Step3Props) => {
   };
 
   const resendOtp = async () => {
-    const { data } = await axios.post("http://localhost:3000/auth/resend-otp", {
-      email,
-    });
+    const { data } = await axios.post(
+      `${import.meta.env.VITE_BASE_URL}/auth/resend-otp`,
+      {
+        email,
+      }
+    );
 
     if (data) {
       return toast({

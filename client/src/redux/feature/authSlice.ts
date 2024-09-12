@@ -36,7 +36,7 @@ export const loginUser = createAsyncThunk<
 >("auth/loginUser", async (form, { rejectWithValue }) => {
   try {
     const { data } = await axios.post<LoginResponse>(
-      "http://localhost:3000/auth/signin",
+      `${import.meta.env.VITE_BASE_URL}/auth/signin`,
       form
     );
 
@@ -64,7 +64,7 @@ export const registerUser = createAsyncThunk<
 >("auth/registerUser", async (form, { rejectWithValue }) => {
   try {
     const { data } = await axios.post<LoginResponse>(
-      "http://localhost:3000/auth/signup",
+      `${import.meta.env.VITE_BASE_URL}/auth/signup`,
       form
     );
 
@@ -92,7 +92,7 @@ export const verifyUser = createAsyncThunk<
 >("auth/verifyUser", async ({ formData, id }, { rejectWithValue }) => {
   try {
     const { data } = await axios.patch<LoginResponse>(
-      `http://localhost:3000/auth/verify/${id}`,
+      `${import.meta.env.VITE_BASE_URL}/auth/verify/${id}`,
       formData,
       { headers: { "Content-Type": "multipart/form-data" } }
     );
