@@ -5,7 +5,7 @@ import f2 from "../assets/images/f2.png";
 import f3 from "../assets/images/f3.png";
 import f4 from "../assets/images/f4.png";
 import hl1 from "../assets/images/hl1.png";
-import hl2 from "../assets/images/hl2.png";
+import hl2 from "../assets/images/df.png";
 import hl3 from "../assets/images/hl3.png";
 import hl4 from "../assets/images/hl4.png";
 import hl5 from "../assets/images/hl5.png";
@@ -21,9 +21,7 @@ import icn5 from "../assets/images/icn5.png";
 import whc from "../assets/images/gp (2).png";
 import hiw from "../assets/images/hiw.png";
 import { FiArrowDownRight } from "react-icons/fi";
-// import { FaAngleDoubleDown } from "react-icons/fa";
 import { ScreenLayout } from "../components/layout/ScreenLayout";
-// import { Accordion, Placeholder } from "rsuite";
 import Footer from "../components/Footer";
 
 const Home: React.FC = () => {
@@ -32,46 +30,48 @@ const Home: React.FC = () => {
       <div className=" ">
         <div className="container mx-auto px-4 flex flex-col lg:flex-row items-center">
           <div className="lg:w-1/2">
-            <h1 className="text-6xl font-bold mb-4 leading-[1.25] fs ">
-              Connecting <span className="text-blue-600">Medics</span>
-              <br />
-              with <span className="text-blue-600">Hospitals</span> in <br />{" "}
-              Real-Time
+            <h1 className="text-4xl sm:text-6xl font-bold mb-4 leading-tight">
+              Connecting <span className="text-blue-600">Medics</span> <br />
+              with <span className="text-blue-600">Hospitals</span> <br />
+              in Real-Time
             </h1>
-            <p className="mb-6 text-lg text-gray-700">
+            <p className="mb-6 text-base sm:text-lg text-gray-700">
               Join our community and start finding shifts that match your
               expertise.
             </p>
+
             <button className="bg-blue-600 text-white px-6 py-3 rounded-full text-lg font-semibold hover:bg-blue-700 transition duration-300 flex items-center">
               Get started <FiArrowDownRight className="font-bold text-2xl" />
             </button>
-            <div className="mt-6 flex items-center border border-blue-300 rounded-full w-1/2 ">
-              <div className="mr-6">
+            <div className="mt-6 flex flex-col sm:flex-row items-center border border-blue-300 rounded-full sm:w-1/2 w-full p-4">
+              <div className="mr-0 sm:mr-6 mb-4 sm:mb-0">
                 <div className="flex -space-x-4">
                   <img
-                    className="w-12 h-12 rounded-full border-2 border-white"
+                    className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-white"
                     src={f1}
                     alt="User 1"
                   />
                   <img
-                    className="w-12 h-12 rounded-full border-2 border-white"
+                    className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-white"
                     src={f2}
                     alt="User 2"
                   />
                   <img
-                    className="w-12 h-12 rounded-full border-2 border-white"
+                    className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-white"
                     src={f3}
                     alt="User 3"
                   />
                   <img
-                    className="w-12 h-12 rounded-full border-2 border-white"
+                    className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-white"
                     src={f4}
-                    alt="User 3"
+                    alt="User 4"
                   />
                 </div>
               </div>
-              <div>
-                <p className="text-gray-600 font-medium">8K+ Happy Users</p>
+              <div className="text-center sm:text-left whitespace-nowrap">
+                <p className="text-gray-600 font-medium text-sm sm:text-sm">
+                  8K+ Happy Users
+                </p>
               </div>
             </div>
           </div>
@@ -82,80 +82,74 @@ const Home: React.FC = () => {
         </div>
 
         <div className="container mx-auto mt-16 flex justify-center bg-blue-100 p-5 mb-16 rounded">
-          <div className="grid grid-cols-3 lg:grid-cols-6 gap-4">
-            <div className="flex items-center gap-1">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+            <div className="flex  md:flex-row flex-col items-center gap-1">
               <img
-                src={hl1} // Replace with actual logo
+                src={hl1}
                 alt="Kinsmith Specialist Hospital"
-                className="h-10"
+                className="h-8 sm:h-10"
               />
-              <p className="text-xs">Kinsmith Specialist Hospital</p>
-            </div>
-            <div className="flex items-center gap-1">
-              <img
-                src={hl2} // Replace with actual logo
-                alt="Cornerstone Healthcare"
-                className="h-10"
-              />
-              <p className="text-xs">Cornerstone Healthcare</p>
-            </div>
-            <div className="flex items-center gap-1">
-              <img
-                src={hl3} // Replace with actual logo
-                alt="Mayo Clinic"
-                className="h-10"
-              />
-              <p className="text-xs">Mayo Clinic</p>
-            </div>
-            <div className="flex items-center gap-1">
-              <img
-                src={hl4} // Replace with actual logo
-                alt="Babcock University Hospital"
-                className="h-10"
-              />
-              <p className="text-xs">
-                Babcock University Teaching Hospital BUTH
+              <p className="text-[10px] sm:text-xs text-center sm:text-left">
+                Kinsmith Specialist Hospital
               </p>
             </div>
-            <div className="flex items-center gap-1">
+            <div className="flex  md:flex-row flex-col items-center gap-1">
               <img
-                src={hl5} // Replace with actual logo
-                alt="Shouldice Hospital"
-                className="h-10"
+                src={hl2}
+                alt="Cornerstone Healthcare"
+                className="h-8 sm:h-10"
               />
-              <p className="text-xs">Shouldice Hospital</p>
+              <p className="text-[10px] sm:text-xs text-center sm:text-left">
+                Cornerstone Healthcare
+              </p>
             </div>
-            <div className="flex items-center gap-1">
+            <div className="flex  md:flex-row flex-col items-center gap-1">
+              <img src={hl3} alt="Mayo Clinic" className="h-8 sm:h-10" />
+              <p className="text-[10px] sm:text-xs text-center sm:text-left">
+                Mayo Clinic
+              </p>
+            </div>
+            <div className="flex  md:flex-row flex-col items-center gap-1">
               <img
-                src={hl6} // Replace with actual logo
-                alt="Seventh-d Hospital"
-                className="h-10"
+                src={hl4}
+                alt="Babcock University Hospital"
+                className="h-8 sm:h-10"
               />
-              <p className="text-xs">Seventh-day Adventist Hospital, Ile-Ife</p>
+              <p className="text-[10px] sm:text-xs text-center sm:text-left">
+                Babcock Hospital
+              </p>
+            </div>
+            <div className="flex  md:flex-row flex-col items-center gap-1">
+              <img src={hl5} alt="Shouldice Hospital" className="h-8 sm:h-10" />
+              <p className="text-[10px] sm:text-xs text-center sm:text-left">
+                Shouldice Hospital
+              </p>
+            </div>
+            <div className="flex md:flex-row flex-col items-center gap-1">
+              <img src={hl6} alt="Seventh-d Hospital" className="h-8 sm:h-10" />
+              <p className="text-[10px] sm:text-xs text-center sm:text-left">
+                Ever Care Hospital
+              </p>
             </div>
           </div>
         </div>
 
         <div className="bg-blue-50 py-16">
           <div className="container mx-auto px-4">
-            {/* Title */}
-            <h2 className="text-3xl font-bold text-center mb-10 ft">
+            <h2 className="md:text-3xl text-xl font-bold text-center mb-10 ft">
               Streamlined Staffing Solutions for Hospitals
             </h2>
 
             <div className="flex flex-col lg:flex-row items-center lg:space-x-10">
-              {/* Image */}
               <div className="lg:w-1/3 mb-10 lg:mb-0">
                 <img
                   src={blc}
                   alt="Nurse working"
-                  className="rounded-lg shadow-lg"
+                  className="rounded-lg shadow-lg h-1/2 md:h-full"
                 />
               </div>
 
-              {/* Features grid */}
               <div className="lg:w-2/3 grid grid-cols-1 md:grid-cols-2 gap-8">
-                {/* Feature 1 */}
                 <div className="bg-green-100 rounded-lg shadow-lg p-6 text-center">
                   <img src={icn5} alt="" />
                   <h3 className="text-xl font-semibold mb-2">
@@ -167,7 +161,6 @@ const Home: React.FC = () => {
                   </p>
                 </div>
 
-                {/* Feature 2 */}
                 <div className="bg-red-100 rounded-lg shadow-lg p-6 text-center">
                   <img src={icn4} alt="" />{" "}
                   <h3 className="text-xl font-semibold mb-2">
@@ -179,7 +172,6 @@ const Home: React.FC = () => {
                   </p>
                 </div>
 
-                {/* Feature 3 */}
                 <div className="bg-yellow-100 rounded-lg shadow-lg p-6 text-center">
                   <img src={icn2} alt="" />
                   <h3 className="text-xl font-semibold mb-2">
@@ -191,7 +183,6 @@ const Home: React.FC = () => {
                   </p>
                 </div>
 
-                {/* Feature 4 */}
                 <div className="bg-purple-100 rounded-lg shadow-lg p-6 text-center">
                   <img src={icn1} alt="" />
                   <h3 className="text-xl font-semibold mb-2">
@@ -203,7 +194,6 @@ const Home: React.FC = () => {
                   </p>
                 </div>
 
-                {/* Feature 5 */}
                 <div className="bg-white rounded-lg shadow-lg p-6 text-center">
                   <img src={icn3} alt="" />{" "}
                   <h3 className="text-xl font-semibold mb-2">
@@ -279,52 +269,6 @@ const Home: React.FC = () => {
             />
           </div>
         </div>
-        {/* <p className="font-black text-3xl">Frequently Asked Questions</p>
-        <p className="mb-4 text-sm">
-          Connecting Hospitals and Nurses in a Few Simple Steps
-        </p>
-        <Accordion defaultActiveKey={1} bordered>
-          <Accordion.Panel
-            header="How do I sign up and create a profile?"
-            eventKey={1}
-            caretAs={FaAngleDoubleDown}
-          >
-            <p>
-              Hospitals and medics can sign up by providing their details and
-              creating a profile. Medics can include their qualifications,
-              preferences, and availability, while hospitals can outline their
-              staffing needs and shift requirements.
-            </p>
-          </Accordion.Panel>
-          <Accordion.Panel
-            header="How do hospitals post and medics discover shifts?"
-            eventKey={2}
-            caretAs={FaAngleDoubleDown}
-          >
-            <Placeholder.Paragraph />
-          </Accordion.Panel>
-          <Accordion.Panel
-            header="How does CuraFlux match medics to shifts and verify credentials?"
-            eventKey={3}
-            caretAs={FaAngleDoubleDown}
-          >
-            <Placeholder.Paragraph />
-          </Accordion.Panel>
-          <Accordion.Panel
-            header="How do hospitals and medics communicate and coordinate?"
-            eventKey={3}
-            caretAs={FaAngleDoubleDown}
-          >
-            <Placeholder.Paragraph />
-          </Accordion.Panel>
-          <Accordion.Panel
-            header="How do medics work and get compensated?"
-            eventKey={3}
-            caretAs={FaAngleDoubleDown}
-          >
-            <Placeholder.Paragraph />
-          </Accordion.Panel>
-        </Accordion> */}
         <div>
           <img src={hiw} alt="" />
         </div>

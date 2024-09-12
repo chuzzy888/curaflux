@@ -9,6 +9,7 @@ import {
   Routes,
   useLocation,
 } from "react-router-dom";
+import Verification from "./pages/Verification";
 
 function AppWrapper() {
   const location = useLocation();
@@ -20,6 +21,7 @@ function AppWrapper() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/verify" element={<Verification />} />
       </Routes>
     </>
   );
