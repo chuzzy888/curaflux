@@ -7,3 +7,15 @@ export type InputTypes = {
   gender: string;
   otp: string;
 };
+
+export type VerificationTypes = {
+  fullName: string;
+  email: string;
+  phoneNumber: string;
+  birthdate: string;
+  gender: string;
+  linkedInUrl: string;
+  identificationType: string;
+  identificationNumber: string;
+  identificationDocument: string;
+};

@@ -5,12 +5,14 @@ import expressAsyncHandler from "express-async-handler";
 import { Otp } from "../models/otpModel.js";
 import { sendEmail } from "../utils/sendVerificationOtp.js";
 import randomstring from "randomstring";
+import { v2 as cloudinary } from "cloudinary";
+import fs from "fs";
 
 // Sign Up Handler
 export const signUp = expressAsyncHandler(async (req, res) => {
   const {
     email,
-    // password,
+    password,
     fullName,
     nickName,
     photo,
@@ -26,10 +28,10 @@ export const signUp = expressAsyncHandler(async (req, res) => {
   }
 
   // Hash the password and create the new user
-  // const hashedPassword = await bcrypt.hash(password, 10);
+  const hashedPassword = await bcrypt.hash(password, 10);
   const newUser = new User({
     email,
-    // password: hashedPassword,
+    password: hashedPassword,
     fullName,
     nickName,
     birthdate,
@@ -72,7 +74,7 @@ export const signIn = expressAsyncHandler(async (req, res) => {
     return res.status(400).json({ message: "User not found" });
   }
 
-  const isPasswordCorrect = await bcrypt.compare(password, user.password);
+  const isPasswordCorrect =  bcrypt.compare(password, user.password);
   if (!isPasswordCorrect) {
     return res.status(400).json({ message: "Invalid credentials" });
   }
@@ -83,8 +85,8 @@ export const signIn = expressAsyncHandler(async (req, res) => {
       id: user._id,
       fullName: user.fullName,
       nickName: user.nickName,
-      birthdate: newUser.birthdate,
-      gender: newUser.gender,
+      birthdate: user.birthdate,
+      gender: user.gender,
       role: user.role,
       email: user.email,
     },
@@ -181,5 +183,79 @@ export const resendOtp = expressAsyncHandler(async (req, res) => {
   } catch (error) {
     console.error("Error sending OTP:", error);
     res.status(500).json({ success: false, error: "Internal server error" });
+  }
+});
+
+export const verify = expressAsyncHandler(async (req, res) => {
+  const { userId } = req.params;
+
+  const {
+    fullName,
+    email,
+    phoneNumber,
+    birthdate,
+    gender,
+    linkedInUrl,
+    identificationType,
+    identificationNumber,
+  } = req.body;
+
+  const userDetails = {};
+
+  if (fullName) userDetails.fullName = fullName;
+  if (email) userDetails.email = email;
+  if (phoneNumber) userDetails.phoneNumber = phoneNumber;
+  if (birthdate) userDetails.birthdate = birthdate;
+  if (gender) userDetails.gender = gender;
+  if (linkedInUrl) userDetails.linkedInUrl = linkedInUrl;
+  if (identificationType) userDetails.identificationType = identificationType;
+  if (identificationNumber)
+    userDetails.identificationNumber = identificationNumber;
+
+  const document =
+    req.files && req.files.identificationDocument
+      ? req.files.identificationDocument.tempFilePath
+      : null;
+
+  if (document) {
+    try {
+      const documentResult = await cloudinary.uploader.upload(
+        req.files.identificationDocument.tempFilePath,
+        {
+          use_filename: true,
+          folder: "CuraFlux-user-identificationDocument",
+          resource_type: "auto",
+        }
+      );
+
+      userDetails.identificationDocument = documentResult.secure_url;
+      fs.unlinkSync(document);
+    } catch (error) {
+      console.error("Error uploading document to Cloudinary:", error);
+      return res
+        .status(500)
+        .json({ success: false, error: "Failed to upload document" });
+    }
+  }
+
+  try {
+    const updateUserDetails = await User.findByIdAndUpdate(
+      { _id: userId },
+      userDetails,
+      { new: true, runValidators: true }
+    );
+
+    if (!updateUserDetails) {
+      return res
+        .status(404)
+        .json({ success: false, error: "Details not found" });
+    }
+
+    res.status(200).json({ success: true, updateUserDetails });
+  } catch (error) {
+    console.error("Error updating user details:", error);
+    res
+      .status(500)
+      .json({ success: false, error: "Failed to update user details" });
   }
 });

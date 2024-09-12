@@ -22,6 +22,7 @@ import {
   FieldErrors,
   UseFormRegister,
 } from "react-hook-form";
+import { useAppSelector } from "../../../hooks/hook";
 // import { useAuth } from "../../../context/authContext";
 
 interface Step2Props {
@@ -44,6 +45,7 @@ export const Step2 = ({
   control,
   handleSubmit,
 }: Step2Props) => {
+  const { status } = useAppSelector((state) => state.auth);
   return (
     <ScreenLayout>
       {" "}
@@ -117,10 +119,16 @@ export const Step2 = ({
                   why do we need your date of birth?{" "}
                   <span className=" underline">Learn More.</span>
                 </p>
-                <Input
+                {/* <Input
                   type="text"
                   placeholder="MM/DD/YYY"
                   className=" placeholder:text-[#D9D9D9]"
+                  
+                /> */}
+
+                <input
+                  type="date"
+                  className="mt-1 block w-full p-2 border  bg-gray-100 border-border rounded-md"
                   {...register("birthdate", { required: true })}
                 />
                 {errors.birthdate && (
@@ -167,7 +175,7 @@ export const Step2 = ({
                 // disabled={!isValid}
                 // onClick={handleNextStep}
               >
-                Next
+                {status === "loading" ? "Submitting" : "Next"}
               </Button>
             </form>
           </section>

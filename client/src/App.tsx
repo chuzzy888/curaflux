@@ -11,7 +11,8 @@ import {
 } from "react-router-dom";
 import Verification from "./pages/Verification";
 import { AuthProvider } from "./context/authContext";
-import { Toaster } from "./components/ui/sonner";
+import { Toaster } from "./components/ui/toaster";
+
 
 function AppWrapper() {
   const location = useLocation();

@@ -47,20 +47,20 @@ export const Step1 = ({ nextStep, register, errors, isValid }: Step1Props) => {
               )}
             </div>
 
-            {/* <div className="space-y-1 mt-3">
-                <Label htmlFor="password" className="font-semibold text-sm">
-                  Password
-                </Label>
-                <Input
-                  type="password"
-                  placeholder="Password"
-                  className="placeholder:text-[#D9D9D9]"
-                  {...register("password", { required: true })}
-                />
-                {errors.password && (
-                  <p className="text-red-500">{errors.password.message}</p>
-                )}
-              </div> */}
+            <div className="space-y-1 mt-3">
+              <Label htmlFor="password" className="font-semibold text-sm">
+                Password
+              </Label>
+              <Input
+                type="password"
+                placeholder="Password"
+                className="placeholder:text-[#D9D9D9]"
+                {...register("password", { required: true })}
+              />
+              {errors.password && (
+                <p className="text-red-500">{errors.password.message}</p>
+              )}
+            </div>
 
             <Button
               className="w-full bg-[#009FF5] rounded-full mt-4"

@@ -4,9 +4,9 @@ import { Step2 } from "../../components/auth/signup/Step2";
 import { Step3 } from "../../components/auth/signup/Step3";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { InputTypes } from "../../types/types";
-import axios from "axios";
-import cookies from "js-cookie";
 import { useAuth } from "../../context/authContext";
+import { useAppDispatch } from "../../hooks/hook";
+import { registerUser } from "../../redux/feature/authSlice";
 
 const Register = () => {
   const [currentStep, setCurrentStep] = useState<number>(1);
@@ -20,6 +20,8 @@ const Register = () => {
     // reset,
   } = useForm<InputTypes>();
 
+  const dispatch = useAppDispatch();
+
   const handleRegister: SubmitHandler<InputTypes> = async (form) => {
     console.log(form);
     setEmail(form.email);
@@ -30,13 +32,7 @@ const Register = () => {
       }, 3000);
     }
 
-    const { data } = await axios.post(
-      "http://localhost:3000/auth/signup",
-      form
-    );
-
-    console.log(data);
-    cookies.set("token", data.token);
+    dispatch(registerUser(form));
   };
 
   const nextStep = () => {

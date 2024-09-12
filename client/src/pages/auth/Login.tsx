@@ -8,9 +8,11 @@ import signupImg from "../../assets/images/signUp.png";
 import google from "../../assets/images/Google.png";
 import AuthFooter from "../../components/footer/AuthFooter";
 import { SubmitHandler, useForm } from "react-hook-form";
-import axios from "axios";
-import Cookies from "js-cookie";
+
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
+
+import { loginUser } from "../../redux/feature/authSlice";
+import { useAppDispatch, useAppSelector } from "../../hooks/hook";
 
 type loginType = {
   email: string;
@@ -26,17 +28,13 @@ const Login = () => {
     // reset,
   } = useForm<loginType>();
   const [show, setShow] = useState(false);
+  const dispatch = useAppDispatch();
+  const { status } = useAppSelector((state) => state.auth);
+
+  console.log(status);
 
   const handleLogin: SubmitHandler<loginType> = async (form) => {
-    console.log(form);
-
-    const { data } = await axios.post(
-      "http://localhost:3000/auth/signin",
-      form
-    );
-
-    console.log(data);
-    Cookies.set("token", data.token);
+    dispatch(loginUser(form));
   };
 
   return (
@@ -132,7 +130,7 @@ const Login = () => {
                 className=" w-full bg-[#009FF5] rounded-full mt-7"
                 disabled={!isValid}
               >
-                Login
+                {status === "loading" ? "Signing" : "Login"}
               </Button>
 
               <div className=" h-[1px] w-full my-7 bg-gray-300" />

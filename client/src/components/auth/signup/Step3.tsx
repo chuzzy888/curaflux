@@ -17,7 +17,7 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../context/authContext";
-import { toast } from "sonner";
+import { useToast } from "../../../hooks/use-toast";
 
 interface Step3Props {
   prevStep: () => void;
@@ -30,6 +30,7 @@ type otpTypes = {
 
 export const Step3 = ({ prevStep, currentStep }: Step3Props) => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const {
     formState: { errors },
     handleSubmit,
@@ -59,13 +60,9 @@ export const Step3 = ({ prevStep, currentStep }: Step3Props) => {
     });
 
     if (data) {
-      return toast("Otp sent", {
+      return toast({
+        title: "Otp sent",
         description: `Your otp have been sent to ${email} successfully`,
-        action: {
-          label: "Close",
-          onClick: () => console.log("Close"),
-        },
-        position: "top-right",
       });
     }
   };
