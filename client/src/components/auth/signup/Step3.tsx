@@ -51,7 +51,7 @@ export const Step3 = ({ prevStep, currentStep }: Step3Props) => {
       }, 2000);
     }
 
-    // reset();
+   
   };
 
   const resendOtp = async () => {
