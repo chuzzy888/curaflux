@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { ScreenLayout } from "../../components/layout/ScreenLayout";
 import { Button } from "../../components/ui/button";
 import { Label } from "../../components/ui/label";
@@ -40,12 +40,12 @@ const Login = () => {
   return (
     <ScreenLayout>
       <main className="h-screen flex justify-center flex-col">
-        <section className=" flex justify-between items-center  gap-20">
-          <section className=" w-full">
+        <section className=" lg:flex justify-center items-center  gap-32">
+          <section className=" w-[502px] h-[502px] hidden lg:block">
             <img src={signupImg} alt="" className=" w-full" />
           </section>
 
-          <section className=" w-[60%] border py-10 px-20 border-black rounded-2xl">
+          <section className=" lg:w-[521px] h-[570px] border p-10 border-black rounded-2xl">
             <form onSubmit={handleSubmit(handleLogin)}>
               <div className=" flex justify-center flex-col items-center">
                 <h1 className="text-xl font-black">Welcome Back! Sign In</h1>

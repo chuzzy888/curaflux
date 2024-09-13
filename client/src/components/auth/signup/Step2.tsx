@@ -50,12 +50,12 @@ export const Step2 = ({
     <ScreenLayout>
       {" "}
       <main className="h-screen flex justify-center flex-col">
-        <section className=" flex justify-between items-center gap-20">
-          <section className=" w-full">
+        <section className=" lg:flex justify-center items-center  gap-32">
+          <section className=" w-[502px] h-[502px] hidden lg:block">
             <img src={signin} alt="" className=" w-full" />
           </section>
 
-          <section className=" w-[60%] border-4 p-10  border-blue-500 rounded-2xl">
+          <section className="lg:w-[521px]  border-4 p-10  border-blue-500 rounded-2xl">
             <div className=" step2 h-[4px] w-full mb-5">{/* stepper */}</div>
 
             <form onSubmit={handleSubmit}>

@@ -9,7 +9,7 @@ import youtube from "../../assets/images/youtube.png";
 
 const AuthFooter = () => {
   return (
-    <main className="flex justify-between items-center mt-16">
+    <main className="flex flex-wrap justify-around lg:justify-between items-center mt-16">
       <img src={authLogo} alt="auth-logo" />
       <p className="text-sm text-gray-600">All copyrights reserved</p>
       <section className=" flex items-center gap-3">

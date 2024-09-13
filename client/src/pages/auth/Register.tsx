@@ -26,11 +26,7 @@ const Register = () => {
     console.log(form);
     setEmail(form.email);
 
-    if (form) {
-      setTimeout(() => {
-        nextStep();
-      }, 3000);
-    }
+    nextStep();
 
     dispatch(registerUser(form));
   };

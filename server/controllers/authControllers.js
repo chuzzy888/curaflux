@@ -74,7 +74,7 @@ export const signIn = expressAsyncHandler(async (req, res) => {
     return res.status(400).json({ message: "User not found" });
   }
 
-  const isPasswordCorrect =  bcrypt.compare(password, user.password);
+  const isPasswordCorrect = bcrypt.compare(password, user.password);
   if (!isPasswordCorrect) {
     return res.status(400).json({ message: "Invalid credentials" });
   }
@@ -96,7 +96,7 @@ export const signIn = expressAsyncHandler(async (req, res) => {
     }
   );
 
-  res.status(200).json({ message: "Successful login", token });
+  res.status(200).json({ message: "Successful login", token, success: true });
 });
 
 // Generate OTP
@@ -258,4 +258,17 @@ export const verify = expressAsyncHandler(async (req, res) => {
       .status(500)
       .json({ success: false, error: "Failed to update user details" });
   }
+});
+
+export const getUsers = expressAsyncHandler(async (req, res) => {
+  const user = await User.find();
+
+  res.status(200).json({ success: true, user });
+});
+
+export const getAUsers = expressAsyncHandler(async (req, res) => {
+  const { userId } = req.params;
+  const user = await User.findById({ _id: userId });
+
+  res.status(200).json({ success: true, user });
 });
