@@ -20,12 +20,12 @@ export const Step1 = ({ nextStep, register, errors, isValid }: Step1Props) => {
   return (
     <ScreenLayout>
       <main className="h-screen flex justify-center flex-col">
-        <section className="flex justify-center items-center gap-40">
-          <section className="w-[502px] h-[502px]">
+        <section className="flex justify-center items-center gap-32">
+          <section className=" w-[502px] h-[502px] hidden lg:block">
             <img src={signin} alt="" className="w-full" />
           </section>
 
-          <section className=" w-[521px] h-[570px] border-4 p-10 border-blue-500 rounded-2xl">
+          <section className=" w-[521px]  border-4 p-10 border-blue-500 rounded-2xl">
             <div className="flex justify-center flex-col items-center">
               <h1 className="text-xl font-bold">Create an account</h1>
             </div>
