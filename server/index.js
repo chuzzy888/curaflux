@@ -3,9 +3,10 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
 import authRoutes from "./routes/authRoute.js";
+import hospitalRoute from "./routes/hospitalRoute.js";
 import { errorHandler } from "./middleware/errorHandlers.js";
 import { v2 as cloudinary } from "cloudinary";
-import fileupload from "express-fileupload"
+import fileupload from "express-fileupload";
 
 const PORT = 3000;
 const app = express();
@@ -40,6 +41,7 @@ app.get("/", (req, res) => {
   res.send("home page");
 });
 app.use("/auth", authRoutes);
+app.use("/hospital", hospitalRoute);
 
 const startServer = async () => {
   try {
