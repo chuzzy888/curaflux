@@ -4,6 +4,7 @@ import { shifts } from "./shiftData"; // Import your shift data
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { HiCalendar, HiClock, HiUser, HiCurrencyDollar } from "react-icons/hi";
 import Modal from "react-modal";
+import React from "react";
 
 const ShiftDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();

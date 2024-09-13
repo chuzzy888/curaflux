@@ -12,6 +12,8 @@ import {
 import Verification from "./pages/Verification";
 import { AuthProvider } from "./context/authContext";
 import { Toaster } from "./components/ui/toaster";
+import Shift from "./pages/Shift";
+import ShiftDetails from "./pages/ShiftDetails";
 
 function AppWrapper() {
   const location = useLocation();
