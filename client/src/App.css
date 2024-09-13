@@ -6,3 +6,36 @@
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
     "Lucida Sans", Arial, sans-serif;
 }
+
+.react-calendar {
+  width: 100%;
+  max-width: 300px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 9px;
+}
+
+.react-calendar__tile {
+  border-radius: 4px;
+  padding: 10px;
+}
+
+.react-calendar__tile--active {
+  /* background: #7eabdb; */
+  background: rgb(84, 212, 84);
+  color: white;
+}
+
+.react-calendar__tile--now {
+  background: #f0f0f0;
+}
+
+.react-calendar__navigation button {
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 10px;
+  margin: 2px;
+}
