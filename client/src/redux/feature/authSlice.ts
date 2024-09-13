@@ -27,6 +27,7 @@ interface VerificationForm {
 interface LoginResponse {
   token: string;
   message: User;
+  success: boolean;
 }
 
 export const loginUser = createAsyncThunk<
@@ -42,9 +43,10 @@ export const loginUser = createAsyncThunk<
 
     Cookies.set("token", data.token);
 
-    setTimeout(() => {
-      window.location.href = "/";
-    }, 2000);
+  if (data.success === true) {
+    window.location.href = "/";
+  }
+    
 
     return data.message;
   } catch (error) {
@@ -70,9 +72,9 @@ export const registerUser = createAsyncThunk<
 
     Cookies.set("token", data.token);
 
-    setTimeout(() => {
-      window.location.href = "/verify";
-    }, 2000);
+    // setTimeout(() => {
+    //   window.location.href = "/verify";
+    // }, 2000);
 
     return data.message;
   } catch (error) {
@@ -97,9 +99,11 @@ export const verifyUser = createAsyncThunk<
       { headers: { "Content-Type": "multipart/form-data" } }
     );
 
-    setTimeout(() => {
+    Cookies.set("verified", "true");
+
+    if (data.success === true) {
       window.location.href = "/";
-    }, 2000);
+    }
 
     return data.message;
 

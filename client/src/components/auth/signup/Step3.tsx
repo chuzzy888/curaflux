@@ -45,13 +45,11 @@ export const Step3 = ({ prevStep, currentStep }: Step3Props) => {
       form
     );
 
-    if (data) {
-      setTimeout(() => {
-        navigate("/verify");
-      }, 2000);
+    if (data.success === true) {
+      navigate("/verify");
     }
 
-   
+    // console.log(data.success === true);
   };
 
   const resendOtp = async () => {

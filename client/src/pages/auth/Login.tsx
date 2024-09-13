@@ -40,12 +40,12 @@ const Login = () => {
   return (
     <ScreenLayout>
       <main className="h-screen flex justify-center flex-col">
-        <section className=" flex justify-between items-center  gap-20">
-          <section className=" w-full">
+        <section className=" flex justify-center items-center  gap-40">
+          <section className=" w-[502px] h-[502px]">
             <img src={signupImg} alt="" className=" w-full" />
           </section>
 
-          <section className=" w-[60%] border py-10 px-20 border-black rounded-2xl">
+          <section className=" w-[521px] h-[570px] border p-10 border-black rounded-2xl">
             <form onSubmit={handleSubmit(handleLogin)}>
               <div className=" flex justify-center flex-col items-center">
                 <h1 className="text-xl font-black">Welcome Back! Sign In</h1>
