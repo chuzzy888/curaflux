@@ -13,6 +13,7 @@ import Verification from "./pages/Verification";
 import { AuthProvider } from "./context/authContext";
 import { Toaster } from "./components/ui/toaster";
 import Shift from "./pages/Shift";
+import ShiftDetails from "./pages/ShiftDetails";
 
 function AppWrapper() {
   const location = useLocation();
@@ -27,6 +28,7 @@ function AppWrapper() {
           <Route path="/register" element={<Register />} />
           <Route path="/verify" element={<Verification />} />
           <Route path="/shift" element={<Shift />} />
+          <Route path="/shift-details/:id" element={<ShiftDetails />} />
         </Routes>
         <Toaster />
       </AuthProvider>
