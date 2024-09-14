@@ -36,7 +36,7 @@ const Home: React.FC = () => {
               in Real-Time
             </h1>
             <p className="mb-6 text-base sm:text-lg text-gray-700">
-              Join our community and start finding shifts that match your
+              Join our community and start finding shifts that match your 
               expertise.
             </p>
 
