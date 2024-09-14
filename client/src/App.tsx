@@ -6,6 +6,7 @@ import Navbar from "./components/Navbar";
 import Verification from "./pages/Verification";
 import Shift from "./pages/Shift";
 import ShiftDetails from "./pages/ShiftDetails";
+import "./App.css";
 import {
   BrowserRouter as Router,
   Route,

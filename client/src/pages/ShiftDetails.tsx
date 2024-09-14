@@ -201,7 +201,7 @@
 
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { shifts } from "./shiftData"; // Import your shift data
+import { shifts } from "./shiftData";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { HiCalendar, HiClock, HiCurrencyDollar } from "react-icons/hi";
 import Modal from "react-modal";
@@ -212,20 +212,19 @@ const ShiftDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const shift = shifts.find(shift => shift.id === parseInt(id || ""));
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false); // State for loading
-  const [isConfirmed, setIsConfirmed] = useState(false); // State for shift confirmation
+  const [isLoading, setIsLoading] = useState(false);
+  const [isConfirmed, setIsConfirmed] = useState(false);
 
   // Modal open and close handlers
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
-  // Function to handle shift acceptance
   const handleShiftAcceptance = () => {
-    setIsLoading(true); // Set loading to true
+    setIsLoading(true);
     setTimeout(() => {
-      setIsLoading(false); // End loading after 4 seconds
-      setIsConfirmed(true); // Set confirmation state to true
-    }, 4000); // Simulate 4-second loading state
+      setIsLoading(false);
+      setIsConfirmed(true);
+    }, 4000);
   };
 
   if (!shift) {
@@ -313,7 +312,6 @@ const ShiftDetails: React.FC = () => {
                   {/* Display text only */}
                 </div>
               ) : (
-                // Show this content when the user is not loading
                 <div>
                   <div className="flex justify-between gap-3">
                     <p className="font-bold">Confirm Shift</p>

@@ -30,13 +30,13 @@ const Home: React.FC = () => {
       <div className="">
         <div className="container mx-auto px-4 flex flex-col lg:flex-row items-center">
           <div className="lg:w-1/2 ">
-            <h1 className="text-4xl sm:text-6xl font-bold mb-4 leading-tight">
+            <h1 className="text-3xl sm:text-6xl font-bold mb-4 leading-tight">
               Connecting <span className="text-blue-600">Medics</span> <br />
               with <span className="text-blue-600">Hospitals</span> <br />
               in Real-Time
             </h1>
             <p className="mb-6 text-base sm:text-lg text-gray-700">
-              Join our community and start finding shifts that match your 
+              Join our community and start finding shifts that match your
               expertise.
             </p>
 
@@ -211,14 +211,16 @@ const Home: React.FC = () => {
 
         <div className="flex flex-col md:flex-row items-center p-6 bg-gray-50  my-3 ">
           <div className="md:w-1/2">
-            <h2 className="text-2xl font-bold text-primary ml-4 ">
+            <h2 className="md:text-3xl text-xl font-bold text-primary ml-4 ">
               Why Choose CuraFlux?
             </h2>
             <ul className="mt-4 space-y-4 text-muted-foreground">
               <li className="flex items-start">
                 <span className="mr-2 text-accent">•</span>
                 <span>
-                  <strong className="text-black">Instant Shift Matching</strong>{" "}
+                  <strong className="text-black font-medium">
+                    Instant Shift Matching
+                  </strong>{" "}
                   Get notified about available shifts that match your expertise
                   and availability.
                 </span>
@@ -226,7 +228,9 @@ const Home: React.FC = () => {
               <li className="flex items-start">
                 <span className="mr-2 text-accent">•</span>
                 <span>
-                  <strong className="text-black">Flexible Scheduling </strong>{" "}
+                  <strong className="text-black font-medium">
+                    Flexible Scheduling{" "}
+                  </strong>{" "}
                   Take control of your work-life balance by selecting shifts
                   that fit your schedule.
                 </span>
@@ -234,7 +238,7 @@ const Home: React.FC = () => {
               <li className="flex items-start">
                 <span className="mr-2 text-accent">•</span>
                 <span>
-                  <strong className="text-black">
+                  <strong className="text-black font-medium">
                     Seamless Integration with Hospitals
                   </strong>{" "}
                   Hospitals can request practitioners easily, ensuring quick
@@ -244,7 +248,9 @@ const Home: React.FC = () => {
               <li className="flex items-start">
                 <span className="mr-2 text-accent">•</span>
                 <span>
-                  <strong className="text-black">Simple & Fast Sign-Up</strong>{" "}
+                  <strong className="text-black font-medium">
+                    Simple & Fast Sign-Up
+                  </strong>{" "}
                   Sign up in minutes, and start receiving shift requests
                   directly on your phone.
                 </span>
@@ -266,7 +272,7 @@ const Home: React.FC = () => {
           </div>
         </div>
         <div>
-          <img src={hiw} alt="" className="md:block hidden" />
+          <img src={hiw} alt="" className="md:block hidden w-full" />
         </div>
       </div>
       <Footer />
