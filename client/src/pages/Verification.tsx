@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import Cookies from "js-cookie";
 import { jwtDecode, JwtPayload } from "jwt-decode";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
+import lg from "../assets/images/lg.png";
 
 import { Input } from "../components/ui/input";
 import {
@@ -38,7 +39,7 @@ function Verification() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const dispatch = useAppDispatch();
-  const { status } = useAppSelector((state) => state.auth);
+  const { status } = useAppSelector(state => state.auth);
 
   const {
     register,
@@ -73,9 +74,9 @@ function Verification() {
 
   const handleClick = () => fileInputRef.current?.click();
 
-  const handleUploadVerification: SubmitHandler<VerificationTypes> = async (
-    form
-  ) => {
+  const handleUploadVerification: SubmitHandler<
+    VerificationTypes
+  > = async form => {
     try {
       const formData = new FormData();
       Object.entries(form).forEach(([key, value]) =>
@@ -98,7 +99,10 @@ function Verification() {
           className="max-w-2xl mx-auto p-6 rounded-lg shadow-2xl border border-t-blue-500"
           onSubmit={handleSubmit(handleUploadVerification)}
         >
-          <h1 className="text-2xl font-bold mb-4">Welcome 👋</h1>
+          <div className="flex justify-between items-center">
+            <h1 className="text-2xl font-bold mb-4">Welcome 👋</h1>
+            <img src={lg} alt="" />
+          </div>
           <p className="text-muted-foreground mb-6">
             Let us know more about yourself
           </p>
@@ -329,16 +333,35 @@ function Verification() {
             </div>
           </div>
 
-          <div>
+          <div className="bg-white p-6 rounded-xl shadow-md max-w-2xl mx-auto my-6">
             <h1 className="text-2xl font-bold text-foreground mb-4 mt-6">
               Consent and Privacy
             </h1>
-            {/* ... (consent text remains unchanged) ... */}
-            <div className="flex items-center mb-4">
-              <Input type="checkbox" id="consent" className="mr-2" required />
-              <label htmlFor="consent" className="text-muted-foreground">
+            <p className="text-gray-600 mb-6 leading-relaxed">
+              To provide the best experience and maintain your privacy, we
+              collect and process your personal data in accordance with our{" "}
+              <a href="#" className="text-blue-600 underline">
+                Consent and Privacy
+              </a>{" "}
+              policy. Please review it carefully before proceeding. By checking
+              the box below, you agree to the terms outlined in this policy,
+              which include the use of your data for service improvements and
+              tailored notifications.
+            </p>
+            <div className="flex items-start mb-6 ">
+              {/* <Input type="checkbox" id="consent" className="mr-2" required /> */}
+              <input
+                type="checkbox"
+                id="consent"
+                className="mr-3 mt-1 w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+                required
+              />
+              <label
+                htmlFor="consent"
+                className="text-gray-700 whitespace-nowrap"
+              >
                 I acknowledge that I have reviewed and agree to the{" "}
-                <a href="#" className="text-primary">
+                <a href="#" className="text-blue-600 underline">
                   Consent and Privacy
                 </a>{" "}
                 policy.

@@ -27,9 +27,9 @@ import Footer from "../components/Footer";
 const Home: React.FC = () => {
   return (
     <ScreenLayout>
-      <div className=" ">
+      <div className="">
         <div className="container mx-auto px-4 flex flex-col lg:flex-row items-center">
-          <div className="lg:w-1/2">
+          <div className="lg:w-1/2 ">
             <h1 className="text-4xl sm:text-6xl font-bold mb-4 leading-tight">
               Connecting <span className="text-blue-600">Medics</span> <br />
               with <span className="text-blue-600">Hospitals</span> <br />
@@ -145,7 +145,7 @@ const Home: React.FC = () => {
                 <img
                   src={blc}
                   alt="Nurse working"
-                  className="rounded-lg shadow-lg h-1/2 md:h-full"
+                  className="rounded-lg shadow-lg h-1/2 md:h-full "
                 />
               </div>
 
@@ -218,9 +218,7 @@ const Home: React.FC = () => {
               <li className="flex items-start">
                 <span className="mr-2 text-accent">•</span>
                 <span>
-                  <strong className="text-black">
-                    Instant Shift Matching :
-                  </strong>{" "}
+                  <strong className="text-black">Instant Shift Matching</strong>{" "}
                   Get notified about available shifts that match your expertise
                   and availability.
                 </span>
@@ -228,7 +226,7 @@ const Home: React.FC = () => {
               <li className="flex items-start">
                 <span className="mr-2 text-accent">•</span>
                 <span>
-                  <strong className="text-black">Flexible Scheduling :</strong>{" "}
+                  <strong className="text-black">Flexible Scheduling </strong>{" "}
                   Take control of your work-life balance by selecting shifts
                   that fit your schedule.
                 </span>
@@ -237,7 +235,7 @@ const Home: React.FC = () => {
                 <span className="mr-2 text-accent">•</span>
                 <span>
                   <strong className="text-black">
-                    Seamless Integration with Hospitals :
+                    Seamless Integration with Hospitals
                   </strong>{" "}
                   Hospitals can request practitioners easily, ensuring quick
                   responses for urgent staffing needs.
@@ -246,9 +244,7 @@ const Home: React.FC = () => {
               <li className="flex items-start">
                 <span className="mr-2 text-accent">•</span>
                 <span>
-                  <strong className="text-black">
-                    Simple & Fast Sign-Up :
-                  </strong>{" "}
+                  <strong className="text-black">Simple & Fast Sign-Up</strong>{" "}
                   Sign up in minutes, and start receiving shift requests
                   directly on your phone.
                 </span>
@@ -270,7 +266,7 @@ const Home: React.FC = () => {
           </div>
         </div>
         <div>
-          <img src={hiw} alt="" />
+          <img src={hiw} alt="" className="md:block hidden" />
         </div>
       </div>
       <Footer />

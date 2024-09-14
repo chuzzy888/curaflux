@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import logo from "../assets/images/logo.png";
-import { MdDoubleArrow, MdMenu, MdClose } from "react-icons/md";
+import { MdMenu, MdClose } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { ScreenLayout } from "./layout/ScreenLayout";
 
@@ -13,7 +13,7 @@ const Navbar: React.FC = () => {
 
   return (
     <ScreenLayout>
-      <nav className="w-full flex justify-between items-center p-6 bg-white">
+      <nav className="w-full flex justify-between items-center p-6 bg-white ">
         <div>
           <img src={logo} alt="Logo" className="h-10" />
         </div>
@@ -49,7 +49,12 @@ const Navbar: React.FC = () => {
         </div>
 
         {isMobileMenuOpen && (
-          <div className="absolute top-16 left-0 w-full bg-white shadow-lg md:hidden">
+          <div className=" absolute top-0 right-0 w-2/3 h-full transition-transform duration-300 bg-white shadow-lg md:hidden">
+            <div className="flex justify-end p-4">
+              <button onClick={toggleMobileMenu}>
+                <MdClose size={30} className="text-blue-800" />
+              </button>
+            </div>
             <ul className="flex flex-col items-center gap-4 p-4">
               <li className="text-blue-800 font-bold">
                 <Link to="/">Home</Link>
@@ -69,9 +74,8 @@ const Navbar: React.FC = () => {
               <li>
                 <Link
                   to="/register"
-                  className="bg-blue-800 text-white font-bold flex items-center gap-1 p-2 px-4 rounded-full"
+                  className="bg-blue-400 text-white font-bold flex items-center gap-1 p-2 px-4 rounded-lg"
                 >
-                  <MdDoubleArrow className="text-blue-200" />
                   Join CuraFlux
                 </Link>
               </li>

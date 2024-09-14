@@ -12,7 +12,7 @@ import profilePic from "../assets/images/blc.jpeg";
 import { IoMdClose } from "react-icons/io";
 import { MdLogout } from "react-icons/md";
 import { Calendar } from "react-calendar";
-import { FaCheckCircle } from "react-icons/fa";
+import { FaCheckCircle, FaRegCalendarCheck } from "react-icons/fa";
 import { AiOutlineMail } from "react-icons/ai";
 import { IoLocationOutline } from "react-icons/io5";
 import { HiOutlinePhone } from "react-icons/hi";
@@ -147,8 +147,8 @@ function Shift() {
           {/* Content Box */}
           <div className="bg-white rounded-xl shadow-lg p-8 w-full max-w-md lg:max-w-lg mx-auto">
             <h2 className="text-xl font-bold text-gray-700 mb-4">
-              Explore <span className="text-blue-500">Perfect Shifts</span>{" "}
-              Around <span className="text-green-600">You!</span>
+              Explore <span className="text-blue-500"> Shifts</span> Around{" "}
+              <span className="text-green-600">You!</span>
             </h2>
 
             {/* Location Input */}
@@ -171,14 +171,14 @@ function Shift() {
                   type="text"
                   onChange={e => setLocation(e.target.value)}
                   value={location}
-                  placeholder="10, Brickfield Road .."
+                  placeholder="Enter Current Location"
                   className="w-full p-3 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-0 border-l-green-700"
                 />
                 <button
                   onClick={handleFindShifts}
-                  className="bg-blue-600 text-white px-6 py-3 hover:bg-blue-700 transition-all duration-300 flex items-center space-x-2 whitespace-nowrap"
+                  className="bg-blue-600 text-white px-4 py-3 hover:bg-blue-700 transition-all duration-300 flex items-center space-x-2 whitespace-nowrap"
                 >
-                  <span>Find Shifts</span>
+                  <span className="md:flex hidden">Find Shifts</span>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-5 w-5"
@@ -289,13 +289,13 @@ function Shift() {
 
           {/* Sidebar */}
           <div
-            className={`fixed top-0 right-0 h-full w-80 bg-white shadow-lg transition-transform transform ${
+            className={`fixed top-0 right-0 h-full w-80 bg-white shadow-lg transition-transform transform animate_animated animate__fadeInRight ${
               isSidebarOpen ? "translate-x-0" : "translate-x-full"
             }`}
           >
             <button
               onClick={toggleSidebar}
-              className="absolute top-4 right-4 text-gray-600"
+              className="absolute top-4 right-4 text-gray-600 "
             >
               <IoMdClose />
             </button>
@@ -345,9 +345,18 @@ function Shift() {
             </div>
 
             {/* Availability Section */}
-            <div className="p-4 ">
+            {/* <div className="p-4 ">
               <h3 className="text-lg font-bold mb-2">Availability</h3>
               <Calendar />
+            </div> */}
+            <div className="flex gap-5 items-center p-4">
+              <button className="bg-slate-900 p-2 text-white font-bold flex items-center gap-1  rounded-md">
+                <FaRegCalendarCheck />
+                My availability
+              </button>
+              <button className="bg-green-500 p-2 text-white font-bold hover:bg-green-600  rounded-md">
+                Get Verified
+              </button>
             </div>
 
             {/* Buttons */}
