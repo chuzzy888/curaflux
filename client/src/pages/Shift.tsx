@@ -16,7 +16,8 @@ import { FaCheckCircle, FaRegCalendarCheck } from "react-icons/fa";
 import { AiOutlineMail } from "react-icons/ai";
 import { IoLocationOutline } from "react-icons/io5";
 import { HiOutlinePhone } from "react-icons/hi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 interface HospitalData {
   name: string;
@@ -35,6 +36,7 @@ function Shift() {
   const [loadingState, setLoadingState] = useState<string>("");
   const [hospitalData, setHospitalData] = useState<HospitalData | null>(null);
   const [location, setLocation] = useState<string>("");
+  const navigate = useNavigate();
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -42,7 +44,8 @@ function Shift() {
 
   const handleLogout = () => {
     // Handle logout logic here
-    console.log("Logout clicked");
+    Cookies.remove("token");
+    navigate("/");
   };
 
   //   const handleFindShifts = () => {
@@ -169,7 +172,7 @@ function Shift() {
               <div className="flex mt-4">
                 <input
                   type="text"
-                  onChange={e => setLocation(e.target.value)}
+                  onChange={(e) => setLocation(e.target.value)}
                   value={location}
                   placeholder="Enter Current Location"
                   className="w-full p-3 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-0 border-l-green-700"
