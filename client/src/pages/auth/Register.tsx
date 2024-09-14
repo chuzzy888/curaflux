@@ -5,12 +5,17 @@ import { Step3 } from "../../components/auth/signup/Step3";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { InputTypes } from "../../types/types";
 import { useAuth } from "../../context/authContext";
-import { useAppDispatch } from "../../hooks/hook";
+import { useAppDispatch, useAppSelector } from "../../hooks/hook";
 import { registerUser } from "../../redux/feature/authSlice";
+import { useToast } from "../../hooks/use-toast";
 
 const Register = () => {
   const [currentStep, setCurrentStep] = useState<number>(1);
   const { setEmail } = useAuth();
+  const { error } = useAppSelector((state) => state.auth);
+  const { toast } = useToast();
+
+  // console.log(error);
 
   const {
     register,
@@ -26,7 +31,14 @@ const Register = () => {
     console.log(form);
     setEmail(form.email);
 
-    nextStep();
+    if (error) {
+      return toast({
+        title: "Error Found",
+        description: error,
+      });
+    } else {
+      nextStep();
+    }
 
     dispatch(registerUser(form));
   };

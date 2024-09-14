@@ -43,17 +43,14 @@ export const loginUser = createAsyncThunk<
 
     Cookies.set("token", data.token);
 
-  if (data.success === true) {
-    window.location.href = "/";
-  }
-    
+    if (data.success === true) {
+      window.location.href = "/";
+    }
 
     return data.message;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
-      return rejectWithValue(
-        error.response.data.message || "An error occurred"
-      );
+      return rejectWithValue(error.response.data.message);
     }
     return rejectWithValue("An unexpected error occurred");
   }
@@ -78,10 +75,10 @@ export const registerUser = createAsyncThunk<
 
     return data.message;
   } catch (error) {
+    // console.log(error);
+
     if (axios.isAxiosError(error) && error.response) {
-      return rejectWithValue(
-        error.response.data.message || "An error occurred"
-      );
+      return rejectWithValue(error?.response?.data?.message);
     }
     return rejectWithValue("An unexpected error occurred");
   }
