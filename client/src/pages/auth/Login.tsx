@@ -110,7 +110,7 @@ const Login = () => {
               </div>
 
               <div className=" mt-3 flex justify-between items-center">
-                <div className=" flex items-center gap-1">
+                {/* <div className=" flex items-center gap-1">
                   <label
                     htmlFor="AcceptConditions"
                     className="relative inline-block h-5 w-10 cursor-pointer rounded-full bg-gray-300 transition [-webkit-tap-highlight-color:_transparent] has-[:checked]:bg-sky-500"
@@ -124,7 +124,7 @@ const Login = () => {
                     <span className="absolute inset-y-0 start-0 m-0.5 size-4 rounded-full bg-white transition-all peer-checked:start-5"></span>
                   </label>
                   <Label className=" text-xs">Remember me</Label>
-                </div>
+                </div> */}
                 <Link
                   className=" font-semibold text-sm"
                   to={"/forgot-password"}
