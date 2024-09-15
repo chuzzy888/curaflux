@@ -215,7 +215,6 @@ const ShiftDetails: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
 
-  // Modal open and close handlers
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
