@@ -18,6 +18,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../context/authContext";
 import { useToast } from "../../../hooks/use-toast";
+import { useEffect, useState } from "react";
 
 interface Step3Props {
   prevStep: () => void;
@@ -35,9 +36,28 @@ export const Step3 = ({ prevStep, currentStep }: Step3Props) => {
     formState: { errors },
     handleSubmit,
     control,
-    // reset,
   } = useForm<otpTypes>();
   const { email } = useAuth();
+
+  // Timer state
+  const [timeLeft, setTimeLeft] = useState(300); // 300 seconds = 5 minutes
+
+  // useEffect to handle the countdown
+  useEffect(() => {
+    if (timeLeft > 0) {
+      const timer = setInterval(() => {
+        setTimeLeft((prev) => prev - 1);
+      }, 1000);
+      return () => clearInterval(timer);
+    }
+  }, [timeLeft]);
+
+  // Convert seconds to minutes and seconds format
+  const formatTime = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const sec = seconds % 60;
+    return `${minutes}:${sec < 10 ? "0" : ""}${sec}`;
+  };
 
   const handleSubmitOtp: SubmitHandler<otpTypes> = async (form) => {
     const { data } = await axios.post(
@@ -48,8 +68,6 @@ export const Step3 = ({ prevStep, currentStep }: Step3Props) => {
     if (data.success === true) {
       navigate("/verify");
     }
-
-    // console.log(data.success === true);
   };
 
   const resendOtp = async () => {
@@ -61,34 +79,34 @@ export const Step3 = ({ prevStep, currentStep }: Step3Props) => {
     );
 
     if (data) {
+      setTimeLeft(300); // Reset the timer to 5 minutes
       return toast({
-        title: "Otp sent",
-        description: `Your otp have been sent to ${email} successfully`,
+        title: "OTP sent",
+        description: `Your OTP has been sent to ${email} successfully.`,
       });
     }
   };
 
   return (
     <ScreenLayout>
-      {" "}
       <main className="h-screen flex justify-center flex-col">
-        <section className=" lg:flex justify-center items-center  gap-32">
-          <section className=" w-[502px] h-[502px] hidden lg:block">
-            <img src={signin} alt="" className=" w-full" />
+        <section className="lg:flex justify-center items-center gap-32">
+          <section className="w-[502px] h-[502px] hidden lg:block">
+            <img src={signin} alt="" className="w-full" />
           </section>
 
-          <section className=" lg:w-[521px] border p-10 border-black rounded-2xl">
-            <div className=" step3 h-[4px] w-full mb-5">{/* stepper */}</div>
+          <section className="lg:w-[521px] border p-10 border-black rounded-2xl">
+            <div className="step3 h-[4px] w-full mb-5">{/* stepper */}</div>
 
-            <div className=" flex gap-1 items-center">
+            <div className="flex gap-1 items-center">
               <div>
-                <button onClick={prevStep} className=" text-[11px]">
+                <button onClick={prevStep} className="text-[11px]">
                   <IoArrowUndoSharp />
                 </button>
               </div>
 
-              <div className=" ">
-                <p className=" text-gray-400 text-xs mb-1">
+              <div className="">
+                <p className="text-gray-400 text-xs mb-1">
                   Step {currentStep} of 3
                 </p>
                 <h1 className="text-xl font-bold">Confirm your email</h1>
@@ -97,12 +115,12 @@ export const Step3 = ({ prevStep, currentStep }: Step3Props) => {
 
             <form onSubmit={handleSubmit(handleSubmitOtp)}>
               <div className="">
-                <p className=" text-[13px] py-6">
+                <p className="text-[13px] py-6">
                   Enter the code we sent to{" "}
-                  <span className=" font-semibold">{email}</span> if you didn’t
+                  <span className="font-semibold">{email}</span> if you didn’t
                   get the email, check your junk folder or{" "}
                   <span
-                    className=" text-blue-500 cursor-pointer"
+                    className="text-blue-500 cursor-pointer"
                     onClick={resendOtp}
                   >
                     try again
@@ -149,7 +167,7 @@ export const Step3 = ({ prevStep, currentStep }: Step3Props) => {
                 )}
 
                 <div className="flex items-center space-x-2 mt-8 border border-gray-400 p-5 rounded-2xl">
-                  <Checkbox id="terms" className=" border-gray-300" />
+                  <Checkbox id="terms" className="border-gray-300" />
                   <label
                     htmlFor="terms"
                     className="text-sm text-gray-300 leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -159,17 +177,19 @@ export const Step3 = ({ prevStep, currentStep }: Step3Props) => {
                   </label>
                 </div>
 
-                <p className=" text-xs text-gray-300 mt-7">
+                <p className="text-xs text-gray-300 mt-7">
                   Choosing SignUp means that you agree to the CuraFlux Services
                   Agreement and privacy and cookies statement.
                 </p>
+
+                <div className="mt-4">
+                  <p className="text-gray-500 text-sm">
+                    Resend OTP in: <strong>{formatTime(timeLeft)}</strong>
+                  </p>
+                </div>
               </div>
 
-              <Button
-                className=" w-full bg-[#009FF5] rounded-full mt-10"
-                // type="button"
-                //   onClick={nextStep}
-              >
+              <Button className="w-full bg-[#009FF5] rounded-full mt-10">
                 Sign Up
               </Button>
             </form>

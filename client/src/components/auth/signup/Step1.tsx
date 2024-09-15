@@ -8,6 +8,8 @@ import { Label } from "../../ui/label";
 import { Button } from "../../ui/button";
 import { FieldErrors, UseFormRegister } from "react-hook-form";
 import { InputTypes } from "../../../types/types";
+import { useState } from "react";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 interface Step1Props {
   nextStep: () => void;
@@ -17,6 +19,7 @@ interface Step1Props {
 }
 
 export const Step1 = ({ nextStep, register, errors, isValid }: Step1Props) => {
+  const [show, setShow] = useState(false);
   return (
     <ScreenLayout>
       <main className="h-screen flex justify-center flex-col">
@@ -47,19 +50,31 @@ export const Step1 = ({ nextStep, register, errors, isValid }: Step1Props) => {
               )}
             </div>
 
-            <div className="space-y-1 mt-3">
+            <div className="space-y-1 mt-3 relative">
               <Label htmlFor="password" className="font-semibold text-sm">
                 Password
               </Label>
               <Input
-                type="password"
+                type={!show ? "password" : "text"}
                 placeholder="Password"
-                className="placeholder:text-[#D9D9D9]"
+                className="placeholder:text-[#D9D9D9] relative"
                 {...register("password", { required: true })}
               />
               {errors.password && (
                 <p className="text-red-500">{errors.password.message}</p>
               )}
+
+              <div className=" absolute top-[30px] right-2">
+                {!show ? (
+                  <button type="button" onClick={() => setShow(!show)}>
+                    <FaRegEye size={16} />
+                  </button>
+                ) : (
+                  <button type="button" onClick={() => setShow(!show)}>
+                    <FaRegEyeSlash size={16} />
+                  </button>
+                )}
+              </div>
             </div>
 
             <Button

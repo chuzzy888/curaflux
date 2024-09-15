@@ -13,6 +13,7 @@ import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 import { loginUser } from "../../redux/feature/authSlice";
 import { useAppDispatch, useAppSelector } from "../../hooks/hook";
+import { useToast } from "../../hooks/use-toast";
 
 type loginType = {
   email: string;
@@ -29,11 +30,17 @@ const Login = () => {
   } = useForm<loginType>();
   const [show, setShow] = useState(false);
   const dispatch = useAppDispatch();
-  const { status } = useAppSelector((state) => state.auth);
-
-  console.log(status);
+  const { status, error } = useAppSelector((state) => state.auth);
+  const { toast } = useToast();
 
   const handleLogin: SubmitHandler<loginType> = async (form) => {
+    if (error) {
+      return toast({
+        title: "Error Found",
+        description: error,
+      });
+    }
+
     dispatch(loginUser(form));
   };
 
