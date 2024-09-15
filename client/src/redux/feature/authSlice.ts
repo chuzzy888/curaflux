@@ -44,7 +44,7 @@ export const loginUser = createAsyncThunk<
     Cookies.set("token", data.token);
 
     if (data.success === true) {
-      window.location.href = "/";
+      window.location.href = "/shift";
     }
 
     return data.message;
@@ -99,7 +99,7 @@ export const verifyUser = createAsyncThunk<
     Cookies.set("verified", "true");
 
     if (data.success === true) {
-      window.location.href = "/";
+      window.location.href = "/shift";
     }
 
     return data.message;
