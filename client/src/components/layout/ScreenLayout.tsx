@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 
 export const ScreenLayout = ({ children }: { children: ReactNode }) => {
   return (
