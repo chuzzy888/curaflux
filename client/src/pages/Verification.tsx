@@ -356,10 +356,7 @@ function Verification() {
                 className="mr-3 mt-1 w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
                 required
               />
-              <label
-                htmlFor="consent"
-                className="text-gray-700 whitespace-nowrap"
-              >
+              <label htmlFor="consent" className="text-gray-700 ">
                 I acknowledge that I have reviewed and agree to the{" "}
                 <a href="#" className="text-blue-600 underline">
                   Consent and Privacy

@@ -23,13 +23,14 @@ import hiw from "../assets/images/hiw.png";
 import { FiArrowDownRight } from "react-icons/fi";
 import { ScreenLayout } from "../components/layout/ScreenLayout";
 import Footer from "../components/Footer";
+import { Link } from "react-router-dom";
 
 const Home: React.FC = () => {
   return (
     <ScreenLayout>
       <div className="">
         <div className="container mx-auto px-4 flex flex-col lg:flex-row items-center">
-          <div className="lg:w-1/2 ">
+          <div className="lg:w-1/2 animate__animated animate__fadeIn ">
             <h1 className="text-3xl sm:text-6xl font-bold mb-4 leading-tight">
               Connecting <span className="text-blue-600">Medics</span> <br />
               with <span className="text-blue-600">Hospitals</span> <br />
@@ -40,9 +41,12 @@ const Home: React.FC = () => {
               expertise.
             </p>
 
-            <button className="bg-blue-600 text-white px-6 py-3 rounded-full text-lg font-semibold hover:bg-blue-700 transition duration-300 flex items-center">
-              Get started <FiArrowDownRight className="font-bold text-2xl" />
-            </button>
+            <Link to={"/register"}>
+              {" "}
+              <button className="bg-blue-600 text-white px-6 py-3 rounded-full text-lg font-semibold hover:bg-blue-700 transition duration-300 flex items-center">
+                Get started <FiArrowDownRight className="font-bold text-2xl" />
+              </button>
+            </Link>
             <div className="mt-6 flex flex-col sm:flex-row items-center border border-blue-300 rounded-full sm:w-1/2 w-full p-4">
               <div className="mr-0 sm:mr-6 mb-4 sm:mb-0">
                 <div className="flex -space-x-4">
@@ -76,7 +80,7 @@ const Home: React.FC = () => {
             </div>
           </div>
 
-          <div className="lg:w-1/2  mt-10 lg:mt-0">
+          <div className="lg:w-1/2  mt-10 lg:mt-0 animate__animated animate__fadeIn">
             <img src={heroImg} alt="Doctor" className="rounded-lg " />
           </div>
         </div>

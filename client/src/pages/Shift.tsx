@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { shifts } from "./shiftData";
 import bi from "../assets/images/bs.jpeg";
 import lg from "../assets/images/lg.png";
@@ -9,16 +9,17 @@ import twitter from "../assets/images/twitter.png";
 import threads from "../assets/images/threads.png";
 import youtube from "../assets/images/youtube.png";
 import profilePic from "../assets/images/blc.jpeg";
+import ic from "../assets/images/hg.png";
 import { IoMdClose } from "react-icons/io";
-import { MdLogout } from "react-icons/md";
+import { MdLogout, MdOutlinePermContactCalendar } from "react-icons/md";
 // import { Calendar } from "react-calendar";
-import { FaCheckCircle, FaRegCalendarCheck } from "react-icons/fa";
+import { FaCheckCircle } from "react-icons/fa";
 import { AiOutlineMail } from "react-icons/ai";
-import { IoLocationOutline } from "react-icons/io5";
 import { HiOutlinePhone } from "react-icons/hi";
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
-import axios from "axios";
+import { jwtDecode } from "jwt-decode";
+import { VscAccount } from "react-icons/vsc";
 
 interface HospitalData {
   name: string;
@@ -48,28 +49,42 @@ function Shift() {
     Cookies.remove("token");
     navigate("/");
   };
-
+  interface DecodedToken {
+    email: string;
+    nickName: string;
+    gender: string;
+    fullName: string;
+    birthdate: string;
+  }
   const [userData, setUserData] = useState({
     email: "",
     nickName: "",
+    gender: "",
+    fullName: "",
+    birthdate: "",
   });
 
   useEffect(() => {
-    // Assuming you get the user ID after login or signup
-    const userId = "66e5a556b2774f645a415653"; // Example userId, should be dynamic based on the logged-in user
+    const token = Cookies.get("token");
+    if (token) {
+      try {
+        const decodedToken = jwtDecode<DecodedToken>(token);
 
-    axios
-      .get(`https://curaflux-server.onrender.com/auth/users/${userId}`)
-      .then(response => {
-        const user = response.data.user[0]; // Adjust according to actual response structure
         setUserData({
-          email: user.email,
-          nickName: user.nickName,
+          email: decodedToken.email,
+          nickName: decodedToken.nickName,
+          gender: decodedToken.gender,
+          fullName: decodedToken.fullName,
+          birthdate: decodedToken.birthdate,
         });
-      })
-      .catch(error => console.error("Error fetching user data:", error));
-  }, []);
-
+      } catch (error) {
+        console.error("Error decoding token:", error);
+      }
+    } else {
+      console.error("No token found. Redirecting to login.");
+      navigate("/login");
+    }
+  }, [navigate]);
   const handleFindShifts = () => {
     if (!location.trim()) {
       alert("Please enter your location.");
@@ -81,7 +96,6 @@ function Shift() {
       setTimeout(() => {
         setLoadingState("Almost done...");
         setTimeout(() => {
-          // Randomly select one shift from the imported data
           const randomShift = shifts[Math.floor(Math.random() * shifts.length)];
           setHospitalData(randomShift);
           setLoadingState("");
@@ -268,7 +282,9 @@ function Shift() {
                 </div>
               </div>
               <div className="ml-4">
-                <p className="text-lg font-bold">{userData.email}</p>
+                <p className="text-lg font-bold uppercase">
+                  {userData.nickName}
+                </p>
                 <p className="text-gray-600">Nurse</p>
               </div>
             </div>
@@ -281,21 +297,35 @@ function Shift() {
                 <div className="px-4 py-2 bg-blue-100 rounded">Emergency</div>
               </div>
             </div>
+            <div className="p-4 border-b border-gray-200">
+              <h3 className="text-lg font-bold mb-2">Personal Info</h3>
+              <p className="flex items-center gap-2 mb-1">
+                <VscAccount className="text-lg" />
+
+                {userData.fullName}
+              </p>
+              <p className="flex items-center gap-2 mb-1">
+                <img src={ic} alt="" className="h-5" />
+
+                {userData.gender}
+              </p>
+              <p className="flex items-center gap-2 mb-1">
+                <MdOutlinePermContactCalendar className="text-xl" />
+
+                {userData.birthdate}
+              </p>
+            </div>
 
             {/* Contact Information Section */}
             <div className="p-4 border-b border-gray-200">
               <h3 className="text-lg font-bold mb-2">Contact Information</h3>
               <p className="flex items-center gap-1 mb-1">
                 <AiOutlineMail />
-                john.doe@example.com
+                {userData.email}
               </p>
               <p className="flex items-center gap-1 mb-1">
                 <HiOutlinePhone />
                 Phone: (123) 456-7890
-              </p>
-              <p className="flex items-center gap-1 mb-1">
-                <IoLocationOutline />
-                Location: 123 Main St, Anytown, USA
               </p>
             </div>
 
@@ -304,15 +334,14 @@ function Shift() {
               <h3 className="text-lg font-bold mb-2">Availability</h3>
               <Calendar />
             </div> */}
-            <div className="flex gap-5 items-center p-4">
+            {/* <div className="flex gap-5 items-center p-4">
               <button className="bg-slate-900 p-2 text-white font-bold flex items-center gap-1  rounded-md">
-                <FaRegCalendarCheck />
-                My availability
+                View Full Profile
               </button>
               <button className="bg-green-500 p-2 text-white font-bold hover:bg-green-600  rounded-md">
                 Get Verified
               </button>
-            </div>
+            </div> */}
 
             {/* Buttons */}
             {/* <div className="p-4">
@@ -342,126 +371,3 @@ function Shift() {
 }
 
 export default Shift;
-
-// import React, { useState, useEffect } from "react";
-// import profilePic from "../assets/images/blc.jpeg";
-// import { IoMdClose } from "react-icons/io";
-// import { FaCheckCircle } from "react-icons/fa";
-// import { AiOutlineMail } from "react-icons/ai";
-// import { HiOutlinePhone } from "react-icons/hi";
-// import { IoLocationOutline } from "react-icons/io5";
-// import { MdLogout } from "react-icons/md";
-// import axios from "axios";
-// import Cookies from "js-cookie";
-// import { useNavigate } from "react-router-dom";
-
-// function Shift() {
-//   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-//   const [userData, setUserData] = useState({
-//     email: "",
-//     nickName: "",
-//   });
-//   const navigate = useNavigate();
-
-//   useEffect(() => {
-//     const userId = "66e5d5d1f62b7e8c35e47c1c"; // This should be dynamic based on the logged-in user
-//     const token = Cookies.get("token"); // Retrieve the token from cookies
-
-//     if (token) {
-//       axios
-//         .get(`https://curaflux-server.onrender.com/auth/users/${userId}`, {
-//           headers: {
-//             Authorization: `Bearer ${token}`, // Include token in the Authorization header
-//           },
-//         })
-//         .then(response => {
-//           const user = response.data.user[0]; // Adjust according to actual response structure
-//           setUserData({
-//             email: user.email,
-//             nickName: user.nickName,
-//           });
-//         })
-//         .catch(error => console.error("Error fetching user data:", error));
-//     } else {
-//       console.error("No token found");
-//     }
-//   }, []);
-
-//   const toggleSidebar = () => {
-//     setIsSidebarOpen(!isSidebarOpen);
-//   };
-
-//   const handleLogout = () => {
-//     Cookies.remove("token");
-//     navigate("/");
-//   };
-
-//   return (
-//     <div>
-//       {/* Sidebar */}
-//       <div
-//         className={`fixed top-0 right-0 h-full w-80 bg-white shadow-lg transition-transform transform animate_animated animate__fadeInRight ${
-//           isSidebarOpen ? "translate-x-0" : "translate-x-full"
-//         }`}
-//       >
-//         <button
-//           onClick={toggleSidebar}
-//           className="absolute top-4 right-4 text-gray-600 "
-//         >
-//           <IoMdClose />
-//         </button>
-
-//         {/* Profile Section */}
-//         <div className="flex items-center p-4 border-b border-gray-200">
-//           <div className="relative w-16 h-16 rounded-full overflow-hidden">
-//             <img
-//               src={profilePic}
-//               alt="Profile"
-//               className="w-full h-full object-cover"
-//             />
-//             <div className="absolute bottom-0 right-0 p-1 bg-green-500 rounded-full">
-//               <FaCheckCircle className="text-white w-4 h-4" />
-//             </div>
-//           </div>
-//           <div className="ml-4">
-//             {/* Display user nickname */}
-//             <p className="text-lg font-bold">
-//               {userData.nickName || "John Doe"}
-//             </p>
-//             <p className="text-gray-600">Nurse</p>
-//           </div>
-//         </div>
-
-//         {/* Contact Information Section */}
-//         <div className="p-4 border-b border-gray-200">
-//           <h3 className="text-lg font-bold mb-2">Contact Information</h3>
-//           <p className="flex items-center gap-1 mb-1">
-//             <AiOutlineMail />
-//             {userData.email || "john.doe@example.com"}
-//           </p>
-//           <p className="flex items-center gap-1 mb-1">
-//             <HiOutlinePhone />
-//             Phone: (123) 456-7890
-//           </p>
-//           <p className="flex items-center gap-1 mb-1">
-//             <IoLocationOutline />
-//             Location: 123 Main St, Anytown, USA
-//           </p>
-//         </div>
-
-//         {/* Logout Section */}
-//         <div className="absolute bottom-4 left-4 w-full px-4 ">
-//           <button
-//             onClick={handleLogout}
-//             className="flex items-center text-gray-600 hover:text-gray-900"
-//           >
-//             <MdLogout className="h-6 w-6" />
-//             <span className="ml-2">Logout</span>
-//           </button>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default Shift;
