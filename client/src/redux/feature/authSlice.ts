@@ -125,20 +125,20 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    logout: (state) => {
+    logout: state => {
       state.user = null;
       state.status = "idle";
       state.error = null;
       Cookies.remove("token");
     },
-    clearError: (state) => {
+    clearError: state => {
       state.error = null;
     },
   },
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     builder
       // handling Login
-      .addCase(loginUser.pending, (state) => {
+      .addCase(loginUser.pending, state => {
         state.status = "loading";
         state.error = null;
       })
@@ -153,7 +153,7 @@ const authSlice = createSlice({
         state.error = action.payload || "An error occurred";
       })
       // handling registered
-      .addCase(registerUser.pending, (state) => {
+      .addCase(registerUser.pending, state => {
         state.status = "loading";
         state.error = null;
       })
@@ -168,7 +168,7 @@ const authSlice = createSlice({
         state.error = action.payload || "An error occurred";
       })
       // handling verifications
-      .addCase(verifyUser.pending, (state) => {
+      .addCase(verifyUser.pending, state => {
         state.status = "loading";
         state.error = null;
       })

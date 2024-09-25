@@ -2,7 +2,7 @@ import { ScreenLayout } from "../../../components/layout/ScreenLayout";
 import { Input } from "../../../components/ui/input";
 import { Link } from "react-router-dom";
 import signin from "../../../assets/images/signin.png";
-import googleSignup from "../../../assets/images/googleSignup.png";
+// import googleSignup from "../../../assets/images/googleSignup.png";
 import AuthFooter from "../../../components/footer/AuthFooter";
 import { Label } from "../../ui/label";
 import { Button } from "../../ui/button";
@@ -92,9 +92,9 @@ export const Step1 = ({ nextStep, register, errors, isValid }: Step1Props) => {
               <div className="h-[1px] w-full my-7 bg-gray-300" />
             </div>
 
-            <div>
+            {/* <div>
               <img src={googleSignup} alt="google-signup" />
-            </div>
+            </div> */}
 
             <div className="h-[1px] w-full my-7 bg-gray-300" />
 

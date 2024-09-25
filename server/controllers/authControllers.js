@@ -101,6 +101,42 @@ export const signIn = expressAsyncHandler(async (req, res) => {
   res.status(200).json({ message: "Successful login", token, success: true });
 });
 
+// Sign In Handler
+// export const signIn = expressAsyncHandler(async (req, res) => {
+//   const { email, password } = req.body;
+
+//   // Find user and validate email
+//   const user = await User.findOne({ email });
+//   if (!user) {
+//     return res.status(400).json({ message: "User not found" });
+//   }
+
+//   // Compare passwords
+//   const isPasswordCorrect = await bcrypt.compare(password, user.password); // Await this promise
+//   if (!isPasswordCorrect) {
+//     return res.status(400).json({ message: "Invalid credentials" });
+//   }
+
+//   // Generate JWT token
+//   const token = jwt.sign(
+//     {
+//       id: user._id,
+//       fullName: user.fullName,
+//       nickName: user.nickName,
+//       birthdate: user.birthdate,
+//       gender: user.gender,
+//       role: user.role,
+//       email: user.email,
+//     },
+//     process.env.JWT_SECRET,
+//     {
+//       expiresIn: "1h",
+//     }
+//   );
+
+//   res.status(200).json({ message: "Successful login", token, success: true });
+// });
+
 // Generate OTP
 function generateOTP() {
   return randomstring.generate({
@@ -111,12 +147,38 @@ function generateOTP() {
 
 // Send OTP to the provided email
 // Send OTP to the provided email
-export const sendOTP = async (email) => {
+// export const sendOTP = async (email) => {
+//   try {
+//     const otp = generateOTP(); // Generate a 6-digit OTP
+
+//     // Await the hashing of OTP
+//     // const hashedOtp = await bcrypt.hash(otp, 10);
+
+//     const newOTP = new Otp({
+//       email,
+//       otp,
+//       createdAt: Date.now(),
+//       expiresAt: Date.now() + 3600000, // OTP valid for 1 hour
+//     });
+//     await newOTP.save();
+
+//     // Send OTP via email
+//     await sendEmail({
+//       to: email,
+//       subject: "Your OTP",
+//       html: `<p>Your OTP is: <strong>${otp}</strong></p>`,
+//     });
+
+//     // You can log the success or perform other actions here if needed
+//     console.log("OTP sent successfully to:", email);
+//   } catch (error) {
+//     console.error("Error sending OTP:", error);
+//     throw new Error("Failed to send OTP");
+//   }
+// };
+export const sendOTP = async email => {
   try {
     const otp = generateOTP(); // Generate a 6-digit OTP
-
-    // Await the hashing of OTP
-    // const hashedOtp = await bcrypt.hash(otp, 10);
 
     const newOTP = new Otp({
       email,
@@ -126,14 +188,35 @@ export const sendOTP = async (email) => {
     });
     await newOTP.save();
 
+    // Customized OTP email content
+    const emailContent = `
+    <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f4;">
+      <div style="max-width: 600px; margin: auto; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+        <div style="text-align: center; margin-bottom: 20px;">
+          <img src="https://curaflux.netlify.app/assets/logo-DH0Xceen.png" alt="Logo" style="max-width: 150px;" />
+        </div>
+        <h2 style="text-align: center; color: #333;">Verify Your Account</h2>
+        <p style="text-align: center; font-size: 16px; color: #555;">Hello, your OTP for verifying your account is:</p>
+        <div style="text-align: center; margin: 20px 0;">
+          <span style="font-size: 30px; color: #4CAF50; font-weight: bold;">${otp}</span>
+        </div>
+        <p style="text-align: center; font-size: 14px; color: #777;">
+          This OTP will expire in 1 hour. If you did not request this, please ignore this email.
+        </p>
+        <div style="text-align: center; margin-top: 30px;">
+          <a href="https://curaflux.netlify.app/" style="background-color: #4CAF50; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Visit Our Site</a>
+        </div>
+      </div>
+    </div>
+    `;
+
     // Send OTP via email
     await sendEmail({
       to: email,
-      subject: "Your OTP",
-      html: `<p>Your OTP is: <strong>${otp}</strong></p>`,
+      subject: "Your OTP Code",
+      html: emailContent,
     });
 
-    // You can log the success or perform other actions here if needed
     console.log("OTP sent successfully to:", email);
   } catch (error) {
     console.error("Error sending OTP:", error);
@@ -236,12 +319,10 @@ export const verify = expressAsyncHandler(async (req, res) => {
       fs.unlinkSync(document); // Remove temp file after upload
     } catch (error) {
       console.error("Error uploading identification document:", error);
-      return res
-        .status(500)
-        .json({
-          success: false,
-          message: "Failed to upload identification document",
-        });
+      return res.status(500).json({
+        success: false,
+        message: "Failed to upload identification document",
+      });
     }
   }
 
@@ -290,7 +371,6 @@ export const verify = expressAsyncHandler(async (req, res) => {
     });
   }
 });
-
 
 export const getUsers = expressAsyncHandler(async (req, res) => {
   const user = await User.find();
