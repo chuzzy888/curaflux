@@ -5,7 +5,6 @@ import { Label } from "../../components/ui/label";
 import { Input } from "../../components/ui/input";
 import { Link, useNavigate } from "react-router-dom";
 import signupImg from "../../assets/images/signUp.png";
-import google from "../../assets/images/Google.png";
 import AuthFooter from "../../components/footer/AuthFooter";
 import { SubmitHandler, useForm } from "react-hook-form";
 
@@ -14,6 +13,7 @@ import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { useToast } from "../../hooks/use-toast";
 import axios, { AxiosError } from "axios";
 import Cookies from "js-cookie";
+import GoogleSignInButton from "../../components/auth/google/GoogleSignInButton";
 
 type loginType = {
   email: string;
@@ -47,7 +47,7 @@ const Login = () => {
         description: "You have successfully logged in.",
       });
 
-      navigate("/shift")
+      navigate("/shift");
     } catch (error) {
       const axiosError = error as AxiosError<{ message: string }>;
 
@@ -72,9 +72,8 @@ const Login = () => {
             <form onSubmit={handleSubmit(handleLogin)}>
               <div className="flex justify-center flex-col items-center">
                 <h1 className="text-xl font-black">Welcome Back! Sign In</h1>
-                <button type="button" className="my-4">
-                  <img src={google} alt="google-img" />
-                </button>
+
+                <GoogleSignInButton />
               </div>
 
               <div className=" h-[1px] w-full my-7 bg-gray-300" />
