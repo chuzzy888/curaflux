@@ -11,9 +11,8 @@ import { SubmitHandler, useForm } from "react-hook-form";
 
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
-import { loginUser } from "../../redux/feature/authSlice";
-import { useAppDispatch, useAppSelector } from "../../hooks/hook";
 import { useToast } from "../../hooks/use-toast";
+import axios from "axios";
 
 type loginType = {
   email: string;
@@ -29,19 +28,30 @@ const Login = () => {
     // reset,
   } = useForm<loginType>();
   const [show, setShow] = useState(false);
-  const dispatch = useAppDispatch();
-  const { status, error } = useAppSelector((state) => state.auth);
+
   const { toast } = useToast();
 
   const handleLogin: SubmitHandler<loginType> = async (form) => {
-    if (error) {
-      return toast({
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/auth/signin`,
+        form
+      );
+
+      console.log(data);
+
+      toast({
+        title: "Login Successful",
+        description: "You have successfully logged in.",
+      });
+    } catch (error) {
+      console.log(error);
+
+      toast({
         title: "Error Found",
-        description: error,
+        description: error as string,
       });
     }
-
-    dispatch(loginUser(form));
   };
 
   return (

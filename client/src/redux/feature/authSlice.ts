@@ -41,12 +41,18 @@ export const loginUser = createAsyncThunk<
       form
     );
 
-    Cookies.set("token", data.token);
-
-    if (data.success === true) {
-      window.location.href = "/shift";
+    // Check if the success flag is false, and reject
+    if (!data.success) {
+      return rejectWithValue("Invalid credentials");
     }
 
+    // Set the token in cookies if the login was successful
+    Cookies.set("token", data.token);
+
+    // Optionally redirect the user
+    window.location.href = "/shift";
+
+    // Return the user data (message contains user info)
     return data.message;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
@@ -55,6 +61,7 @@ export const loginUser = createAsyncThunk<
     return rejectWithValue("An unexpected error occurred");
   }
 });
+
 
 export const registerUser = createAsyncThunk<
   User,
@@ -68,10 +75,6 @@ export const registerUser = createAsyncThunk<
     );
 
     Cookies.set("token", data.token);
-
-    // setTimeout(() => {
-    //   window.location.href = "/verify";
-    // }, 2000);
 
     return data.message;
   } catch (error) {

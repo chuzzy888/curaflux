@@ -5,17 +5,15 @@ import { Step3 } from "../../components/auth/signup/Step3";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { InputTypes } from "../../types/types";
 import { useAuth } from "../../context/authContext";
-import { useAppDispatch, useAppSelector } from "../../hooks/hook";
-import { registerUser } from "../../redux/feature/authSlice";
 import { useToast } from "../../hooks/use-toast";
 
 const Register = () => {
   const [currentStep, setCurrentStep] = useState<number>(1);
   const { setEmail } = useAuth();
-  const { error } = useAppSelector((state) => state.auth);
+
   const { toast } = useToast();
 
-  // console.log(error);
+  
 
   const {
     register,
@@ -25,22 +23,20 @@ const Register = () => {
     // reset,
   } = useForm<InputTypes>();
 
-  const dispatch = useAppDispatch();
+  
 
   const handleRegister: SubmitHandler<InputTypes> = async (form) => {
-    console.log(form);
+ 
     setEmail(form.email);
 
-    if (error) {
-      return toast({
-        title: "Error Found",
-        description: error,
-      });
-    } else {
-      nextStep();
-    }
-
-    dispatch(registerUser(form));
+    // if (result.meta.requestStatus === "rejected") {
+    //   return toast({
+    //     title: "Error Found",
+    //     description: result.payload as string,
+    //   });
+    // } else {
+    //   nextStep(); // Move to the next step if successful
+    // }
   };
 
   const nextStep = () => {
