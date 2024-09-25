@@ -6,6 +6,8 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { InputTypes } from "../../types/types";
 import { useAuth } from "../../context/authContext";
 import { useToast } from "../../hooks/use-toast";
+import axios, { AxiosError } from "axios";
+import Cookies from "js-cookie";
 
 const Register = () => {
   const [currentStep, setCurrentStep] = useState<number>(1);
@@ -13,30 +15,43 @@ const Register = () => {
 
   const { toast } = useToast();
 
-  
-
   const {
     register,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isSubmitting },
     handleSubmit,
     control,
     // reset,
   } = useForm<InputTypes>();
 
-  
-
   const handleRegister: SubmitHandler<InputTypes> = async (form) => {
- 
     setEmail(form.email);
 
-    // if (result.meta.requestStatus === "rejected") {
-    //   return toast({
-    //     title: "Error Found",
-    //     description: result.payload as string,
-    //   });
-    // } else {
-    //   nextStep(); // Move to the next step if successful
-    // }
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/auth/signup`,
+        form
+      );
+
+      console.log(data);
+
+      Cookies.set("token", data.token);
+
+      toast({
+        title: "Registration Successful",
+        description: "You have successfully been registered",
+      });
+
+      nextStep();
+    } catch (error) {
+      const axiosError = error as AxiosError<{ message: string }>;
+
+      toast({
+        title: "Error Found",
+        description:
+          axiosError?.response?.data?.message ||
+          "An error occurred during login.",
+      });
+    }
   };
 
   const nextStep = () => {
@@ -68,6 +83,7 @@ const Register = () => {
           register={register}
           isValid={isValid}
           control={control}
+          isSubmitting={isSubmitting}
         />
       );
     case 3:

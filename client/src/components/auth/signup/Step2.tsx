@@ -22,7 +22,6 @@ import {
   FieldErrors,
   UseFormRegister,
 } from "react-hook-form";
-import { useAppSelector } from "../../../hooks/hook";
 // import { useAuth } from "../../../context/authContext";
 
 interface Step2Props {
@@ -34,6 +33,7 @@ interface Step2Props {
   control: Control<InputTypes>;
   handleSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>;
   isValid: boolean;
+  isSubmitting: boolean;
 }
 
 export const Step2 = ({
@@ -44,8 +44,8 @@ export const Step2 = ({
   register,
   control,
   handleSubmit,
+  isSubmitting,
 }: Step2Props) => {
-  const { status } = useAppSelector((state) => state.auth);
   return (
     <ScreenLayout>
       {" "}
@@ -175,7 +175,7 @@ export const Step2 = ({
                 // disabled={!isValid}
                 // onClick={handleNextStep}
               >
-                {status === "loading" ? "Submitting" : "Next"}
+                {isSubmitting ? "Submitting" : "Next"}
               </Button>
             </form>
           </section>

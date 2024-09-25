@@ -13,8 +13,8 @@ import {
   SelectValue,
 } from "../components/ui/select";
 import { Button } from "../components/ui/button";
-import { useAppDispatch, useAppSelector } from "../hooks/hook";
-import { verifyUser } from "../redux/feature/authSlice";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 interface VerificationTypes {
   fullName: string;
@@ -38,18 +38,16 @@ function Verification() {
   const [dragging, setDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const dispatch = useAppDispatch();
-  const { status } = useAppSelector(state => state.auth);
-
   const {
     register,
     control,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isSubmitting },
   } = useForm<VerificationTypes>();
 
   const token = Cookies.get("token");
   const decode = token ? jwtDecode<CustomJwtPayload>(token) : null;
+  const navigate = useNavigate();
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
@@ -74,9 +72,9 @@ function Verification() {
 
   const handleClick = () => fileInputRef.current?.click();
 
-  const handleUploadVerification: SubmitHandler<
-    VerificationTypes
-  > = async form => {
+  const handleUploadVerification: SubmitHandler<VerificationTypes> = async (
+    form
+  ) => {
     try {
       const formData = new FormData();
       Object.entries(form).forEach(([key, value]) =>
@@ -85,7 +83,16 @@ function Verification() {
       if (uploadedFile) formData.append("identificationDocument", uploadedFile);
 
       if (decode?.id) {
-        dispatch(verifyUser({ formData, id: decode.id }));
+        const { data } = await axios.patch(
+          `${import.meta.env.VITE_BASE_URL}/auth/verify/${decode.id}`,
+          formData,
+          { headers: { "Content-Type": "multipart/form-data" } }
+        );
+
+        if (data.success === true) {
+          Cookies.set("verified", "true");
+          navigate("/shift");
+        }
       }
     } catch (error) {
       console.error("Error uploading verification:", error);
@@ -370,7 +377,7 @@ function Verification() {
               className="bg-blue-500 text-primary-foreground hover:bg-primary/80 p-2 rounded-lg w-full"
               disabled={!isValid}
             >
-              {status === "loading" ? "Submitting" : "Finish"}
+              {isSubmitting ? "Submitting" : "Finish"}
             </Button>
           </div>
         </form>
