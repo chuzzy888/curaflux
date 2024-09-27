@@ -17,6 +17,7 @@ import { AuthProvider } from "./context/authContext";
 import { Toaster } from "./components/ui/toaster";
 import { User } from "./protect/user";
 import Cookies from "js-cookie";
+import Admin from "./Healthcare/Admin";
 
 function AppWrapper() {
   const location = useLocation();
@@ -29,10 +30,12 @@ function AppWrapper() {
         {/* Show Navbar on all routes except for authentication routes */}
         {location.pathname !== "/login" &&
           location.pathname !== "/register" &&
+          location.pathname !== "/curaflux/medixcare/admin" &&
           location.pathname !== "/verify" && <Navbar />}
 
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/curaflux/medixcare/admin" element={<Admin />} />
 
           <Route
             path="/login"
