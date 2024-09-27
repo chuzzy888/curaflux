@@ -12,11 +12,14 @@ import {
   Routes,
   Navigate,
   useLocation,
+  matchPath,
 } from "react-router-dom";
 import { AuthProvider } from "./context/authContext";
 import { Toaster } from "./components/ui/toaster";
 import { User } from "./protect/user";
 import Cookies from "js-cookie";
+import ForgotPassword from "./pages/auth/forgot-password";
+import ResetPassword from "./pages/auth/reset-password";
 import Admin from "./Healthcare/Admin";
 
 function AppWrapper() {
@@ -24,10 +27,18 @@ function AppWrapper() {
   const token = Cookies.get("token");
   const verified = Cookies.get("verified");
 
+  const isNavbarHidden =
+    location.pathname === "/login" ||
+    location.pathname === "/register" ||
+    location.pathname === "/forgot-password" ||
+    matchPath("/reset-password/:token", location.pathname) ||
+    location.pathname === "/verify";
+
   return (
     <>
       <AuthProvider>
         {/* Show Navbar on all routes except for authentication routes */}
+        {!isNavbarHidden && <Navbar />}
         {location.pathname !== "/login" &&
           location.pathname !== "/register" &&
           location.pathname !== "/curaflux/medixcare/admin" &&
@@ -37,6 +48,7 @@ function AppWrapper() {
           <Route path="/" element={<Home />} />
           <Route path="/curaflux/medixcare/admin" element={<Admin />} />
 
+          {/* auth */}
           <Route
             path="/login"
             element={token ? <Navigate to="/" /> : <Login />}
@@ -45,6 +57,11 @@ function AppWrapper() {
             path="/register"
             element={token ? <Navigate to="/verify" /> : <Register />}
           />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
+
+          {/* auth */}
+
           <Route
             path="/verify"
             element={
