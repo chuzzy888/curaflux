@@ -65,7 +65,7 @@ function Verification() {
     if (file) setUploadedFile(file);
   };
 
-   console.log(decode);
+  console.log(decode);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -77,10 +77,6 @@ function Verification() {
   const handleUploadVerification: SubmitHandler<VerificationTypes> = async (
     form
   ) => {
-
-  
-    
-
     try {
       const formData = new FormData();
       Object.entries(form).forEach(([key, value]) =>

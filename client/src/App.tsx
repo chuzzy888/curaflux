@@ -39,10 +39,6 @@ function AppWrapper() {
       <AuthProvider>
         {/* Show Navbar on all routes except for authentication routes */}
         {!isNavbarHidden && <Navbar />}
-        {location.pathname !== "/login" &&
-          location.pathname !== "/register" &&
-          location.pathname !== "/curaflux/medixcare/admin" &&
-          location.pathname !== "/verify" && <Navbar />}
 
         <Routes>
           <Route path="/" element={<Home />} />
