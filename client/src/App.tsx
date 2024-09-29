@@ -20,6 +20,7 @@ import { User } from "./protect/user";
 import Cookies from "js-cookie";
 import ForgotPassword from "./pages/auth/forgot-password";
 import ResetPassword from "./pages/auth/reset-password";
+import Admin from "./Healthcare/Admin";
 
 function AppWrapper() {
   const location = useLocation();
@@ -38,9 +39,14 @@ function AppWrapper() {
       <AuthProvider>
         {/* Show Navbar on all routes except for authentication routes */}
         {!isNavbarHidden && <Navbar />}
+        {location.pathname !== "/login" &&
+          location.pathname !== "/register" &&
+          location.pathname !== "/curaflux/medixcare/admin" &&
+          location.pathname !== "/verify" && <Navbar />}
 
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/curaflux/medixcare/admin" element={<Admin />} />
 
           {/* auth */}
           <Route
