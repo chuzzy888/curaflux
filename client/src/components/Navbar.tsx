@@ -4,6 +4,7 @@ import { MdMenu, MdClose } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { ScreenLayout } from "./layout/ScreenLayout";
 import Cookies from "js-cookie";
+import { IoPersonAdd } from "react-icons/io5";
 
 const Navbar: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -54,8 +55,9 @@ const Navbar: React.FC = () => {
               <Link to={"/login"}>Login</Link>
               <Link
                 to={"/register"}
-                className="bg-blue-400 text-white font-bold p-2 px-4 md:px-6 lg:px-8 hover:bg-blue-500 rounded-full"
+                className="bg-blue-400 text-white font-bold p-2 px-4 md:px-6 lg:px-4 hover:bg-blue-500 rounded-full flex items-center gap-2"
               >
+                <IoPersonAdd />
                 Join Curaflux
               </Link>
             </>

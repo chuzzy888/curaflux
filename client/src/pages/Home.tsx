@@ -19,7 +19,8 @@ import dr from "../assets/images/dr.png";
 import det from "../assets/images/det.png";
 import icn5 from "../assets/images/icn5.png";
 import whc from "../assets/images/gp (2).png";
-import hiw from "../assets/images/hiw.png";
+// import hiw from "../assets/images/hiw.png";
+import hiw from "../assets/images/hits.png";
 import { FiArrowDownRight } from "react-icons/fi";
 import { ScreenLayout } from "../components/layout/ScreenLayout";
 import Footer from "../components/Footer";
@@ -31,21 +32,26 @@ const Home: React.FC = () => {
       <div className="">
         <div className="container mx-auto px-4 flex flex-col lg:flex-row items-center">
           <div className="lg:w-1/2 animate__animated animate__fadeIn ">
-            <h1 className="text-3xl sm:text-6xl font-bold mb-4 leading-tight">
+            <h1 className="text-3xl sm:text-6xl font-bold mb-4 leading-tight text-center md:text-start">
               Connecting <span className="text-blue-600">Medics</span> <br />
               with <span className="text-blue-600">Hospitals</span> <br />
               in Real-Time
             </h1>
-            <p className="mb-6 text-base sm:text-lg text-gray-700">
+            <p className="mb-6 text-base sm:text-lg text-gray-700 text-center md:text-start">
               Join our community and start finding shifts that match your
               expertise.
             </p>
 
             <Link to={"/register"}>
               {" "}
-              <button className="bg-blue-600 text-white px-6 py-3 rounded-full text-lg font-semibold hover:bg-blue-700 transition duration-300 flex items-center">
-                Get started <FiArrowDownRight className="font-bold text-2xl" />
-              </button>
+              <div className="w-full  md:flex md:justify-start">
+                <div className="flex justify-center items-center w-full md:w-auto">
+                  <button className="bg-blue-600 text-white px-6 py-3 rounded-full text-lg font-semibold hover:bg-blue-700 transition duration-300 flex items-center">
+                    Get started{" "}
+                    <FiArrowDownRight className="font-bold text-2xl" />
+                  </button>
+                </div>
+              </div>
             </Link>
             <div className="mt-6 flex flex-col sm:flex-row items-center border border-blue-300 rounded-full sm:w-1/2 w-full p-4">
               <div className="mr-0 sm:mr-6 mb-4 sm:mb-0">
