@@ -30,7 +30,7 @@ interface VerificationTypes {
 interface CustomJwtPayload extends JwtPayload {
   fullName: string;
   email: string;
-  id: string;
+  userId: string;
 }
 
 function Verification() {
@@ -65,6 +65,8 @@ function Verification() {
     if (file) setUploadedFile(file);
   };
 
+   console.log(decode);
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) setUploadedFile(file);
@@ -75,6 +77,10 @@ function Verification() {
   const handleUploadVerification: SubmitHandler<VerificationTypes> = async (
     form
   ) => {
+
+  
+    
+
     try {
       const formData = new FormData();
       Object.entries(form).forEach(([key, value]) =>
@@ -82,12 +88,14 @@ function Verification() {
       );
       if (uploadedFile) formData.append("identificationDocument", uploadedFile);
 
-      if (decode?.id) {
+      if (decode?.userId) {
         const { data } = await axios.patch(
-          `${import.meta.env.VITE_BASE_URL}/auth/verify/${decode.id}`,
+          `${import.meta.env.VITE_BASE_URL}/auth/verify/${decode.userId}`,
           formData,
           { headers: { "Content-Type": "multipart/form-data" } }
         );
+
+        console.log(decode.userId);
 
         if (data.success === true) {
           Cookies.set("verified", "true");
