@@ -1,18 +1,18 @@
 import { useState, useEffect } from "react";
 import { shifts } from "./shiftData";
-import bi from "../assets/images/bs.jpeg";
-import lg from "../assets/images/lg.png";
-import instagram from "../assets/images/instagram.png";
-import facebook from "../assets/images/facebook.png";
-import linkedin from "../assets/images/linkedin.png";
-import twitter from "../assets/images/twitter.png";
-import threads from "../assets/images/threads.png";
-import youtube from "../assets/images/youtube.png";
+import bi from "../../assets/images/bs.jpeg";
+import lg from "../../assets/images/lg.png";
+import instagram from "../../assets/images/instagram.png";
+import facebook from "../../assets/images/facebook.png";
+import linkedin from "../../assets/images/linkedin.png";
+import twitter from "../../assets/images/twitter.png";
+import threads from "../../assets/images/threads.png";
+import youtube from "../../assets/images/youtube.png";
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
-import { SidebarProfile } from "../components/profile/Sidebar-profile";
-import useAuthStore from "../redux/store/authStore";
+import { SidebarProfile } from "../../components/profile/Sidebar-profile";
+import useAuthStore from "../../redux/store/authStore";
 
 interface HospitalData {
   name: string;

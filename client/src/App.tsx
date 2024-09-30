@@ -1,10 +1,10 @@
-import Home from "./pages/Home";
+import Home from "./pages/locum/Home";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
-import Navbar from "./components/Navbar";
-import Verification from "./pages/Verification";
-import Shift from "./pages/Shift";
-import ShiftDetails from "./pages/ShiftDetails";
+import Navbar from "./components/navbar/Navbar";
+import Verification from "./pages/locum/Verification";
+import Shift from "./pages/locum/Shift";
+import ShiftDetails from "./pages/locum/ShiftDetails";
 import "./App.css";
 import {
   BrowserRouter as Router,
@@ -20,10 +20,10 @@ import { User } from "./protect/user";
 import Cookies from "js-cookie";
 import ForgotPassword from "./pages/auth/forgot-password";
 import ResetPassword from "./pages/auth/reset-password";
-import Admin from "./Healthcare/Admin";
+import Admin from "./pages/Healthcare/Admin";
 import useAuthStore from "./redux/store/authStore";
-import Profile from "./pages/profile/Profile";
-import EditProfile from "./pages/profile/Edit-profile";
+import Profile from "./pages/locum/profile/Profile";
+import EditProfile from "./pages/locum/profile/Edit-profile";
 
 function AppWrapper() {
   const location = useLocation();

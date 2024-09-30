@@ -1,8 +1,8 @@
-import ftm from "../assets/images/ftm.png";
-import sc1 from "../assets/images/Social icon (1).png";
-import sc2 from "../assets/images/Social icon (2).png";
-import sc3 from "../assets/images/Social icon.png";
-import sc4 from "../assets/images/Frame 61.png";
+import ftm from "../../assets/images/ftm.png";
+import sc1 from "../../assets/images/Social icon (1).png";
+import sc2 from "../../assets/images/Social icon (2).png";
+import sc3 from "../../assets/images/Social icon.png";
+import sc4 from "../../assets/images/Frame 61.png";
 
 function Footer() {
   return (

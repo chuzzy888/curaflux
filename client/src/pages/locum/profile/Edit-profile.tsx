@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { ScreenLayout } from "../../components/layout/ScreenLayout";
-import { Label } from "../../components/ui/label";
-import { Input } from "../../components/ui/input";
-import useAuthStore from "../../redux/store/authStore";
+import { ScreenLayout } from "../../../components/layout/ScreenLayout";
+import { Label } from "../../../components/ui/label";
+import { Input } from "../../../components/ui/input";
+import useAuthStore from "../../../redux/store/authStore";
 import { Editor } from "primereact/editor";
-import { Button } from "../../components/ui/button";
+import { Button } from "../../../components/ui/button";
 import { useForm, SubmitHandler } from "react-hook-form";
 import axios from "axios";
 
@@ -15,7 +15,7 @@ type EditProfileType = {
   experience: string;
   availableWork: string;
   availableTime: string;
-  photo: FileList;
+  photo: File | null;
 };
 
 const EditProfile = () => {
@@ -68,8 +68,7 @@ const EditProfile = () => {
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreviewUrl(reader.result as string);
-        // Set the file to the form's photo input
-        setValue("photo", files);
+        setValue("photo", file);
       };
       reader.readAsDataURL(file);
     }
@@ -77,10 +76,8 @@ const EditProfile = () => {
 
   const handleEditProfile: SubmitHandler<EditProfileType> = async (form) => {
     const formData = new FormData();
-    if (form.photo.length > 0) {
-      formData.append("photo", form.photo[0]);
-    } else {
-      formData.append("photo", userInfo.photo);
+    if (form.photo) {
+      formData.append("photo", form.photo);
     }
     formData.append("fullName", form.fullName);
     formData.append("specialty", form.specialty);
@@ -88,7 +85,7 @@ const EditProfile = () => {
     formData.append("availableWork", form.availableWork);
     formData.append("availableTime", form.availableTime);
     formData.append("bio", text);
-    formData.append("certifications", JSON.stringify(certifications)); // Convert array to JSON string
+      formData.append("certifications", certifications.join(", "));
 
     const { data } = await axios.patch(
       `${import.meta.env.VITE_BASE_URL}/auth/verify/${userId}`,
@@ -112,23 +109,21 @@ const EditProfile = () => {
             {/* Image Preview Section */}
             <div className="flex flex-wrap gap-4">
               <div className="relative overflow-hidden h-32 w-32 mx-auto rounded-full bg-gray-200 mb-4">
-                {previewUrl && (
+                {previewUrl ? (
                   <img
                     src={previewUrl}
                     alt="Preview"
                     className="absolute inset-0 object-cover w-full h-full"
                   />
+                ) : (
+                  <p className="text-center text-gray-500">No Image Selected</p>
                 )}
                 <input
                   type="file"
                   accept="image/*"
-                  {...register("photo")} // Register file input
                   className="absolute inset-0 opacity-0 w-full h-full cursor-pointer"
                   onChange={handleImageChange}
                 />
-                {errors.photo && (
-                  <p className="text-xs text-center">Please select an Image</p>
-                )}
               </div>
             </div>
 
@@ -265,7 +260,7 @@ const EditProfile = () => {
             </div>
           </section>
 
-          <Button className="mt-5 bg-[#009FF5]">
+          <Button className="mt-5 bg-[#009FF5]" disabled={isSubmitting}>
             {isSubmitting ? "Saving Changes" : "Save Changes"}
           </Button>
         </form>

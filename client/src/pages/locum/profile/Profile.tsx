@@ -1,8 +1,8 @@
 import React from "react";
-import { ScreenLayout } from "../../components/layout/ScreenLayout";
-import useAuthStore from "../../redux/store/authStore";
+import { ScreenLayout } from "../../../components/layout/ScreenLayout";
+import useAuthStore from "../../../redux/store/authStore";
 import { FaCalendarAlt, FaLinkedinIn, FaStar } from "react-icons/fa";
-import { Button } from "../../components/ui/button";
+import { Button } from "../../../components/ui/button";
 import { Link } from "react-router-dom";
 
 const Profile = () => {
@@ -34,7 +34,7 @@ const Profile = () => {
               </Link>
             </div>
 
-            <p className=" pb-1 text-gray-500 text-[16px]">
+            <p className=" pb-1 text-gray-500 text-[16px] capitalize">
               Registered {userInfo.specialty}
             </p>
 

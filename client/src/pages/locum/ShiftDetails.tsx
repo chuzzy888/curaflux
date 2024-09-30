@@ -5,7 +5,7 @@ import { FaMapMarkerAlt } from "react-icons/fa";
 import { HiCalendar, HiClock, HiCurrencyDollar } from "react-icons/hi";
 import Modal from "react-modal";
 import React from "react";
-import lg from "../assets/images/lg.png";
+import lg from "../../assets/images/lg.png";
 
 const ShiftDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
