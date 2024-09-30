@@ -67,9 +67,16 @@ const Profile = () => {
               <FaCalendarAlt /> {userInfo.experience || "Not updated"}
             </p>
 
-            <p className=" pb-1 text-gray-500 text-[16px] flex gap-2 items-center">
-              <FaLinkedinIn />{" "}
-              <a href={userInfo.linkedInUrl}>LinkedIn Profile</a>
+            <p className="pb-1 text-gray-500 text-[16px] flex gap-2 items-center">
+              <FaLinkedinIn />
+              <a
+                href={`https://${userInfo.linkedInUrl}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className=" hover:underline"
+              >
+                LinkedIn Profile
+              </a>
             </p>
 
             {/* <p className=" mt-7 pb-1 text-gray-500 text-[16px] max-w-3xl">
