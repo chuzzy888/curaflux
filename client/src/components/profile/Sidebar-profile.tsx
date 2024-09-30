@@ -148,7 +148,7 @@ export const SidebarProfile = ({
       <div className="absolute bottom-4  w-full  ">
         <button
           onClick={handleLogout}
-          className="flex items-center text-gray-600 hover:text-gray-900 bg-white p-2 rounded-md shadow w-full px-7"
+          className="flex items-center text-gray-600 hover:text-gray-900  p-2 rounded-md  w-full px-7"
         >
           <MdLogout className="h-6 w-6 mr-2" />
           <span>Logout</span>
