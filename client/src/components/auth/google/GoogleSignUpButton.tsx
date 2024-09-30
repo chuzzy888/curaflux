@@ -2,10 +2,11 @@ import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import axios, { AxiosError } from "axios";
 import { JwtPayload, jwtDecode } from "jwt-decode";
 import { auth } from "../../../firebaseConfig";
-import { useToast } from "../../../hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import googleSignup from "../../../assets/images/googleSignup.png";
+import { Modal } from "../../modals/Success-Modal";
+import { useState } from "react";
 
 interface CustomJwtPayload extends JwtPayload {
   name?: string;
@@ -13,8 +14,10 @@ interface CustomJwtPayload extends JwtPayload {
 }
 
 const GoogleSignUpButton = () => {
-  const { toast } = useToast();
   const navigate = useNavigate();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
 
   const handleSignUp = () => {
     const provider = new GoogleAuthProvider();
@@ -27,7 +30,7 @@ const GoogleSignUpButton = () => {
           decode = jwtDecode<CustomJwtPayload>(idToken);
         }
 
-        console.log(decode);
+        // console.log(decode);
 
         if (decode) {
           const namePart = decode.name?.split(" ");
@@ -46,7 +49,12 @@ const GoogleSignUpButton = () => {
 
           if (data.token) {
             Cookies.set("token", data.token);
-            navigate("/verify");
+            setModalMessage("You have successfully logged in.");
+            setIsModalOpen(true);
+
+            setTimeout(() => {
+              navigate("/verify");
+            }, 2000);
           }
         }
       })
@@ -55,18 +63,23 @@ const GoogleSignUpButton = () => {
 
         const axiosError = error as AxiosError<{ message: string }>;
 
-        toast({
-          title: "Error Found",
-          description:
-            axiosError?.response?.data?.message ||
-            "An error occurred during Registration.",
-        });
+        setModalMessage(
+          axiosError?.response?.data?.message ||
+            "An error occurred during registration."
+        );
+        setIsModalOpen(true);
       });
   };
 
   return (
     <button onClick={handleSignUp}>
       <img src={googleSignup} alt="google-signup" />
+
+      <Modal
+        msg={modalMessage}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </button>
   );
 };

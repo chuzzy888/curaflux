@@ -2,10 +2,11 @@ import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import axios, { AxiosError } from "axios";
 import { JwtPayload, jwtDecode } from "jwt-decode";
 import { auth } from "../../../firebaseConfig";
-import { useToast } from "../../../hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import google from "../../../assets/images/Google.png";
+import { useState } from "react";
+import { Modal } from "../../modals/Success-Modal";
 
 interface CustomJwtPayload extends JwtPayload {
   name?: string;
@@ -13,8 +14,11 @@ interface CustomJwtPayload extends JwtPayload {
 }
 
 const GoogleSignInButton = () => {
-  const { toast } = useToast();
+ 
   const navigate = useNavigate();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
 
   const handleSignIn = () => {
     const provider = new GoogleAuthProvider();
@@ -27,7 +31,7 @@ const GoogleSignInButton = () => {
           decode = jwtDecode<CustomJwtPayload>(idToken);
         }
 
-        console.log(decode);
+        // console.log(decode);
 
         if (decode) {
           const { data } = await axios.post(
@@ -40,7 +44,13 @@ const GoogleSignInButton = () => {
 
           if (data.token) {
             Cookies.set("token", data.token);
-            navigate("/verify");
+
+            setModalMessage("You have successfully logged in.");
+            setIsModalOpen(true);
+
+            setTimeout(() => {
+              navigate("/shift");
+            }, 2000);
           }
         }
       })
@@ -49,18 +59,23 @@ const GoogleSignInButton = () => {
 
         const axiosError = error as AxiosError<{ message: string }>;
 
-        toast({
-          title: "Error Found",
-          description:
-            axiosError?.response?.data?.message ||
-            "An error occurred during Login.",
-        });
+        setModalMessage(
+          axiosError?.response?.data?.message ||
+            "An error occurred during registration."
+        );
+        setIsModalOpen(true);
       });
   };
 
   return (
     <button onClick={handleSignIn} className=" mt-3">
       <img src={google} alt="google-signup" />
+
+      <Modal
+        msg={modalMessage}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </button>
   );
 };
