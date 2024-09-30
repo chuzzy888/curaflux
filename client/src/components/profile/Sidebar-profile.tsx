@@ -7,6 +7,7 @@ import { MdLogout } from "react-icons/md";
 import useAuthStore from "../../redux/store/authStore";
 import { Link } from "react-router-dom";
 import { FaCircleCheck } from "react-icons/fa6";
+import { IoHome } from "react-icons/io5";
 
 type profileSidebarTypes = {
   handleLogout: () => void;
@@ -106,6 +107,13 @@ export const SidebarProfile = ({
             +234:{" "}
             <a href={`tel:${userInfo?.phoneNumber}`}>{userInfo?.phoneNumber}</a>
           </p>
+
+          <p className="flex items-center gap-2 my-2 text-sm">
+            <span>
+              <IoHome />
+            </span>
+            {userInfo?.address || "soon"}
+          </p>
         </div>
       </section>
 
@@ -120,6 +128,7 @@ export const SidebarProfile = ({
                 <FaCircleCheck size={15} color="green" />
               )}
             </span>
+            {userInfo.specialty === "nurse" ? " NMCN Number:" : "MDCN Number"}{" "}
             {userInfo?.mdcnNumber || userInfo?.nmcnNumber
               ? `${userInfo?.mdcnNumber || ""} ${userInfo?.nmcnNumber || ""}`
               : "Not available"}
@@ -133,18 +142,7 @@ export const SidebarProfile = ({
                 <FaCircleCheck size={15} color="green" />
               )}
             </span>
-            {userInfo?.identificationNumber || "soon"}
-          </p>
-
-          <p className="flex items-center gap-2 my-2 text-sm">
-            <span>
-              {!userInfo?.address ? (
-                <IoMdCloseCircle size={18} color="red" />
-              ) : (
-                <FaCircleCheck size={15} color="green" />
-              )}
-            </span>
-            {userInfo?.address || "soon"}
+            I.D No: {userInfo?.identificationNumber || "soon"}
           </p>
         </div>
       </section>
