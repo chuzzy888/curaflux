@@ -47,7 +47,7 @@ export const SidebarProfile = ({
     getAUserInfo();
   }, [userData?.userId]);
 
-  console.log(userInfo);
+  // console.log(userInfo);
 
   return (
     <main

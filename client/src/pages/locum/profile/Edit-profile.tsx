@@ -8,6 +8,8 @@ import { Editor } from "primereact/editor";
 import { Button } from "../../../components/ui/button";
 import { useForm, SubmitHandler } from "react-hook-form";
 import axios from "axios";
+import { jwtDecode, JwtPayload } from "jwt-decode";
+import Cookies from "js-cookie";
 
 type EditProfileType = {
   fullName: string;
@@ -18,14 +20,21 @@ type EditProfileType = {
   photo: File | null;
 };
 
+interface CustomJwtPayload extends JwtPayload {
+  userId: string;
+}
+
 const EditProfile = () => {
   const { userId } = useParams();
-  const { userInfo } = useAuthStore();
-  const [text, setText] = useState(userInfo.bio || "");
+  const { userInfo, setUserInfo } = useAuthStore();
+  const [text, setText] = useState(userInfo?.bio || "");
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
+  const token = Cookies.get("token");
+  const decode = token ? jwtDecode<CustomJwtPayload>(token) : null;
+
   const [certifications, setCertifications] = useState<string[]>(
-    userInfo.certifications || []
+    userInfo?.certifications || []
   );
   const [currentCertification, setCurrentCertification] = useState<string>("");
 
@@ -85,18 +94,40 @@ const EditProfile = () => {
     formData.append("availableWork", form.availableWork);
     formData.append("availableTime", form.availableTime);
     formData.append("bio", text);
-      formData.append("certifications", certifications.join(", "));
+    formData.append("certifications", certifications.join(", "));
 
-    const { data } = await axios.patch(
-      `${import.meta.env.VITE_BASE_URL}/auth/verify/${userId}`,
-      formData,
-      { headers: { "Content-Type": "multipart/form-data" } }
-    );
+    try {
+      const { data } = await axios.patch(
+        `${import.meta.env.VITE_BASE_URL}/auth/verify/${userId}`,
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
 
-    console.log(data);
+      if (data.success === true) {
+        window.location.href = `/profile/${data.updatedUser.nickName}`;
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  console.log(userInfo.photo);
+  const getAUserInfo = async () => {
+    try {
+      const { data } = await axios(
+        `${import.meta.env.VITE_BASE_URL}/auth/user/${decode?.userId}`
+      );
+
+      setUserInfo(data.user);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getAUserInfo();
+  }, [decode?.userId]);
+
+  console.log(userInfo);
 
   return (
     <main className="pt-20 pb-10">

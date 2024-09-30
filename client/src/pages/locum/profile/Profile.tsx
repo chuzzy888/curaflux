@@ -1,12 +1,37 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { ScreenLayout } from "../../../components/layout/ScreenLayout";
 import useAuthStore from "../../../redux/store/authStore";
 import { FaCalendarAlt, FaLinkedinIn, FaStar } from "react-icons/fa";
 import { Button } from "../../../components/ui/button";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { jwtDecode, JwtPayload } from "jwt-decode";
+import Cookies from "js-cookie";
+
+interface CustomJwtPayload extends JwtPayload {
+  userId: string;
+}
 
 const Profile = () => {
-  const { userInfo } = useAuthStore();
+  const { userInfo, setUserInfo } = useAuthStore();
+  const token = Cookies.get("token");
+  const decode = token ? jwtDecode<CustomJwtPayload>(token) : null;
+
+  const getAUserInfo = async () => {
+    try {
+      const { data } = await axios(
+        `${import.meta.env.VITE_BASE_URL}/auth/user/${decode?.userId}`
+      );
+
+      setUserInfo(data.user);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getAUserInfo();
+  }, [decode?.userId]);
 
   return (
     <main className=" pt-20">
