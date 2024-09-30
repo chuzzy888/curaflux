@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import logo from "../assets/images/logo.png";
+import logo from "../../assets/images/logo.png";
 import { MdMenu, MdClose } from "react-icons/md";
 import { Link } from "react-router-dom";
-import { ScreenLayout } from "./layout/ScreenLayout";
+import { ScreenLayout } from "../layout/ScreenLayout";
 import Cookies from "js-cookie";
 import { IoPersonAdd } from "react-icons/io5";
 
@@ -115,16 +115,21 @@ const Navbar: React.FC = () => {
                   Shift
                 </Link>
               </li>
-              <li>
-                <Link to="/login" className="text-lg">
-                  Login
-                </Link>
-              </li>
-              <li>
-                <Link to="/register" className="text-lg">
-                  Sign Up
-                </Link>
-              </li>
+
+              {!isAuthenticated && (
+                <>
+                  <li>
+                    <Link to="/login" className="text-lg">
+                      Login
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/register" className="text-lg">
+                      Sign Up
+                    </Link>
+                  </li>
+                </>
+              )}
             </ul>
           </div>
         )}

@@ -7,7 +7,8 @@ interface UserInfo {
   profilePic: string;
   email: string;
   phoneNumber: string;
-  nicNumber: string;
+  nmcnNumber: string;
+  mdcnNumber: string;
   identificationNumber: string;
   address: string;
   photo: string;
@@ -47,7 +48,8 @@ const useAuthStore = create<AuthState>((set) => ({
     profilePic: "",
     email: "",
     phoneNumber: "",
-    nicNumber: "",
+    nmcnNumber: "",
+    mdcnNumber: "",
     identificationNumber: "",
     address: "",
     photo: "",

@@ -1,12 +1,37 @@
-import React from "react";
-import { ScreenLayout } from "../../components/layout/ScreenLayout";
-import useAuthStore from "../../redux/store/authStore";
+import React, { useEffect } from "react";
+import { ScreenLayout } from "../../../components/layout/ScreenLayout";
+import useAuthStore from "../../../redux/store/authStore";
 import { FaCalendarAlt, FaLinkedinIn, FaStar } from "react-icons/fa";
-import { Button } from "../../components/ui/button";
+import { Button } from "../../../components/ui/button";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { jwtDecode, JwtPayload } from "jwt-decode";
+import Cookies from "js-cookie";
+
+interface CustomJwtPayload extends JwtPayload {
+  userId: string;
+}
 
 const Profile = () => {
-  const { userInfo } = useAuthStore();
+  const { userInfo, setUserInfo } = useAuthStore();
+  const token = Cookies.get("token");
+  const decode = token ? jwtDecode<CustomJwtPayload>(token) : null;
+
+  const getAUserInfo = async () => {
+    try {
+      const { data } = await axios(
+        `${import.meta.env.VITE_BASE_URL}/auth/user/${decode?.userId}`
+      );
+
+      setUserInfo(data.user);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getAUserInfo();
+  }, [decode?.userId]);
 
   return (
     <main className=" pt-20">
@@ -34,7 +59,7 @@ const Profile = () => {
               </Link>
             </div>
 
-            <p className=" pb-1 text-gray-500 text-[16px]">
+            <p className=" pb-1 text-gray-500 text-[16px] capitalize">
               Registered {userInfo.specialty}
             </p>
 
@@ -42,9 +67,16 @@ const Profile = () => {
               <FaCalendarAlt /> {userInfo.experience || "Not updated"}
             </p>
 
-            <p className=" pb-1 text-gray-500 text-[16px] flex gap-2 items-center">
-              <FaLinkedinIn />{" "}
-              <a href={userInfo.linkedInUrl}>LinkedIn Profile</a>
+            <p className="pb-1 text-gray-500 text-[16px] flex gap-2 items-center">
+              <FaLinkedinIn />
+              <a
+                href={`https://${userInfo.linkedInUrl}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className=" hover:underline"
+              >
+                LinkedIn Profile
+              </a>
             </p>
 
             {/* <p className=" mt-7 pb-1 text-gray-500 text-[16px] max-w-3xl">

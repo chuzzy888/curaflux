@@ -10,10 +10,10 @@ import { SubmitHandler, useForm } from "react-hook-form";
 
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
-import { useToast } from "../../hooks/use-toast";
 import axios, { AxiosError } from "axios";
 import Cookies from "js-cookie";
 import GoogleSignInButton from "../../components/auth/google/GoogleSignInButton";
+import { Modal } from "../../components/modals/Success-Modal";
 
 type loginType = {
   email: string;
@@ -28,8 +28,10 @@ const Login = () => {
   } = useForm<loginType>();
 
   const [show, setShow] = useState(false);
-  const { toast } = useToast();
+
   const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
 
   const handleLogin: SubmitHandler<loginType> = async (form) => {
     try {
@@ -38,30 +40,34 @@ const Login = () => {
         form
       );
 
-      // console.log(data);
-
       Cookies.set("token", data.token);
 
-      toast({
-        title: "Login Successful",
-        description: "You have successfully logged in.",
-      });
+      if (data.success === true) {
+        setModalMessage("You have successfully logged in.");
+        setIsModalOpen(true);
 
-      navigate("/shift");
+        setTimeout(() => {
+          navigate("/shift");
+        }, 2000);
+      }
     } catch (error) {
       const axiosError = error as AxiosError<{ message: string }>;
 
-      toast({
-        title: "Error Found",
-        description:
-          axiosError?.response?.data?.message ||
-          "An error occurred during login.",
-      });
+      setModalMessage(
+        axiosError?.response?.data?.message ||
+          "An error occurred during registration."
+      );
+      setIsModalOpen(true);
     }
   };
 
   return (
     <ScreenLayout>
+      <Modal
+        msg={modalMessage}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
       <main className="h-screen flex justify-center flex-col">
         <section className=" lg:flex justify-center items-center gap-32">
           <section className=" w-[502px] h-[502px] hidden lg:block">

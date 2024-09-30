@@ -1,10 +1,10 @@
-import Home from "./pages/Home";
+import Home from "./pages/locum/Home";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
-import Navbar from "./components/Navbar";
-import Verification from "./pages/Verification";
-import Shift from "./pages/Shift";
-import ShiftDetails from "./pages/ShiftDetails";
+import Navbar from "./components/navbar/Navbar";
+import Verification from "./pages/locum/Verification";
+import Shift from "./pages/locum/Shift";
+import ShiftDetails from "./pages/locum/ShiftDetails";
 import "./App.css";
 import {
   BrowserRouter as Router,
@@ -20,17 +20,21 @@ import { User } from "./protect/user";
 import Cookies from "js-cookie";
 import ForgotPassword from "./pages/auth/forgot-password";
 import ResetPassword from "./pages/auth/reset-password";
-import Admin from "./Healthcare/Admin";
-import useAuthStore from "./redux/store/authStore";
-import Profile from "./pages/profile/Profile";
-import EditProfile from "./pages/profile/Edit-profile";
+import Admin from "./pages/Healthcare/Admin";
+import Profile from "./pages/locum/profile/Profile";
+import EditProfile from "./pages/locum/profile/Edit-profile";
+import { jwtDecode, JwtPayload } from "jwt-decode";
+
+interface CustomJwtPayload extends JwtPayload {
+  nickName: string;
+}
 
 function AppWrapper() {
   const location = useLocation();
   const token = Cookies.get("token");
   const verified = Cookies.get("verified");
 
-  const { userInfo } = useAuthStore();
+  const decode = token ? jwtDecode<CustomJwtPayload>(token) : null;
 
   const isNavbarHidden =
     location.pathname === "/login" ||
@@ -40,8 +44,8 @@ function AppWrapper() {
     matchPath("/reset-password/:token", location.pathname) ||
     location.pathname === "/verify" ||
     location.pathname === "/shift" ||
-    location.pathname === `/profile/${userInfo.nickName}` ||
-    matchPath(`/edit-profile-${userInfo.nickName}/:userId`, location.pathname);
+    location.pathname === `/profile/${decode?.nickName}` ||
+    matchPath(`/edit-profile-${decode?.nickName}/:userId`, location.pathname);
 
   return (
     <>
@@ -83,11 +87,11 @@ function AppWrapper() {
             <Route path="/shift" element={<Shift />} />
             <Route path="/shift-details/:id" element={<ShiftDetails />} />
             <Route
-              path={`/profile/${userInfo.nickName}`}
+              path={`/profile/${decode?.nickName}`}
               element={<Profile />}
             />
             <Route
-              path={`/edit-profile-${userInfo.nickName}/:userId`}
+              path={`/edit-profile-${decode?.nickName}/:userId`}
               element={<EditProfile />}
             />
           </Route>

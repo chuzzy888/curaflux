@@ -2,17 +2,17 @@ import React, { useState, useRef } from "react";
 import Cookies from "js-cookie";
 import { jwtDecode, JwtPayload } from "jwt-decode";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
-import lg from "../assets/images/lg.png";
+import lg from "../../assets/images/lg.png";
 
-import { Input } from "../components/ui/input";
+import { Input } from "../../components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../components/ui/select";
-import { Button } from "../components/ui/button";
+} from "../../components/ui/select";
+import { Button } from "../../components/ui/button";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -27,7 +27,8 @@ interface VerificationTypes {
   identificationNumber: string;
   address: string;
   specialty: string;
-  nicNumber: string;
+  nmcnNumber: string;
+  mdcnNumber: string;
 }
 
 interface CustomJwtPayload extends JwtPayload {
@@ -40,6 +41,7 @@ function Verification() {
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [dragging, setDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [selected, setSelected] = useState("");
 
   const {
     register,
@@ -68,8 +70,6 @@ function Verification() {
     if (file) setUploadedFile(file);
   };
 
-  console.log(decode);
-
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) setUploadedFile(file);
@@ -93,8 +93,6 @@ function Verification() {
           formData,
           { headers: { "Content-Type": "multipart/form-data" } }
         );
-
-        console.log(decode.userId);
 
         if (data.success === true) {
           Cookies.set("verified", "true");
@@ -220,7 +218,6 @@ function Verification() {
                       <SelectContent>
                         <SelectItem value="male">Male</SelectItem>
                         <SelectItem value="female">Female</SelectItem>
-                        <SelectItem value="other">Other</SelectItem>
                       </SelectContent>
                     </Select>
                   )}
@@ -241,18 +238,21 @@ function Verification() {
                 <Controller
                   name="specialty"
                   control={control}
-                  rules={{ required: "Position is required" }}
+                  rules={{ required: "Specialty is required" }}
                   render={({ field }) => (
                     <Select
-                      onValueChange={field.onChange}
+                      onValueChange={(value) => {
+                        field.onChange(value);
+                        setSelected(value);
+                      }}
                       defaultValue={field.value}
                     >
                       <SelectTrigger className="w-full">
                         <SelectValue placeholder="Select specialty" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="male">Doctor</SelectItem>
-                        <SelectItem value="female">Nurse</SelectItem>
+                        <SelectItem value="doctor">Doctor</SelectItem>
+                        <SelectItem value="nurse">Nurse</SelectItem>
                       </SelectContent>
                     </Select>
                   )}
@@ -359,24 +359,47 @@ function Verification() {
               )}
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-muted-foreground">
-                NIC Number:
-              </label>
-              <Input
-                type="text"
-                className="mt-1 block w-full p-2 border border-border rounded-md"
-                placeholder="123A-456L-789B"
-                {...register("nicNumber", {
-                  required: "  NIC Number is required",
-                })}
-              />
-              {errors.nicNumber && (
-                <p className="text-red-500 text-xs">
-                  {errors.nicNumber.message}
-                </p>
-              )}
-            </div>
+            {selected === "nurse" && (
+              <div>
+                <label className="block text-sm font-medium text-muted-foreground">
+                  NMCN Number:
+                </label>
+                <Input
+                  type="text"
+                  className="mt-1 block w-full p-2 border border-border rounded-md"
+                  placeholder="RN12345"
+                  {...register("nmcnNumber", {
+                    required: "  NMCN Number is required",
+                  })}
+                />
+                {errors.nmcnNumber && (
+                  <p className="text-red-500 text-xs">
+                    {errors.nmcnNumber.message}
+                  </p>
+                )}
+              </div>
+            )}
+
+            {selected === "doctor" && (
+              <div>
+                <label className="block text-sm font-medium text-muted-foreground">
+                  MDCN Number:
+                </label>
+                <Input
+                  type="text"
+                  className="mt-1 block w-full p-2 border border-border rounded-md"
+                  placeholder="MED12345"
+                  {...register("mdcnNumber", {
+                    required: "  MDCN Number is required",
+                  })}
+                />
+                {errors.mdcnNumber && (
+                  <p className="text-red-500 text-xs">
+                    {errors.mdcnNumber.message}
+                  </p>
+                )}
+              </div>
+            )}
 
             <div>
               <label className="block text-sm font-medium text-muted-foreground">

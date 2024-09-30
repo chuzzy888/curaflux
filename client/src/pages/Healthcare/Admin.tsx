@@ -1,6 +1,6 @@
-import Dashboard from "./components/Dashboard";
-import Header from "./components/Header";
-import Sidebar from "./components/Sidebar";
+import Dashboard from "../../components/health-care/Dashboard";
+import Header from "../../components/health-care/Header";
+import Sidebar from "../../components/health-care/Sidebar";
 
 function Admin() {
   return (

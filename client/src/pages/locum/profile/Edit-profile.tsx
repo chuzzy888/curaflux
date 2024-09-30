@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { ScreenLayout } from "../../components/layout/ScreenLayout";
-import { Label } from "../../components/ui/label";
-import { Input } from "../../components/ui/input";
-import useAuthStore from "../../redux/store/authStore";
+import { ScreenLayout } from "../../../components/layout/ScreenLayout";
+import { Label } from "../../../components/ui/label";
+import { Input } from "../../../components/ui/input";
+import useAuthStore from "../../../redux/store/authStore";
 import { Editor } from "primereact/editor";
-import { Button } from "../../components/ui/button";
+import { Button } from "../../../components/ui/button";
 import { useForm, SubmitHandler } from "react-hook-form";
 import axios from "axios";
+import { jwtDecode, JwtPayload } from "jwt-decode";
+import Cookies from "js-cookie";
+import { Modal } from "../../../components/modals/Success-Modal";
 
 type EditProfileType = {
   fullName: string;
@@ -15,17 +18,27 @@ type EditProfileType = {
   experience: string;
   availableWork: string;
   availableTime: string;
-  photo: FileList;
+  photo: File | null;
 };
+
+interface CustomJwtPayload extends JwtPayload {
+  userId: string;
+}
 
 const EditProfile = () => {
   const { userId } = useParams();
-  const { userInfo } = useAuthStore();
-  const [text, setText] = useState(userInfo.bio || "");
+  const { userInfo, setUserInfo } = useAuthStore();
+  const [text, setText] = useState(userInfo?.bio || "");
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+
+  const token = Cookies.get("token");
+  const decode = token ? jwtDecode<CustomJwtPayload>(token) : null;
+
   const [certifications, setCertifications] = useState<string[]>(
-    userInfo.certifications || []
+    userInfo?.certifications || []
   );
   const [currentCertification, setCurrentCertification] = useState<string>("");
 
@@ -68,8 +81,7 @@ const EditProfile = () => {
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreviewUrl(reader.result as string);
-        // Set the file to the form's photo input
-        setValue("photo", files);
+        setValue("photo", file);
       };
       reader.readAsDataURL(file);
     }
@@ -77,10 +89,8 @@ const EditProfile = () => {
 
   const handleEditProfile: SubmitHandler<EditProfileType> = async (form) => {
     const formData = new FormData();
-    if (form.photo.length > 0) {
-      formData.append("photo", form.photo[0]);
-    } else {
-      formData.append("photo", userInfo.photo);
+    if (form.photo) {
+      formData.append("photo", form.photo);
     }
     formData.append("fullName", form.fullName);
     formData.append("specialty", form.specialty);
@@ -88,22 +98,51 @@ const EditProfile = () => {
     formData.append("availableWork", form.availableWork);
     formData.append("availableTime", form.availableTime);
     formData.append("bio", text);
-    formData.append("certifications", JSON.stringify(certifications)); // Convert array to JSON string
+    formData.append("certifications", certifications.join(", "));
 
-    const { data } = await axios.patch(
-      `${import.meta.env.VITE_BASE_URL}/auth/verify/${userId}`,
-      formData,
-      { headers: { "Content-Type": "multipart/form-data" } }
-    );
+    try {
+      const { data } = await axios.patch(
+        `${import.meta.env.VITE_BASE_URL}/auth/verify/${userId}`,
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
 
-    console.log(data);
+      if (data.success === true) {
+        setModalMessage(data?.message);
+        setIsModalOpen(true);
+        setTimeout(() => {
+          window.location.href = `/profile/${data.updatedUser.nickName}`;
+        }, 3000);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  console.log(userInfo.photo);
+  const getAUserInfo = async () => {
+    try {
+      const { data } = await axios(
+        `${import.meta.env.VITE_BASE_URL}/auth/user/${decode?.userId}`
+      );
+
+      setUserInfo(data.user);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getAUserInfo();
+  }, [decode?.userId]);
 
   return (
     <main className="pt-20 pb-10">
       <ScreenLayout>
+        <Modal
+          msg={modalMessage}
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+        />
         <h1 className="text-2xl font-bold">Edit Profile</h1>
 
         <form onSubmit={handleSubmit(handleEditProfile)}>
@@ -112,23 +151,21 @@ const EditProfile = () => {
             {/* Image Preview Section */}
             <div className="flex flex-wrap gap-4">
               <div className="relative overflow-hidden h-32 w-32 mx-auto rounded-full bg-gray-200 mb-4">
-                {previewUrl && (
+                {previewUrl ? (
                   <img
                     src={previewUrl}
                     alt="Preview"
                     className="absolute inset-0 object-cover w-full h-full"
                   />
+                ) : (
+                  <p className="text-center text-gray-500">No Image Selected</p>
                 )}
                 <input
                   type="file"
                   accept="image/*"
-                  {...register("photo")} // Register file input
                   className="absolute inset-0 opacity-0 w-full h-full cursor-pointer"
                   onChange={handleImageChange}
                 />
-                {errors.photo && (
-                  <p className="text-xs text-center">Please select an Image</p>
-                )}
               </div>
             </div>
 
@@ -265,7 +302,7 @@ const EditProfile = () => {
             </div>
           </section>
 
-          <Button className="mt-5 bg-[#009FF5]">
+          <Button className="mt-5 bg-[#009FF5]" disabled={isSubmitting}>
             {isSubmitting ? "Saving Changes" : "Save Changes"}
           </Button>
         </form>
