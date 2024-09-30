@@ -25,6 +25,9 @@ interface VerificationTypes {
   linkedInUrl: string;
   identificationType: string;
   identificationNumber: string;
+  address: string;
+  specialty: string;
+  nicNumber: string;
 }
 
 interface CustomJwtPayload extends JwtPayload {
@@ -229,6 +232,56 @@ function Verification() {
                 )}
               </div>
             </div>
+
+            <div className="grid grid-cols-2 gap-2">
+              <div>
+                <label className="block text-sm font-medium text-muted-foreground">
+                  Specialty:
+                </label>
+                <Controller
+                  name="specialty"
+                  control={control}
+                  rules={{ required: "Position is required" }}
+                  render={({ field }) => (
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select specialty" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="male">Doctor</SelectItem>
+                        <SelectItem value="female">Nurse</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
+                {errors.specialty && (
+                  <p className="text-red-500 text-xs">
+                    {errors.specialty.message}
+                  </p>
+                )}
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-muted-foreground">
+                  Address:
+                </label>
+                <Input
+                  type="tel"
+                  className="mt-1 block w-full p-2 border bg-gray-100 border-border rounded-md"
+                  // placeholder="+234 8147246757"
+                  {...register("address", {
+                    required: "Address is required",
+                  })}
+                />
+                {errors.address && (
+                  <p className="text-red-500 text-xs">
+                    {errors.address.message}
+                  </p>
+                )}
+              </div>
+            </div>
           </div>
 
           <h2 className="text-xl font-semibold mt-6 mb-2">
@@ -302,6 +355,25 @@ function Verification() {
               {errors.identificationNumber && (
                 <p className="text-red-500 text-xs">
                   {errors.identificationNumber.message}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-muted-foreground">
+                NIC Number:
+              </label>
+              <Input
+                type="text"
+                className="mt-1 block w-full p-2 border border-border rounded-md"
+                placeholder="123A-456L-789B"
+                {...register("nicNumber", {
+                  required: "  NIC Number is required",
+                })}
+              />
+              {errors.nicNumber && (
+                <p className="text-red-500 text-xs">
+                  {errors.nicNumber.message}
                 </p>
               )}
             </div>

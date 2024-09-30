@@ -18,4 +18,7 @@ export type VerificationTypes = {
   identificationType: string;
   identificationNumber: string;
   identificationDocument: string;
+  specialty: string;
+  address: string;
+  nicNumber: string;
 };

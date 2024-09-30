@@ -21,11 +21,16 @@ import Cookies from "js-cookie";
 import ForgotPassword from "./pages/auth/forgot-password";
 import ResetPassword from "./pages/auth/reset-password";
 import Admin from "./Healthcare/Admin";
+import useAuthStore from "./redux/store/authStore";
+import Profile from "./pages/profile/Profile";
+import EditProfile from "./pages/profile/Edit-profile";
 
 function AppWrapper() {
   const location = useLocation();
   const token = Cookies.get("token");
   const verified = Cookies.get("verified");
+
+  const { userInfo } = useAuthStore();
 
   const isNavbarHidden =
     location.pathname === "/login" ||
@@ -33,7 +38,10 @@ function AppWrapper() {
     location.pathname === "/forgot-password" ||
     location.pathname === "/curaflux/medixcare/admin" ||
     matchPath("/reset-password/:token", location.pathname) ||
-    location.pathname === "/verify";
+    location.pathname === "/verify" ||
+    location.pathname === "/shift" ||
+    location.pathname === `/profile/${userInfo.nickName}` ||
+    matchPath(`/edit-profile-${userInfo.nickName}/:userId`, location.pathname);
 
   return (
     <>
@@ -74,6 +82,14 @@ function AppWrapper() {
           <Route element={<User />}>
             <Route path="/shift" element={<Shift />} />
             <Route path="/shift-details/:id" element={<ShiftDetails />} />
+            <Route
+              path={`/profile/${userInfo.nickName}`}
+              element={<Profile />}
+            />
+            <Route
+              path={`/edit-profile-${userInfo.nickName}/:userId`}
+              element={<EditProfile />}
+            />
           </Route>
 
           {/* Fallback route for undefined paths */}

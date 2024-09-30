@@ -8,18 +8,11 @@ import linkedin from "../assets/images/linkedin.png";
 import twitter from "../assets/images/twitter.png";
 import threads from "../assets/images/threads.png";
 import youtube from "../assets/images/youtube.png";
-import profilePic from "../assets/images/blc.jpeg";
-import ic from "../assets/images/hg.png";
-import { IoMdClose } from "react-icons/io";
-import { MdLogout, MdOutlinePermContactCalendar } from "react-icons/md";
-// import { Calendar } from "react-calendar";
-import { FaCheckCircle } from "react-icons/fa";
-import { AiOutlineMail } from "react-icons/ai";
-import { HiOutlinePhone } from "react-icons/hi";
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
-import { VscAccount } from "react-icons/vsc";
+import { SidebarProfile } from "../components/profile/Sidebar-profile";
+import useAuthStore from "../redux/store/authStore";
 
 interface HospitalData {
   name: string;
@@ -50,19 +43,25 @@ function Shift() {
     navigate("/");
   };
   interface DecodedToken {
+    userId: string;
     email: string;
     nickName: string;
     gender: string;
     fullName: string;
     birthdate: string;
+    nicNumber: string;
   }
   const [userData, setUserData] = useState({
+    userId: "",
     email: "",
     nickName: "",
     gender: "",
     fullName: "",
     birthdate: "",
+    nicNumber: "",
   });
+
+  const { userInfo } = useAuthStore();
 
   useEffect(() => {
     const token = Cookies.get("token");
@@ -71,11 +70,13 @@ function Shift() {
         const decodedToken = jwtDecode<DecodedToken>(token);
 
         setUserData({
+          userId: decodedToken.userId,
           email: decodedToken.email,
           nickName: decodedToken.nickName,
           gender: decodedToken.gender,
           fullName: decodedToken.fullName,
           birthdate: decodedToken.birthdate,
+          nicNumber: decodedToken?.nicNumber,
         });
       } catch (error) {
         console.error("Error decoding token:", error);
@@ -138,7 +139,7 @@ function Shift() {
               <div className="flex mt-4">
                 <input
                   type="text"
-                  onChange={e => setLocation(e.target.value)}
+                  onChange={(e) => setLocation(e.target.value)}
                   value={location}
                   placeholder="Enter Current Location"
                   className="w-full p-3 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-0 border-l-green-700"
@@ -249,121 +250,20 @@ function Shift() {
               className="w-12 h-12 rounded-full overflow-hidden border-2 border-gray-300"
             >
               <img
-                src={profilePic}
-                alt="Profile"
+                src={userInfo.photo}
+                alt="Profile-image"
                 className="w-full h-full object-cover"
               />
             </button>
           </div>
 
           {/* Sidebar */}
-          <div
-            className={`fixed top-0 right-0 h-full w-80 bg-white shadow-lg transition-transform transform animate_animated animate__fadeInRight ${
-              isSidebarOpen ? "translate-x-0" : "translate-x-full"
-            }`}
-          >
-            <button
-              onClick={toggleSidebar}
-              className="absolute top-4 right-4 text-gray-600 "
-            >
-              <IoMdClose />
-            </button>
-
-            {/* Profile Section */}
-            <div className="flex items-center p-4 border-b border-gray-200">
-              <div className="relative w-16 h-16 rounded-full overflow-hidden">
-                <img
-                  src={profilePic}
-                  alt="Profile"
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute bottom-0 right-0 p-1 bg-green-500 rounded-full">
-                  <FaCheckCircle className="text-white w-4 h-4" />
-                </div>
-              </div>
-              <div className="ml-4">
-                <p className="text-lg font-bold uppercase">
-                  {userData.nickName}
-                </p>
-                <p className="text-gray-600">Nurse</p>
-              </div>
-            </div>
-
-            {/* Specialties Section */}
-            <div className="p-4 border-b border-gray-200">
-              <h3 className="text-lg font-bold mb-2">Specialties</h3>
-              <div className="flex  space-x-4">
-                <div className="px-4 py-2 bg-blue-100 rounded">Pediatrics</div>
-                <div className="px-4 py-2 bg-blue-100 rounded">Emergency</div>
-              </div>
-            </div>
-            <div className="p-4 border-b border-gray-200">
-              <h3 className="text-lg font-bold mb-2">Personal Info</h3>
-              <p className="flex items-center gap-2 mb-1">
-                <VscAccount className="text-lg" />
-
-                {userData.fullName}
-              </p>
-              <p className="flex items-center gap-2 mb-1">
-                <img src={ic} alt="" className="h-5" />
-
-                {userData.gender}
-              </p>
-              <p className="flex items-center gap-2 mb-1">
-                <MdOutlinePermContactCalendar className="text-xl" />
-
-                {userData.birthdate}
-              </p>
-            </div>
-
-            {/* Contact Information Section */}
-            <div className="p-4 border-b border-gray-200">
-              <h3 className="text-lg font-bold mb-2">Contact Information</h3>
-              <p className="flex items-center gap-1 mb-1">
-                <AiOutlineMail />
-                {userData.email}
-              </p>
-              <p className="flex items-center gap-1 mb-1">
-                <HiOutlinePhone />
-                Phone: (123) 456-7890
-              </p>
-            </div>
-
-            {/* Availability Section */}
-            {/* <div className="p-4 ">
-              <h3 className="text-lg font-bold mb-2">Availability</h3>
-              <Calendar />
-            </div> */}
-            {/* <div className="flex gap-5 items-center p-4">
-              <button className="bg-slate-900 p-2 text-white font-bold flex items-center gap-1  rounded-md">
-                View Full Profile
-              </button>
-              <button className="bg-green-500 p-2 text-white font-bold hover:bg-green-600  rounded-md">
-                Get Verified
-              </button>
-            </div> */}
-
-            {/* Buttons */}
-            {/* <div className="p-4">
-              <button className="w-full bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mb-2">
-                View Full Profile
-              </button>
-              <button className="w-full bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
-                Get Verified
-              </button>
-            </div> */}
-
-            {/* Logout Section */}
-            <div className="absolute bottom-4 left-4 w-full px-4 ">
-              <button
-                onClick={handleLogout}
-                className="flex items-center text-gray-600 hover:text-gray-900"
-              >
-                <MdLogout className="h-6 w-6 mr-2" />
-                <span>Logout</span>
-              </button>
-            </div>
-          </div>
+          <SidebarProfile
+            handleLogout={handleLogout}
+            toggleSidebar={toggleSidebar}
+            isSidebarOpen={isSidebarOpen}
+            userData={userData}
+          />
         </div>
       </div>
     </div>
