@@ -5,15 +5,14 @@ import { Step3 } from "../../components/auth/signup/Step3";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { InputTypes } from "../../types/types";
 import { useAuth } from "../../context/authContext";
-import { useToast } from "../../hooks/use-toast";
 import axios, { AxiosError } from "axios";
 import Cookies from "js-cookie";
 
 const Register = () => {
   const [currentStep, setCurrentStep] = useState<number>(1);
   const { setEmail } = useAuth();
-
-  const { toast } = useToast();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
 
   const {
     register,
@@ -32,25 +31,24 @@ const Register = () => {
         form
       );
 
-      console.log(data);
+      if (data.success === true) {
+        setModalMessage("You have successfully been registered");
+        setIsModalOpen(true);
+
+        setTimeout(() => {
+          nextStep();
+        }, 2000);
+      }
 
       Cookies.set("token", data.token);
-
-      toast({
-        title: "Registration Successful",
-        description: "You have successfully been registered",
-      });
-
-      nextStep();
     } catch (error) {
       const axiosError = error as AxiosError<{ message: string }>;
 
-      toast({
-        title: "Error Found",
-        description:
-          axiosError?.response?.data?.message ||
-          "An error occurred during login.",
-      });
+      setModalMessage(
+        axiosError?.response?.data?.message ||
+          "An error occurred during registration."
+      );
+      setIsModalOpen(true);
     }
   };
 
@@ -84,6 +82,9 @@ const Register = () => {
           isValid={isValid}
           control={control}
           isSubmitting={isSubmitting}
+          msg={modalMessage}
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
         />
       );
     case 3:

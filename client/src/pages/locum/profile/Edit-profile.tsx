@@ -10,6 +10,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import axios from "axios";
 import { jwtDecode, JwtPayload } from "jwt-decode";
 import Cookies from "js-cookie";
+import { Modal } from "../../../components/modals/Success-Modal";
 
 type EditProfileType = {
   fullName: string;
@@ -29,6 +30,9 @@ const EditProfile = () => {
   const { userInfo, setUserInfo } = useAuthStore();
   const [text, setText] = useState(userInfo?.bio || "");
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
 
   const token = Cookies.get("token");
   const decode = token ? jwtDecode<CustomJwtPayload>(token) : null;
@@ -104,7 +108,11 @@ const EditProfile = () => {
       );
 
       if (data.success === true) {
-        window.location.href = `/profile/${data.updatedUser.nickName}`;
+        setModalMessage(data?.message);
+        setIsModalOpen(true);
+        setTimeout(() => {
+          window.location.href = `/profile/${data.updatedUser.nickName}`;
+        }, 3000);
       }
     } catch (error) {
       console.log(error);
@@ -127,11 +135,14 @@ const EditProfile = () => {
     getAUserInfo();
   }, [decode?.userId]);
 
-  console.log(userInfo);
-
   return (
     <main className="pt-20 pb-10">
       <ScreenLayout>
+        <Modal
+          msg={modalMessage}
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+        />
         <h1 className="text-2xl font-bold">Edit Profile</h1>
 
         <form onSubmit={handleSubmit(handleEditProfile)}>

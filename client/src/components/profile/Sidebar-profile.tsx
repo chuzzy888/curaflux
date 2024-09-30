@@ -76,8 +76,8 @@ export const SidebarProfile = ({
             />
           </div>
           <div className=" mt-3 text-center">
-            <p className="text-lg font-bold uppercase">{userInfo.nickName}</p>
-            <p className="text-gray-600 capitalize">{userInfo.specialty}</p>
+            <p className="text-lg font-bold uppercase">{userInfo?.nickName}</p>
+            <p className="text-gray-600 capitalize">{userInfo?.specialty}</p>
           </div>
         </div>
       </section>
@@ -85,7 +85,7 @@ export const SidebarProfile = ({
       <section className="mt-32 px-5">
         <div>
           <Link
-            to={`/profile/${userInfo.nickName}`}
+            to={`/profile/${userInfo?.nickName}`}
             className=" font-bold text-sm text-gray-500 hover:underline"
           >
             Profile
@@ -96,7 +96,7 @@ export const SidebarProfile = ({
           <h3 className="text-sm font-bold mb-2">Contact Information</h3>
           <a
             className="flex items-center gap-2 mb-1 text-sm"
-            href={`mailto:${userInfo.email}`}
+            href={`mailto:${userInfo?.email}`}
           >
             <AiOutlineMail />
             {userData.email}
@@ -104,7 +104,7 @@ export const SidebarProfile = ({
           <p className="flex items-center gap-2 mb-1 text-sm">
             <HiOutlinePhone />
             +234:{" "}
-            <a href={`tel:${userInfo.phoneNumber}`}>{userInfo.phoneNumber}</a>
+            <a href={`tel:${userInfo?.phoneNumber}`}>{userInfo?.phoneNumber}</a>
           </p>
         </div>
       </section>
@@ -114,37 +114,37 @@ export const SidebarProfile = ({
           <h3 className="text-sm font-bold mb-2">Professional Registration</h3>
           <p className="flex items-center gap-2 mb-1 text-sm">
             <span>
-              {!userInfo.mdcnNumber && !userInfo.nmcnNumber ? (
+              {!userInfo?.mdcnNumber && !userInfo?.nmcnNumber ? (
                 <IoMdCloseCircle size={18} color="red" />
               ) : (
                 <FaCircleCheck size={15} color="green" />
               )}
             </span>
-            {userInfo.mdcnNumber || userInfo.nmcnNumber
-              ? `${userInfo.mdcnNumber || ""} ${userInfo.nmcnNumber || ""}`
+            {userInfo?.mdcnNumber || userInfo?.nmcnNumber
+              ? `${userInfo?.mdcnNumber || ""} ${userInfo?.nmcnNumber || ""}`
               : "Not available"}
           </p>
 
           <p className="flex items-center gap-2 my-2 text-sm">
             <span>
-              {!userInfo.identificationNumber ? (
+              {!userInfo?.identificationNumber ? (
                 <IoMdCloseCircle size={18} color="red" />
               ) : (
                 <FaCircleCheck size={15} color="green" />
               )}
             </span>
-            {userInfo.identificationNumber}
+            {userInfo?.identificationNumber || "soon"}
           </p>
 
           <p className="flex items-center gap-2 my-2 text-sm">
             <span>
-              {!userInfo.address ? (
+              {!userInfo?.address ? (
                 <IoMdCloseCircle size={18} color="red" />
               ) : (
                 <FaCircleCheck size={15} color="green" />
               )}
             </span>
-            {userInfo.address || "soon"}
+            {userInfo?.address || "soon"}
           </p>
         </div>
       </section>

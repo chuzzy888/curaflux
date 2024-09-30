@@ -250,7 +250,7 @@ function Shift() {
               className="w-12 h-12 rounded-full overflow-hidden border-2 border-gray-300"
             >
               <img
-                src={userInfo.photo}
+                src={userInfo?.photo}
                 alt="Profile-image"
                 className="w-full h-full object-cover"
               />

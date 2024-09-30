@@ -22,6 +22,7 @@ import {
   FieldErrors,
   UseFormRegister,
 } from "react-hook-form";
+import { Modal } from "../../modals/Success-Modal";
 // import { useAuth } from "../../../context/authContext";
 
 interface Step2Props {
@@ -34,6 +35,9 @@ interface Step2Props {
   handleSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>;
   isValid: boolean;
   isSubmitting: boolean;
+  msg: string;
+  isOpen: boolean;
+  onClose: () => void;
 }
 
 export const Step2 = ({
@@ -45,10 +49,14 @@ export const Step2 = ({
   control,
   handleSubmit,
   isSubmitting,
+  msg,
+  isOpen,
+  onClose,
 }: Step2Props) => {
   return (
     <ScreenLayout>
-      {" "}
+      <Modal msg={msg} isOpen={isOpen} onClose={onClose} />
+
       <main className="h-screen flex justify-center flex-col">
         <section className=" lg:flex justify-center items-center  gap-32">
           <section className=" w-[502px] h-[502px] hidden lg:block">
