@@ -24,6 +24,9 @@ import Admin from "./pages/Healthcare/Admin";
 import Profile from "./pages/locum/profile/Profile";
 import EditProfile from "./pages/locum/profile/Edit-profile";
 import { jwtDecode, JwtPayload } from "jwt-decode";
+import Role from "./Role/Role";
+import ShiftForYou from "./pages/locum/ShiftForYou";
+import HospitalRegister from "./pages/Healthcare/Register";
 
 interface CustomJwtPayload extends JwtPayload {
   nickName: string;
@@ -39,6 +42,8 @@ function AppWrapper() {
   const isNavbarHidden =
     location.pathname === "/login" ||
     location.pathname === "/register" ||
+    location.pathname === "/choose-role" ||
+    location.pathname === "/register/healthcare" ||
     location.pathname === "/forgot-password" ||
     location.pathname === "/curaflux/medixcare/admin" ||
     matchPath("/reset-password/:token", location.pathname) ||
@@ -56,6 +61,9 @@ function AppWrapper() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/curaflux/medixcare/admin" element={<Admin />} />
+          <Route path="/shift-for-you" element={<ShiftForYou />} />
+          <Route path="/choose-role" element={<Role />} />
+          <Route path="/register/healthcare" element={<HospitalRegister />} />
 
           {/* auth */}
           <Route

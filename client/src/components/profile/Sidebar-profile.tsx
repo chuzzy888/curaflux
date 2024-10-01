@@ -7,7 +7,7 @@ import { MdLogout } from "react-icons/md";
 import useAuthStore from "../../redux/store/authStore";
 import { Link } from "react-router-dom";
 import { FaCircleCheck } from "react-icons/fa6";
-import { IoHome } from "react-icons/io5";
+import { RiHome4Line } from "react-icons/ri";
 
 type profileSidebarTypes = {
   handleLogout: () => void;
@@ -99,18 +99,25 @@ export const SidebarProfile = ({
             className="flex items-center gap-2 mb-1 text-sm"
             href={`mailto:${userInfo?.email}`}
           >
-            <AiOutlineMail />
+            <p className="h-7 w-7 rounded-full bg-gray-200  flex justify-center items-center">
+              {" "}
+              <AiOutlineMail />
+            </p>
             {userData.email}
           </a>
           <p className="flex items-center gap-2 mb-1 text-sm">
-            <HiOutlinePhone />
-            +234:{" "}
+            <p className="h-7 w-7 rounded-full bg-gray-200  flex justify-center items-center">
+              <HiOutlinePhone />{" "}
+            </p>
+
             <a href={`tel:${userInfo?.phoneNumber}`}>{userInfo?.phoneNumber}</a>
           </p>
 
           <p className="flex items-center gap-2 my-2 text-sm">
             <span>
-              <IoHome />
+              <p className="h-7 w-7 rounded-full bg-gray-200  flex justify-center items-center">
+                <RiHome4Line />
+              </p>
             </span>
             {userInfo?.address || "soon"}
           </p>
@@ -128,7 +135,7 @@ export const SidebarProfile = ({
                 <FaCircleCheck size={15} color="green" />
               )}
             </span>
-            {userInfo.specialty === "nurse" ? " NMCN Number:" : "MDCN Number"}{" "}
+            {userInfo.specialty === "nurse" ? " NMCN :" : "MDCN "}:{" "}
             {userInfo?.mdcnNumber || userInfo?.nmcnNumber
               ? `${userInfo?.mdcnNumber || ""} ${userInfo?.nmcnNumber || ""}`
               : "Not available"}
@@ -142,7 +149,7 @@ export const SidebarProfile = ({
                 <FaCircleCheck size={15} color="green" />
               )}
             </span>
-            I.D No: {userInfo?.identificationNumber || "soon"}
+            I.D No : {userInfo?.identificationNumber || "soon"}
           </p>
         </div>
       </section>

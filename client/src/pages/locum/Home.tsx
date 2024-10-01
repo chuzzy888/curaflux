@@ -32,7 +32,7 @@ const Home: React.FC = () => {
       <div className="">
         <div className="container mx-auto px-4 flex flex-col lg:flex-row items-center">
           <div className="lg:w-1/2 animate__animated animate__fadeIn ">
-            <h1 className="text-3xl sm:text-6xl font-bold mb-4 leading-tight text-center md:text-start">
+            <h1 className="text-3xl sm:text-6xl font-bold mb-4 leading-tight text-center md:text-start font-serif">
               Connecting <span className="text-blue-600">Medics</span> <br />
               with <span className="text-blue-600">Hospitals</span> <br />
               in Real-Time

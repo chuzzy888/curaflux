@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { shifts } from "./shiftData";
-import mapImage from "../../assets/images/mbi.png";
+import mapImage from "../../assets/images/bs.jpeg";
 import clg from "../../assets/images/lg.png";
 import instagram from "../../assets/images/instagram.png";
 import facebook from "../../assets/images/facebook.png";
@@ -15,6 +15,7 @@ import { SidebarProfile } from "../../components/profile/Sidebar-profile";
 import useAuthStore from "../../redux/store/authStore";
 import { ScreenLayout } from "../../components/layout/ScreenLayout";
 import { GoArrowRight } from "react-icons/go";
+import { Dropdown } from "primereact/dropdown";
 
 interface HospitalData {
   name: string;
@@ -40,10 +41,10 @@ function Shift() {
   };
 
   const handleLogout = () => {
-    // Handle logout logic here
     Cookies.remove("token");
     navigate("/");
   };
+
   interface DecodedToken {
     userId: string;
     email: string;
@@ -53,6 +54,7 @@ function Shift() {
     birthdate: string;
     nicNumber: string;
   }
+
   const [userData, setUserData] = useState({
     userId: "",
     email: "",
@@ -70,7 +72,6 @@ function Shift() {
     if (token) {
       try {
         const decodedToken = jwtDecode<DecodedToken>(token);
-
         setUserData({
           userId: decodedToken.userId,
           email: decodedToken.email,
@@ -88,6 +89,7 @@ function Shift() {
       navigate("/login");
     }
   }, [navigate]);
+
   const handleFindShifts = () => {
     if (!location.trim()) {
       alert("Please enter your location.");
@@ -107,6 +109,29 @@ function Shift() {
     }, 4000);
   };
 
+  // this is the Dropdown setup and routing
+  interface DropdownOption {
+    name: string;
+    code: string;
+  }
+
+  const [selectedCity, setSelectedCity] = useState<DropdownOption | null>(null);
+
+  const cities: DropdownOption[] = [
+    { name: "Discover", code: "go-live" },
+    { name: "Shift For You", code: "shift-for-you" },
+  ];
+
+  const handleDropdownChange = (e: { value: DropdownOption }) => {
+    setSelectedCity(e.value);
+
+    if (e.value.code === "go-live") {
+      navigate("/shift");
+    } else if (e.value.code === "shift-for-you") {
+      navigate("/shift-for-you");
+    }
+  };
+
   return (
     <ScreenLayout>
       <div className="relative min-h-screen bg-gray-100">
@@ -118,12 +143,26 @@ function Shift() {
           />
         </div>
 
+        {/* Dropdown Button */}
+        <div className="absolute top-0 left-16 transform -translate-x-1/2  p-2 mx-8 rounded-lg">
+          <div className="card flex justify-content-center">
+            <Dropdown
+              value={selectedCity}
+              onChange={handleDropdownChange}
+              options={cities}
+              optionLabel="name"
+              placeholder="Select Mode"
+              className="w-full md:w-14rem"
+            />
+          </div>
+        </div>
+
         {/* Content Box */}
         {/* Search Box */}
         <div className="absolute top-40 left-1/2 transform -translate-x-1/2 w-full max-w-3xl p-6 bg-white rounded-lg shadow-lg">
-          <h2 className="text-xl font-semibold text-gray-800">
+          <h2 className="text-md md:text-xl font-semibold text-gray-800">
             Discovering <span className="text-blue-500">Ideal Shifts</span> Near{" "}
-            <span className="text-green-600">You!</span>
+            <span className="">You!</span>
           </h2>
 
           {/* Location Input */}
@@ -146,11 +185,11 @@ function Shift() {
               onChange={e => setLocation(e.target.value)}
               value={location}
               placeholder="Enter Current Location Or Nearest Landmark.."
-              className="w-1/2 p-3 border border-gray-300 rounded-l-full focus:outline-none focus:ring-2 focus:ring-blue-600"
+              className="md:w-1/2 w-full p-3 border border-gray-300 rounded-l-full focus:outline-none focus:ring-2 focus:ring-blue-600"
             />
             <button
               onClick={handleFindShifts}
-              className="bg-blue-500 text-white px-8 py-3 flex items-center gap-2 rounded-r-full hover:bg-blue-600 transition-all duration-300"
+              className="bg-blue-500 text-white md:px-8 px-4 py-3 flex items-center gap-2 rounded-r-full hover:bg-blue-600 transition-all duration-300"
             >
               Search
               <GoArrowRight />
@@ -197,12 +236,11 @@ function Shift() {
         </div>
 
         {/* Footer Section */}
-
         <footer className="absolute bottom-0 w-full flex justify-between items-center py-4 bg-white border-t">
           <div className="">
             <img src={clg} alt="Logo" className="h-8" />
           </div>
-          <p className="text-gray-600 text-sm text-center  hidden md:block">
+          <p className="text-gray-600 text-sm text-center hidden md:block">
             All copyrights reserved
           </p>
           <div className="flex space-x-4 ">
@@ -226,6 +264,7 @@ function Shift() {
             </a>
           </div>
         </footer>
+
         {/* Sidebar */}
         <SidebarProfile
           handleLogout={handleLogout}
