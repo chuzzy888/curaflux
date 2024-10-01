@@ -27,7 +27,7 @@ const HospitalRegister: React.FC = () => {
 
   return (
     <ScreenLayout>
-      <main className=" min-h-screen p-4">
+      <main className=" min-h-screen p-4 flex   items-center justify-center">
         <div className="flex   items-center justify-center">
           {/* Form Section */}
           <div className="w-full md:w-1/2 bg-white p-8 border rounded-lg">
@@ -213,7 +213,7 @@ const HospitalRegister: React.FC = () => {
             />
           </div>
         </div>
-        <AuthFooter />
+        {/* <AuthFooter /> */}
       </main>
     </ScreenLayout>
   );

@@ -43,7 +43,9 @@ const Login = () => {
 
   const handleLogin: SubmitHandler<loginType> = async form => {
     if (!selectedCity) {
-      alert("Please select your account type.");
+      setModalMessage("Please select your account type.");
+      setIsModalOpen(true);
+
       return;
     }
     try {
