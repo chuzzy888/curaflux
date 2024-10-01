@@ -4,9 +4,11 @@ import { TbBriefcaseFilled } from "react-icons/tb";
 import { BiSolidMessageDetail } from "react-icons/bi";
 import { IoSettings } from "react-icons/io5";
 import { MdLogout } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 export default function Sidebar() {
+  const navigate = useNavigate();
   return (
     <div className="w-64 bg-gray-100 h-screen fixed top-0 left-0">
       <div className="p-4">
@@ -51,12 +53,18 @@ export default function Sidebar() {
         </Link>
       </nav>
       <div className="absolute bottom-0 left-0 w-full p-4">
-        <Link to={"#"} className="flex items-center py-2 px-4 text-gray-700 ">
+        <button
+          className="flex items-center py-2 px-4 text-gray-700 "
+          onClick={() => {
+            Cookies.remove("healthcareToken");
+            navigate("/register/healthcare");
+          }}
+        >
           <p className="mr-3">
             <MdLogout />
           </p>
           Logout
-        </Link>
+        </button>
       </div>
     </div>
   );

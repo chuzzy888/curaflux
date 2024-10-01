@@ -1,8 +1,12 @@
-import React from "react";
-import signin from "../../assets/images/signin.png";
-import { useForm, SubmitHandler, FieldError } from "react-hook-form";
-import { ScreenLayout } from "../../components/layout/ScreenLayout";
-import AuthFooter from "../../components/footer/AuthFooter";
+import React, { useState } from "react";
+import signin from "../../../assets/images/signin.png";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { ScreenLayout } from "../../../components/layout/ScreenLayout";
+import axios, { AxiosError } from "axios";
+// import AuthFooter from "../../components/footer/AuthFooter";
+import Cookies from "js-cookie";
+import { Modal } from "../../../components/modals/Success-Modal";
+import { useNavigate } from "react-router-dom";
 
 interface FormData {
   hospitalName: string;
@@ -11,22 +15,58 @@ interface FormData {
   phoneNumber: string;
   address: string;
   hospitalType: string;
-  licenseNumber: string;
+  LicenseNumber: string;
 }
 
 const HospitalRegister: React.FC = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<FormData>();
 
-  const onSubmit: SubmitHandler<FormData> = data => {
-    console.log(data);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+  const navigate = useNavigate();
+
+  const onSubmit: SubmitHandler<FormData> = async (form) => {
+    console.log(form);
+
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/hospital/register`,
+        form
+      );
+
+      if (data.success === true) {
+        setModalMessage("You have successfully been registered");
+        setIsModalOpen(true);
+
+        setTimeout(() => {
+          navigate("/register/getVerified");
+        }, 2000);
+      }
+
+      Cookies.set("healthcareToken", data.token);
+    } catch (error) {
+      console.log(error);
+      const axiosError = error as AxiosError<{ message: string }>;
+
+      setModalMessage(
+        axiosError?.response?.data?.message ||
+          "An error occurred during registration."
+      );
+      setIsModalOpen(true);
+    }
   };
 
   return (
     <ScreenLayout>
+      <Modal
+        msg={modalMessage}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
       <main className=" min-h-screen p-4 flex   items-center justify-center">
         <div className="flex   items-center justify-center">
           {/* Form Section */}
@@ -179,17 +219,17 @@ const HospitalRegister: React.FC = () => {
                     type="text"
                     placeholder="Enter license number"
                     className={`w-full p-2 border ${
-                      errors.licenseNumber
+                      errors.LicenseNumber
                         ? "border-red-500"
                         : "border-gray-300"
                     } rounded-md`}
-                    {...register("licenseNumber", {
+                    {...register("LicenseNumber", {
                       required: "License Number is required",
                     })}
                   />
-                  {errors.licenseNumber && (
+                  {errors.LicenseNumber && (
                     <p className="text-red-500 text-sm">
-                      {errors.licenseNumber.message}
+                      {errors.LicenseNumber.message}
                     </p>
                   )}
                 </div>
@@ -197,9 +237,12 @@ const HospitalRegister: React.FC = () => {
 
               <button
                 type="submit"
-                className="w-full bg-black text-white py-2 rounded-md hover:bg-gray-800 transition"
+                className={`w-full bg-black text-white py-2 rounded-md hover:bg-gray-800 transition ${
+                  isSubmitting && "cursor-not-allowed"
+                }`}
+                disabled={isSubmitting}
               >
-                Register
+                {isSubmitting ? "Registering" : "Register"}
               </button>
             </form>
           </div>

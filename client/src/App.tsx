@@ -26,7 +26,8 @@ import EditProfile from "./pages/locum/profile/Edit-profile";
 import { jwtDecode, JwtPayload } from "jwt-decode";
 import Role from "./Role/Role";
 import ShiftForYou from "./pages/locum/ShiftForYou";
-import HospitalRegister from "./pages/Healthcare/Register";
+import HospitalRegister from "./pages/Healthcare/auth/Register";
+import { HealthCareVerification } from "./pages/Healthcare/auth/verification";
 
 interface CustomJwtPayload extends JwtPayload {
   nickName: string;
@@ -44,6 +45,7 @@ function AppWrapper() {
     location.pathname === "/register" ||
     location.pathname === "/choose-role" ||
     location.pathname === "/register/healthcare" ||
+    location.pathname === "/register/getVerified" ||
     location.pathname === "/forgot-password" ||
     location.pathname === "/curaflux/medixcare/admin" ||
     matchPath("/reset-password/:token", location.pathname) ||
@@ -60,12 +62,9 @@ function AppWrapper() {
 
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/curaflux/medixcare/admin" element={<Admin />} />
-          <Route path="/shift-for-you" element={<ShiftForYou />} />
-          <Route path="/choose-role" element={<Role />} />
-          <Route path="/register/healthcare" element={<HospitalRegister />} />
 
           {/* auth */}
+          <Route path="/choose-role" element={<Role />} />
           <Route
             path="/login"
             element={token ? <Navigate to="/" /> : <Login />}
@@ -76,9 +75,9 @@ function AppWrapper() {
           />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
-
           {/* auth */}
 
+          {/* verification */}
           <Route
             path="/verify"
             element={
@@ -89,8 +88,9 @@ function AppWrapper() {
               )
             }
           />
+          {/* verification */}
 
-          {/* Protected routes */}
+          {/* Protected routes for user */}
           <Route element={<User />}>
             <Route path="/shift" element={<Shift />} />
             <Route path="/shift-details/:id" element={<ShiftDetails />} />
@@ -102,7 +102,19 @@ function AppWrapper() {
               path={`/edit-profile-${decode?.nickName}/:userId`}
               element={<EditProfile />}
             />
+
+            <Route path="/shift-for-you" element={<ShiftForYou />} />
           </Route>
+          {/* Protected routes for user */}
+
+          {/* Protected route for admin */}
+          <Route path="/register/healthcare" element={<HospitalRegister />} />
+          <Route
+            path="/register/getVerified"
+            element={<HealthCareVerification />}
+          />
+          <Route path="/curaflux/medixcare/admin" element={<Admin />} />
+          {/* Protected route for admin */}
 
           {/* Fallback route for undefined paths */}
           <Route path="*" element={<Navigate to="/" />} />
