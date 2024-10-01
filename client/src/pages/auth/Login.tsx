@@ -7,17 +7,21 @@ import { Link, useNavigate } from "react-router-dom";
 import signupImg from "../../assets/images/signUp.png";
 import AuthFooter from "../../components/footer/AuthFooter";
 import { SubmitHandler, useForm } from "react-hook-form";
-
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
-
 import axios, { AxiosError } from "axios";
 import Cookies from "js-cookie";
 import GoogleSignInButton from "../../components/auth/google/GoogleSignInButton";
 import { Modal } from "../../components/modals/Success-Modal";
+import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
 
 type loginType = {
   email: string;
   password: string;
+};
+
+type CityOption = {
+  name: string;
+  code: string;
 };
 
 const Login = () => {
@@ -28,12 +32,20 @@ const Login = () => {
   } = useForm<loginType>();
 
   const [show, setShow] = useState(false);
-
+  const [selectedCity, setSelectedCity] = useState<CityOption | null>(null);
+  const cities: CityOption[] = [
+    { name: "Healthcare", code: "NY" },
+    { name: "Locum", code: "RM" },
+  ];
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
 
-  const handleLogin: SubmitHandler<loginType> = async (form) => {
+  const handleLogin: SubmitHandler<loginType> = async form => {
+    if (!selectedCity) {
+      alert("Please select your account type.");
+      return;
+    }
     try {
       const { data } = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/auth/signin`,
@@ -61,6 +73,9 @@ const Login = () => {
     }
   };
 
+  const handleDropdownChange = (e: DropdownChangeEvent) => {
+    setSelectedCity(e.value);
+  };
   return (
     <ScreenLayout>
       <Modal
@@ -79,7 +94,20 @@ const Login = () => {
               <div className="flex justify-center flex-col items-center">
                 <h1 className="text-xl font-black">Welcome Back! Sign In</h1>
 
-                <GoogleSignInButton />
+                <div className="flex items-center gap-3  ">
+                  {selectedCity?.name === "Locum" && <GoogleSignInButton />}
+
+                  <div className="card flex justify-content-center mt-2 border  rounded-lg ">
+                    <Dropdown
+                      value={selectedCity}
+                      onChange={handleDropdownChange}
+                      options={cities}
+                      optionLabel="name"
+                      placeholder="Select Account Type"
+                      className="w-full md:w-14rem "
+                    />
+                  </div>
+                </div>
               </div>
 
               <div className=" h-[1px] w-full my-7 bg-gray-300" />
