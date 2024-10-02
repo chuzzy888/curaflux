@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import signin from "../../../assets/images/signin.png";
+import signin from "../../../assets/images/hpt.png";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { ScreenLayout } from "../../../components/layout/ScreenLayout";
 import axios, { AxiosError } from "axios";
@@ -29,7 +29,7 @@ const HospitalRegister: React.FC = () => {
   const [modalMessage, setModalMessage] = useState("");
   const navigate = useNavigate();
 
-  const onSubmit: SubmitHandler<FormData> = async (form) => {
+  const onSubmit: SubmitHandler<FormData> = async form => {
     console.log(form);
 
     try {
