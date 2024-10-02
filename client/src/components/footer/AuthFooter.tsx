@@ -1,4 +1,4 @@
-import authLogo from "../../assets/images/authLogo.png";
+import authLogo from "../../assets/images/authLg.png";
 import instagram from "../../assets/images/instagram.png";
 import facebook from "../../assets/images/facebook.png";
 import linkedin from "../../assets/images/linkedin.png";

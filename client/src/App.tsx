@@ -24,13 +24,13 @@ import Admin from "./pages/Healthcare/Admin";
 import Profile from "./pages/locum/profile/Profile";
 import EditProfile from "./pages/locum/profile/Edit-profile";
 import { jwtDecode, JwtPayload } from "jwt-decode";
-import Role from "./Role/Role";
 import ShiftForYou from "./pages/locum/ShiftForYou";
 import HospitalRegister from "./pages/Healthcare/auth/Register";
 import { HealthCareVerification } from "./pages/Healthcare/auth/verification";
 import { Healthcare } from "./protect/healthcare";
 import LoginRole from "./Role/LoginRole";
 import HospitalLogin from "./pages/Healthcare/auth/Login";
+import RegisterRole from "./Role/RegisterRole";
 
 interface CustomJwtPayload extends JwtPayload {
   nickName: string;
@@ -71,7 +71,7 @@ function AppWrapper() {
           <Route path="/" element={<Home />} />
 
           {/* auth */}
-          <Route path="/choose-role" element={<Role />} />
+          <Route path="/choose-role" element={<RegisterRole />} />
           <Route path="/login-role" element={<LoginRole />} />
           <Route
             path="/login"
