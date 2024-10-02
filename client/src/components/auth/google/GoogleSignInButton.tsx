@@ -14,69 +14,74 @@ interface CustomJwtPayload extends JwtPayload {
 }
 
 const GoogleSignInButton = () => {
- 
   const navigate = useNavigate();
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false); // Prevent multiple sign-in attempts
 
-  const handleSignIn = () => {
+  const handleSignIn = async () => {
+    if (isSubmitting) return; // Prevent multiple requests
+
+    setIsSubmitting(true); // Start submitting
     const provider = new GoogleAuthProvider();
-    signInWithPopup(auth, provider)
-      .then(async (result) => {
-        const idToken = await result.user.getIdToken();
 
-        let decode: CustomJwtPayload | null = null;
-        if (idToken) {
-          decode = jwtDecode<CustomJwtPayload>(idToken);
-        }
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const idToken = await result.user.getIdToken();
 
-        // console.log(decode);
+      let decode: CustomJwtPayload | null = null;
+      if (idToken) {
+        decode = jwtDecode<CustomJwtPayload>(idToken);
+      }
 
-        if (decode) {
-          const { data } = await axios.post(
-            `${import.meta.env.VITE_BASE_URL}/auth/signin`,
-            {
-              email: decode.email,
-              password: import.meta.env.VITE_GOOGLE_PASSWORD,
-            }
-          );
-
-          if (data.token) {
-            Cookies.set("token", data.token);
-
-            setModalMessage("You have successfully logged in.");
-            setIsModalOpen(true);
-
-            setTimeout(() => {
-              navigate("/shift");
-            }, 2000);
+      if (decode) {
+        const { data } = await axios.post(
+          `${import.meta.env.VITE_BASE_URL}/auth/signin`,
+          {
+            email: decode.email,
+            password: import.meta.env.VITE_GOOGLE_PASSWORD,
           }
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-
-        const axiosError = error as AxiosError<{ message: string }>;
-
-        setModalMessage(
-          axiosError?.response?.data?.message ||
-            "An error occurred during registration."
         );
-        setIsModalOpen(true);
-      });
+
+        if (data.locumToken) {
+          Cookies.set("locumToken", data.locumToken);
+
+          setModalMessage("You have successfully logged in.");
+          setIsModalOpen(true);
+
+          setTimeout(() => {
+            navigate("/shift");
+          }, 2000);
+        }
+      }
+    } catch (error) {
+      console.error(error);
+
+      const axiosError = error as AxiosError<{ message: string }>;
+
+      // Display backend error if present, otherwise a default sign-in error
+      setModalMessage(
+        axiosError?.response?.data?.message ||
+          "An error occurred during sign-in."
+      );
+      setIsModalOpen(true);
+    } finally {
+      setIsSubmitting(false); // Reset the submitting state
+    }
   };
 
   return (
-    <button onClick={handleSignIn} className=" mt-3">
-      <img src={google} alt="google-signup" />
+    <>
+      <button onClick={handleSignIn} className="mt-3" disabled={isSubmitting}>
+        <img src={google} alt="google-signup" />
+      </button>
 
       <Modal
         msg={modalMessage}
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
       />
-    </button>
+    </>
   );
 };
 
