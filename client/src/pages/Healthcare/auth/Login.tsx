@@ -30,10 +30,10 @@ const HospitalLogin = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
 
-  const handleLogin: SubmitHandler<loginType> = async form => {
+  const handleLogin: SubmitHandler<loginType> = async (form) => {
     try {
       const { data } = await axios.post(
-        `${import.meta.env.VITE_BASE_URL}/auth/signin`,
+        `${import.meta.env.VITE_BASE_URL}/hospital/login`,
         form
       );
 
@@ -44,7 +44,7 @@ const HospitalLogin = () => {
         setIsModalOpen(true);
 
         setTimeout(() => {
-          navigate("/shift");
+          navigate("/curaflux/medixcare/admin");
         }, 2000);
       }
     } catch (error) {
