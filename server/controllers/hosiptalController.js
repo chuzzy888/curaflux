@@ -77,3 +77,28 @@ export const getHospitalById = async (req, res) => {
     res.status(500).json({ message: "Error retrieving the Hospital", error });
   }
 };
+
+export const getShiftForAHealthCare = async (req, res) => {
+  const { hospitalId } = req.params;
+  try {
+    const yourShift = await Hospital.find({ hospital: hospitalId })
+      .sort("-created")
+      .populate("hospital", "-password");
+
+    if (!yourShift) {
+      return res.status(404).json({ message: "Couldn't find your shifts" });
+    }
+
+    res.status(200).json({
+      msg: "Healthcare Shifts",
+      NumOfShifts: yourShift.length,
+      yourShift,
+    });
+  } catch (error) {
+    console.log(error);
+
+    res
+      .status(500)
+      .json({ message: "Error retrieving the your created shifts", error });
+  }
+};

@@ -29,6 +29,15 @@ export default function Sidebar() {
           className="flex items-center mx-3 py-2 px-4 text-gray-700 rounded-md hover:bg-gray-200"
         >
           <p className="mr-3">
+            <MdSpaceDashboard className="text-xl" />
+          </p>
+          All Shifts
+        </Link>
+        <Link
+          to={"#"}
+          className="flex items-center mx-3 py-2 px-4 text-gray-700 rounded-md hover:bg-gray-200"
+        >
+          <p className="mr-3">
             <TbBriefcaseFilled className="text-xl" />
           </p>
           Locums

@@ -31,6 +31,7 @@ import { Healthcare } from "./protect/healthcare";
 import LoginRole from "./Role/LoginRole";
 import HospitalLogin from "./pages/Healthcare/auth/Login";
 import RegisterRole from "./Role/RegisterRole";
+import Dashboard from "./components/health-care/Dashboard";
 
 interface CustomJwtPayload extends JwtPayload {
   nickName: string;
@@ -123,7 +124,9 @@ function AppWrapper() {
             element={<HealthCareVerification />}
           />
           <Route element={<Healthcare />}>
-            <Route path="/curaflux/medixcare/admin" element={<Admin />} />
+            <Route path="/curaflux/medixcare/admin" element={<Admin />}>
+              <Route index element={<Dashboard />} />
+            </Route>
           </Route>
           {/* Protected route for admin */}
 
