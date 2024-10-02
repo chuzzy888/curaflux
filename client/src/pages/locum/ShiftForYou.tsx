@@ -103,7 +103,6 @@
 import { useState, useEffect } from "react";
 import { ScreenLayout } from "../../components/layout/ScreenLayout";
 
-// Define the interface for shift data
 interface Shift {
   id: number;
   payRate: string;
@@ -117,9 +116,9 @@ const ShiftForYou = () => {
   const [activeTab, setActiveTab] = useState<"available" | "upcoming">(
     "available"
   );
-  const [shifts, setShifts] = useState<Shift[]>([]); // State to hold fetched data
-  const [loading, setLoading] = useState(true); // State for loading status
-  const [error, setError] = useState<string | null>(null); // State for error handling
+  const [shifts, setShifts] = useState<Shift[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchShifts = async () => {
@@ -130,7 +129,7 @@ const ShiftForYou = () => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
-        const data: Shift[] = await response.json(); // Assuming the API returns an array of shifts
+        const data: Shift[] = await response.json();
         setShifts(data);
       } catch (error) {
         if (error instanceof Error) {
@@ -153,13 +152,12 @@ const ShiftForYou = () => {
           <div></div>
         </div>
       </div>
-    ); // Show loading state
-  if (error) return <div>Error: {error}</div>; // Show error message
+    );
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <ScreenLayout>
       <div className="p-4">
-        {/* Tabs */}
         <div className="flex justify-center space-x-4 mb-4">
           <button
             className={`px-4 py-2 rounded-t-lg border-b-4 ${
@@ -191,14 +189,13 @@ const ShiftForYou = () => {
               className="flex flex-col sm:flex-row items-start sm:items-center bg-white p-4 shadow-md rounded-lg space-y-4 sm:space-y-0 sm:space-x-4"
             >
               <img
-                src={shift.imageUrl} // Ensure your API returns an image URL
+                src={shift.imageUrl}
                 alt={shift.payRate}
                 className="w-24 h-24 object-cover rounded-lg"
               />
               <div>
                 <p className="text-gray-500 text-sm mb-2">
                   Posted {shift.date}{" "}
-                  {/* Ensure your API returns a 'postedAgo' field */}
                 </p>
                 <h3 className="text-xl font-semibold">{shift.payRate}</h3>
                 <p className="text-gray-600">{shift.location}</p>
