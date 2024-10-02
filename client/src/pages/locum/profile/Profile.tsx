@@ -14,8 +14,8 @@ interface CustomJwtPayload extends JwtPayload {
 
 const Profile = () => {
   const { userInfo, setUserInfo } = useAuthStore();
-  const token = Cookies.get("token");
-  const decode = token ? jwtDecode<CustomJwtPayload>(token) : null;
+  const locumToken = Cookies.get("locumToken");
+  const decode = locumToken ? jwtDecode<CustomJwtPayload>(locumToken) : null;
 
   const getAUserInfo = async () => {
     try {

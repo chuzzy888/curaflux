@@ -47,7 +47,7 @@ const HospitalRegister: React.FC = () => {
         }, 2000);
       }
 
-      Cookies.set("healthcareToken", data.token);
+      Cookies.set("healthcareToken", data.healthcareToken);
     } catch (error) {
       console.log(error);
       const axiosError = error as AxiosError<{ message: string }>;

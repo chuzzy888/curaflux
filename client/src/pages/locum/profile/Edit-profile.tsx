@@ -34,8 +34,8 @@ const EditProfile = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
 
-  const token = Cookies.get("token");
-  const decode = token ? jwtDecode<CustomJwtPayload>(token) : null;
+  const locumToken = Cookies.get("locumToken");
+  const decode = locumToken ? jwtDecode<CustomJwtPayload>(locumToken) : null;
 
   const [certifications, setCertifications] = useState<string[]>(
     userInfo?.certifications || []
