@@ -31,7 +31,7 @@ const Login = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
 
-  const handleLogin: SubmitHandler<loginType> = async form => {
+  const handleLogin: SubmitHandler<loginType> = async (form) => {
     try {
       const { data } = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/auth/signin`,

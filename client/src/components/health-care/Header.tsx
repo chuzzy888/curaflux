@@ -17,81 +17,74 @@ import { Sidebar } from "primereact/sidebar";
 import { Badge } from "primereact/badge";
 import { Dialog } from "primereact/dialog";
 import { MdOutlineDateRange } from "react-icons/md";
-// import { addDoc, collection } from "firebase/firestore";
-// import { db } from "../../firebaseConfig";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { SubmitHandler, useForm } from "react-hook-form";
+import axios, { AxiosError } from "axios";
+import Cookies from "js-cookie";
+import { Modal } from "../modals/Success-Modal";
+
+type postShiftTypes = {
+  adsNote: string;
+  date: string;
+  location: string;
+  duration: string;
+  payRate: string;
+  specialization: string;
+  licenseRequired: string;
+};
 
 export default function Header() {
   const [visibleRight, setVisibleRight] = useState(false);
   const [profileDialog, setProfileDialog] = useState(false);
   const [shiftDialog, setShiftDialog] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const healthcareToken = Cookies.get("healthcareToken");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
 
-  const [shiftData, setShiftData] = useState({
-    adsNote: "",
-    date: "",
-    location: "",
-    duration: "",
-    payRate: "",
-    specialization: "",
-    licenseRequired: "",
-  });
+  const {
+    handleSubmit,
+    register,
+    formState: { errors, isValid, isSubmitting },
+  } = useForm<postShiftTypes>();
 
-  const handleInputChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
-  ) => {
-    const { name, value } = e.target;
-    setShiftData({ ...shiftData, [name]: value });
-  };
-
-  const handlePostShift = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-
+  const handlePostShift: SubmitHandler<postShiftTypes> = async (form) => {
     try {
-      // await addDoc(collection(db, "shifts"), shiftData);
-      console.log("Shift posted successfully!");
-      setShiftDialog(false);
-      setShiftData({
-        adsNote: "",
-        date: "",
-        location: "",
-        duration: "",
-        payRate: "",
-        specialization: "",
-        licenseRequired: "",
-      });
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/hospital/createHospital`,
+        form,
+        {
+          headers: { Authorization: `Bearer ${healthcareToken}` },
+        }
+      );
 
-      toast.success("Shift posted successfully!", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      console.log(data);
+
+      if (data.success === true) {
+        setShiftDialog(false);
+
+        setTimeout(() => {
+          setModalMessage("Your shift has been posted successfully");
+          setIsModalOpen(true);
+        }, 2000);
+      }
     } catch (error) {
-      console.error("Error posting shift:", error);
-      toast.error("Error posting shift", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-    } finally {
-      setIsLoading(false);
+      const axiosError = error as AxiosError<{ message: string }>;
+
+      setModalMessage(
+        axiosError?.response?.data?.message || "Failed to create shift"
+      );
+      setIsModalOpen(true);
     }
   };
 
   return (
     <header className="flex items-center ml-64 justify-between bg-white shadow p-4">
+      <Modal
+        msg={modalMessage}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
       <h1 className="text-xl font-bold text-gray-800">Welcome!</h1>
 
       <button
@@ -260,7 +253,7 @@ export default function Header() {
             backgroundPosition: "center",
             objectFit: "cover",
           }}
-          onSubmit={handlePostShift}
+          onSubmit={handleSubmit(handlePostShift)}
         >
           <h2 className="text-2xl font-bold text-foreground text-center">
             Post Locum Shift
@@ -268,18 +261,23 @@ export default function Header() {
           <p className="text-muted-foreground mb-6 text-center">
             Fill in the details for the locum shift you want to post.
           </p>
-          <label className="block text-sm font-medium text-muted-foreground">
-            ADS Note*
-          </label>
-          <textarea
-            className="mt-1 block w-full p-3 border border-border rounded-md focus:ring-2 focus:ring-ring"
-            name="adsNote"
-            value={shiftData.adsNote}
-            onChange={handleInputChange}
-            rows={3}
-            placeholder="E.g., Join our General Medicine SHO Position in Lagos: Elevate Your Career, Impact Patient Care"
-            required
-          ></textarea>
+          <div>
+            <label className="block text-sm font-medium text-muted-foreground">
+              ADS Note*
+            </label>
+            <textarea
+              className="mt-1 block w-full p-3 border border-border rounded-md focus:ring-2 focus:ring-ring"
+              {...register("adsNote", { required: "Please add your adsNote" })}
+              rows={3}
+              placeholder="E.g., Join our General Medicine SHO Position in Lagos: Elevate Your Career, Impact Patient Care"
+            ></textarea>
+
+            {errors.adsNote && (
+              <p className=" text-[12px] text-red-500">
+                {errors.adsNote.message}
+              </p>
+            )}
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
             <div>
@@ -287,15 +285,21 @@ export default function Header() {
                 Date <MdOutlineDateRange className="text-gray-500" />
               </label>
               <input
-                value={shiftData.date}
-                onChange={handleInputChange}
-                name="date"
                 type="date"
                 className="mt-1 block w-full p-3 border border-border rounded-md focus:ring-2 focus:ring-ring"
                 placeholder="mm/dd/yyyy"
-                required
+                {...register("date", {
+                  required: "Please add your date",
+                })}
               />
+
+              {errors.date && (
+                <p className=" text-[12px] text-red-500">
+                  {errors.date.message}
+                </p>
+              )}
             </div>
+
             <div>
               <label className="block text-sm font-medium text-muted-foreground flex items-center gap-0.5">
                 Location
@@ -303,13 +307,18 @@ export default function Header() {
               </label>
               <input
                 type="text"
-                value={shiftData.location}
-                onChange={handleInputChange}
-                name="location"
                 className="mt-1 block w-full p-3 border border-border rounded-md focus:ring-2 focus:ring-ring"
                 placeholder="Location"
-                required
+                {...register("location", {
+                  required: "Please add your location",
+                })}
               />
+
+              {errors.location && (
+                <p className=" text-[12px] text-red-500">
+                  {errors.location.message}
+                </p>
+              )}
             </div>
           </div>
 
@@ -320,27 +329,38 @@ export default function Header() {
               </label>
               <input
                 type="text"
-                value={shiftData.duration}
-                onChange={handleInputChange}
-                name="duration"
                 className="mt-1 block w-full p-3 border border-border rounded-md focus:ring-2 focus:ring-ring"
                 placeholder="E.g., 8 AM - 4 PM"
-                required
+                {...register("duration", {
+                  required: "Please add your duration",
+                })}
               />
+
+              {errors.duration && (
+                <p className=" text-[12px] text-red-500">
+                  {errors.duration.message}
+                </p>
+              )}
             </div>
+
             <div>
               <label className="block text-sm font-medium text-muted-foreground">
                 Pay Rate ($/hr)
               </label>
               <input
-                type="text"
-                value={shiftData.payRate}
-                onChange={handleInputChange}
-                name="payRate"
+                type="number"
                 className="mt-1 block w-full p-3 border border-border rounded-md focus:ring-2 focus:ring-ring"
                 placeholder="Enter pay rate"
-                required
+                {...register("payRate", {
+                  required: "Please add your payRate",
+                })}
               />
+
+              {errors.payRate && (
+                <p className=" text-[12px] text-red-500">
+                  {errors.payRate.message}
+                </p>
+              )}
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
@@ -350,11 +370,10 @@ export default function Header() {
               </label>
 
               <select
-                name="specialization"
-                value={shiftData.specialization}
-                onChange={handleInputChange}
                 className="mt-1 block w-full p-3 border border-border rounded-md focus:ring-2 focus:ring-ring"
-                required
+                {...register("specialization", {
+                  required: "Please add your specialization",
+                })}
               >
                 <option value="">Select position</option>
                 <option value="Registered Nurse (RN)">
@@ -369,6 +388,12 @@ export default function Header() {
                   Emergency Room Nurse
                 </option>
               </select>
+
+              {errors.specialization && (
+                <p className=" text-[12px] text-red-500">
+                  {errors.specialization.message}
+                </p>
+              )}
             </div>
             <div>
               <label className="block text-sm font-medium text-muted-foreground">
@@ -376,22 +401,27 @@ export default function Header() {
               </label>
               <input
                 type="text"
-                value={shiftData.licenseRequired}
-                onChange={handleInputChange}
-                name="licenseRequired"
                 className="mt-1 block w-full p-3 border border-border rounded-md focus:ring-2 focus:ring-ring"
                 placeholder="Enter license or certification required"
-                required
+                {...register("licenseRequired", {
+                  required: "Please add your license Requirement",
+                })}
               />
+
+              {errors.licenseRequired && (
+                <p className=" text-[12px] text-red-500">
+                  {errors.licenseRequired.message}
+                </p>
+              )}
             </div>
           </div>
 
           <button
             type="submit"
             className="w-full py-3 mt-6 text-white bg-slate-700 rounded-md hover:bg-primary/90"
-            disabled={isLoading}
+            disabled={!isValid}
           >
-            {isLoading ? (
+            {isSubmitting ? (
               <span className="flex justify-center">
                 <svg
                   className="animate-spin h-5 w-5 text-white"
