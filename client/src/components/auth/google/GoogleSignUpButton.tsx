@@ -15,72 +15,79 @@ interface CustomJwtPayload extends JwtPayload {
 
 const GoogleSignUpButton = () => {
   const navigate = useNavigate();
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false); // Prevent duplicate requests
 
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
+    if (isSubmitting) return; // Prevents multiple requests
+
+    setIsSubmitting(true); // Set submitting state
     const provider = new GoogleAuthProvider();
-    signInWithPopup(auth, provider)
-      .then(async (result) => {
-        const idToken = await result.user.getIdToken();
 
-        let decode: CustomJwtPayload | null = null;
-        if (idToken) {
-          decode = jwtDecode<CustomJwtPayload>(idToken);
-        }
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const idToken = await result.user.getIdToken();
 
-        // console.log(decode);
+      let decode: CustomJwtPayload | null = null;
+      if (idToken) {
+        decode = jwtDecode<CustomJwtPayload>(idToken);
+      }
 
-        if (decode) {
-          const namePart = decode.name?.split(" ");
+      if (decode) {
+        const namePart = decode.name?.split(" ");
+        const nickName = namePart ? namePart[1] : "";
 
-          const nickName = namePart ? namePart[1] : "";
-
-          const { data } = await axios.post(
-            `${import.meta.env.VITE_BASE_URL}/auth/signup`,
-            {
-              fullName: decode.name,
-              nickName: nickName,
-              email: decode.email,
-              password: import.meta.env.VITE_GOOGLE_PASSWORD,
-            }
-          );
-
-          if (data.token) {
-            Cookies.set("token", data.token);
-            setModalMessage("You have successfully logged in.");
-            setIsModalOpen(true);
-
-            setTimeout(() => {
-              navigate("/verify");
-            }, 2000);
+        const { data } = await axios.post(
+          `${import.meta.env.VITE_BASE_URL}/auth/signup`,
+          {
+            fullName: decode.name,
+            nickName,
+            email: decode.email,
+            password: import.meta.env.VITE_GOOGLE_PASSWORD,
           }
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-
-        const axiosError = error as AxiosError<{ message: string }>;
-
-        setModalMessage(
-          axiosError?.response?.data?.message ||
-            "An error occurred during registration."
         );
-        setIsModalOpen(true);
-      });
+
+        if (data.locumToken) {
+          Cookies.set("locumToken", data.locumToken);
+          setModalMessage("You have successfully logged in.");
+          setIsModalOpen(true);
+
+          setTimeout(() => {
+            navigate("/verify");
+          }, 2000);
+        }
+      }
+    } catch (error) {
+      console.error(error);
+
+      const axiosError = error as AxiosError<{ message: string }>;
+
+      // Set specific backend error message if available
+      if (axiosError?.response?.data?.message) {
+        setModalMessage(axiosError.response.data.message);
+      } else {
+        setModalMessage("An error occurred during registration.");
+      }
+
+      setIsModalOpen(true);
+    } finally {
+      setIsSubmitting(false); // Reset submitting state
+    }
   };
 
   return (
-    <button onClick={handleSignUp}>
-      <img src={googleSignup} alt="google-signup" />
+    <>
+      <button onClick={handleSignUp} disabled={isSubmitting}>
+        <img src={googleSignup} alt="google-signup" />
+      </button>
 
       <Modal
         msg={modalMessage}
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={() => setIsModalOpen(false)} 
       />
-    </button>
+    </>
   );
 };
 
