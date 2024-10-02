@@ -14,8 +14,8 @@ const Navbar: React.FC = () => {
     document.body.style.overflow = isMobileMenuOpen ? "auto" : "hidden";
   };
 
-  const token = Cookies.get("token");
-  const verified = Cookies.get("verified");
+  const token = Cookies.get("locumToken");
+  const verified = Cookies.get("locumVerified");
 
   const isAuthenticated = token && verified === "true";
 

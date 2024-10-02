@@ -61,7 +61,7 @@ export const HealthCareVerification = () => {
       );
 
       if (data.success === true) {
-        Cookies.set("verified", "true");
+        Cookies.set("healthcareVerified", "true");
         navigate("/curaflux/medixcare/admin");
       }
     } catch (error) {

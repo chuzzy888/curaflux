@@ -57,7 +57,7 @@ export default function Sidebar() {
           className="flex items-center py-2 px-4 text-gray-700 "
           onClick={() => {
             Cookies.remove("healthcareToken");
-            navigate("/register/healthcare");
+            navigate("/login/healthcare");
           }}
         >
           <p className="mr-3">

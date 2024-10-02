@@ -50,7 +50,7 @@ function Verification() {
     formState: { errors, isValid, isSubmitting },
   } = useForm<VerificationTypes>();
 
-  const token = Cookies.get("token");
+  const token = Cookies.get("locumToken");
   const decode = token ? jwtDecode<CustomJwtPayload>(token) : null;
   const navigate = useNavigate();
 
@@ -95,7 +95,7 @@ function Verification() {
         );
 
         if (data.success === true) {
-          Cookies.set("verified", "true");
+          Cookies.set("locumVerified", "true");
           navigate("/shift");
         }
       }
