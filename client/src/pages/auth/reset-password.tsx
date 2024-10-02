@@ -28,18 +28,18 @@ const ResetPassword = () => {
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
 
-  const token = Cookies.get("token");
+  const locumToken = Cookies.get("locumToken");
 
   const handleResetPassword: SubmitHandler<resetType> = async (form) => {
     try {
       await axios.patch(
-        `${import.meta.env.VITE_BASE_URL}/auth/reset-password/${token}`,
+        `${import.meta.env.VITE_BASE_URL}/auth/reset-password/${locumToken}`,
         form
       );
 
       // console.log(data);
 
-      Cookies.remove("token");
+      Cookies.remove("locumToken");
 
       toast({
         title: "Password Changed Successful",

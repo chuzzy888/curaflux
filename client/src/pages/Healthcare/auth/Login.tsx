@@ -37,7 +37,7 @@ const HospitalLogin = () => {
         form
       );
 
-      Cookies.set("token", data.token);
+      Cookies.set("healthcareToken", data.healthcareToken);
 
       if (data.success === true) {
         setModalMessage("You have successfully logged in.");

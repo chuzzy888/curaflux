@@ -40,7 +40,7 @@ const Register = () => {
         }, 2000);
       }
 
-      Cookies.set("token", data.token);
+      Cookies.set("locumToken", data.locumToken);
     } catch (error) {
       const axiosError = error as AxiosError<{ message: string }>;
 

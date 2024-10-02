@@ -14,6 +14,8 @@ export const createHospital = async (req, res) => {
       licenseRequired,
     } = req.body;
 
+    const { hospitalId } = req.user;
+
     // Create a new Hospital instance
     const newHospital = new Hospital({
       adsNote,
@@ -24,6 +26,7 @@ export const createHospital = async (req, res) => {
       payRate,
       specialization,
       licenseRequired,
+      hospital: hospitalId,
     });
 
     // Save the Hospital to the database
@@ -40,7 +43,9 @@ export const createHospital = async (req, res) => {
 export const getAllHospitals = async (req, res) => {
   try {
     // Fetch all Hospitals from the database
-    const Hospitals = await Hospital.find();
+    const Hospitals = await Hospital.find()
+      .sort("-created")
+      .populate("hospital", "-password");
 
     // Send back the Hospitals in the response
     res.status(200).json(Hospitals);

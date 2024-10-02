@@ -35,7 +35,7 @@ const ForgotPassword = () => {
 
       console.log(data);
 
-      Cookies.set("token", data.token);
+      Cookies.set("locumToken", data.locumToken);
 
       toast({
         title: "Email Verification Successful",

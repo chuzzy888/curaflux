@@ -34,6 +34,12 @@ const HospitalSchema = new Schema({
     type: String, // Assuming licenseRequired is a boolean (true/false)
     required: true,
   },
+
+  hospital: {
+    type: mongoose.Types.ObjectId,
+    ref: "Healthcare",
+    required: true,
+  },
 });
 
 // Create the model

@@ -38,7 +38,7 @@ const Login = () => {
         form
       );
 
-      Cookies.set("token", data.token);
+      Cookies.set("locumToken", data.locumToken);
 
       if (data.success === true) {
         setModalMessage("You have successfully logged in.");
