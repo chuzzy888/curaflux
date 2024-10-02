@@ -35,7 +35,7 @@ const HospitalRegister: React.FC = () => {
     try {
       const { data } = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/hospital/register`,
-        form
+        { ...form, role: "healthcare" }
       );
 
       if (data.success === true) {

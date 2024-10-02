@@ -28,6 +28,7 @@ import Role from "./Role/Role";
 import ShiftForYou from "./pages/locum/ShiftForYou";
 import HospitalRegister from "./pages/Healthcare/auth/Register";
 import { HealthCareVerification } from "./pages/Healthcare/auth/verification";
+import { Healthcare } from "./protect/healthcare";
 
 interface CustomJwtPayload extends JwtPayload {
   nickName: string;
@@ -113,7 +114,9 @@ function AppWrapper() {
             path="/register/getVerified"
             element={<HealthCareVerification />}
           />
-          <Route path="/curaflux/medixcare/admin" element={<Admin />} />
+          <Route element={<Healthcare />}>
+            <Route path="/curaflux/medixcare/admin" element={<Admin />} />
+          </Route>
           {/* Protected route for admin */}
 
           {/* Fallback route for undefined paths */}
