@@ -40,6 +40,13 @@ const HospitalSchema = new Schema({
     ref: "Healthcare",
     required: true,
   },
+
+  applicants: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Application",
+    },
+  ],
 });
 
 // Create the model
