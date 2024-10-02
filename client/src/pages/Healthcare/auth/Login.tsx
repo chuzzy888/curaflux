@@ -1,16 +1,16 @@
 import { useState } from "react";
-import { ScreenLayout } from "../../components/layout/ScreenLayout";
-import { Button } from "../../components/ui/button";
-import { Label } from "../../components/ui/label";
-import { Input } from "../../components/ui/input";
+import { ScreenLayout } from "../../../components/layout/ScreenLayout";
+import { Button } from "../../../components/ui/button";
+import { Label } from "../../../components/ui/label";
+import { Input } from "../../../components/ui/input";
 import { Link, useNavigate } from "react-router-dom";
-import AuthFooter from "../../components/footer/AuthFooter";
+import AuthFooter from "../../../components/footer/AuthFooter";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import axios, { AxiosError } from "axios";
 import Cookies from "js-cookie";
-import signin from "../../assets/images/signin.png";
-import { Modal } from "../../components/modals/Success-Modal";
+import signin from "../../../assets/images/signin.png";
+import { Modal } from "../../../components/modals/Success-Modal";
 
 type loginType = {
   email: string;

@@ -29,6 +29,8 @@ import ShiftForYou from "./pages/locum/ShiftForYou";
 import HospitalRegister from "./pages/Healthcare/auth/Register";
 import { HealthCareVerification } from "./pages/Healthcare/auth/verification";
 import { Healthcare } from "./protect/healthcare";
+import LoginRole from "./Role/LoginRole";
+import HospitalLogin from "./pages/Healthcare/auth/Login";
 
 interface CustomJwtPayload extends JwtPayload {
   nickName: string;
@@ -44,6 +46,8 @@ function AppWrapper() {
   const isNavbarHidden =
     location.pathname === "/login-role" ||
     location.pathname === "/login" ||
+    location.pathname === "/login-role" ||
+    location.pathname === "/login/healthcare" ||
     location.pathname === "/register" ||
     location.pathname === "/choose-role" ||
     location.pathname === "/register/healthcare" ||
@@ -68,6 +72,7 @@ function AppWrapper() {
 
           {/* auth */}
           <Route path="/choose-role" element={<Role />} />
+          <Route path="/login-role" element={<LoginRole />} />
           <Route
             path="/login"
             element={token ? <Navigate to="/" /> : <Login />}
@@ -112,6 +117,7 @@ function AppWrapper() {
 
           {/* Protected route for admin */}
           <Route path="/register/healthcare" element={<HospitalRegister />} />
+          <Route path="/login/healthcare" element={<HospitalLogin />} />
           <Route
             path="/register/getVerified"
             element={<HealthCareVerification />}
