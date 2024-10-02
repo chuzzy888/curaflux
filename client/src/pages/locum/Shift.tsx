@@ -144,8 +144,8 @@ function Shift() {
         </div>
 
         {/* Dropdown Button */}
-        <div className="absolute top-0 left-16 transform -translate-x-1/2  p-2 mx-8 rounded-lg">
-          <div className="card flex justify-content-center">
+        <div className="absolute top-0 left-16 transform -translate-x-1/2 p-2 mx-8 rounded-lg">
+          <div className="card flex justify-content-center  border border-gray-400 ">
             <Dropdown
               value={selectedCity}
               onChange={handleDropdownChange}
