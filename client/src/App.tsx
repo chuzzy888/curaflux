@@ -31,11 +31,17 @@ import { Healthcare } from "./protect/healthcare";
 import LoginRole from "./Role/LoginRole";
 import HospitalLogin from "./pages/Healthcare/auth/Login";
 import RegisterRole from "./Role/RegisterRole";
-import Dashboard from "./components/health-care/Dashboard";
+import Dashboard from "./pages/Healthcare/Dashboard";
+import AllShifts from "./pages/Healthcare/All-shifts";
 
 interface CustomJwtPayload extends JwtPayload {
   nickName: string;
+  hospitalName: string;
 }
+
+// interface CustomHealthcareJwtPayload extends JwtPayload {
+//   hospitalName: string;
+// }
 
 function AppWrapper() {
   const location = useLocation();
@@ -43,6 +49,12 @@ function AppWrapper() {
   const verified = Cookies.get("locumVerified");
 
   const decode = token ? jwtDecode<CustomJwtPayload>(token) : null;
+
+  // healthcare
+  const healthcareToken = Cookies.get("healthcareToken");
+  const healthcareTecode = healthcareToken ? jwtDecode<CustomJwtPayload>(healthcareToken) : null;
+
+  
 
   const isNavbarHidden =
     location.pathname === "/login-role" ||
@@ -60,7 +72,9 @@ function AppWrapper() {
     location.pathname === "/verify" ||
     location.pathname === "/shift" ||
     location.pathname === `/profile/${decode?.nickName}` ||
-    matchPath(`/edit-profile-${decode?.nickName}/:userId`, location.pathname);
+    matchPath(`/edit-profile-${decode?.nickName}/:userId`, location.pathname) ||
+    // healthcare section
+    location.pathname.includes("/curaflux");
 
   return (
     <>
@@ -124,8 +138,12 @@ function AppWrapper() {
             element={<HealthCareVerification />}
           />
           <Route element={<Healthcare />}>
-            <Route path="/curaflux/medixcare/admin" element={<Admin />}>
+            <Route
+              path={`/curaflux/${healthcareTecode?.hospitalName}/admin`}
+              element={<Admin />}
+            >
               <Route index element={<Dashboard />} />
+              <Route path="all-shift" element={<AllShifts />} />
             </Route>
           </Route>
           {/* Protected route for admin */}

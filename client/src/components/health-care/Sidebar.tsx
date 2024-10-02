@@ -6,9 +6,19 @@ import { IoSettings } from "react-icons/io5";
 import { MdLogout } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import { jwtDecode, JwtPayload } from "jwt-decode";
+
+interface CustomJwtPayload extends JwtPayload {
+  hospitalName: string;
+}
 
 export default function Sidebar() {
   const navigate = useNavigate();
+  const token = Cookies.get("healthcareToken");
+  const decode = token ? jwtDecode<CustomJwtPayload>(token) : null;
+
+  
+
   return (
     <div className="w-64 bg-gray-100 h-screen fixed top-0 left-0">
       <div className="p-4">
@@ -16,7 +26,7 @@ export default function Sidebar() {
       </div>
       <nav className="mt-6 flex justify-center flex-col gap-8">
         <Link
-          to={"#"}
+          to={`/curaflux/${decode?.hospitalName}/admin`}
           className="flex items-center mx-3 py-2 px-4 text-gray-700 rounded-md hover:bg-gray-200"
         >
           <p className="mr-3">
@@ -25,7 +35,7 @@ export default function Sidebar() {
           Dashboard
         </Link>
         <Link
-          to={"#"}
+          to={`/curaflux/${decode?.hospitalName}/admin/all-shift`}
           className="flex items-center mx-3 py-2 px-4 text-gray-700 rounded-md hover:bg-gray-200"
         >
           <p className="mr-3">
