@@ -38,7 +38,7 @@ export default function Dashboard() {
     return () => clearInterval(interval);
   }, []);
 
-  // console.log(shiftsHealthcare); do not remove. will change this flow later to socket io
+  // console.log(shiftsHealthcare); //do not remove. will change this flow later to socket io
 
   return (
     <div className="p-8 ml-64 ">

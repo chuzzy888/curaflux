@@ -62,7 +62,9 @@ export const getHospitalById = async (req, res) => {
 
   try {
     // Fetch the Hospital from the database by its ID
-    const singleHospital = await Hospital.findById({ _id: HospitalId });
+    const singleHospital = await Hospital.findById({
+      _id: HospitalId,
+    }).populate("hospital", "-password");
 
     // If no Hospital is found, return a 404
     if (!singleHospital) {

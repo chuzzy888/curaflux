@@ -17,8 +17,6 @@ export default function Sidebar() {
   const token = Cookies.get("healthcareToken");
   const decode = token ? jwtDecode<CustomJwtPayload>(token) : null;
 
-  
-
   return (
     <div className="w-64 bg-gray-100 h-screen fixed top-0 left-0">
       <div className="p-4">

@@ -33,6 +33,8 @@ import HospitalLogin from "./pages/Healthcare/auth/Login";
 import RegisterRole from "./Role/RegisterRole";
 import Dashboard from "./pages/Healthcare/Dashboard";
 import AllShifts from "./pages/Healthcare/All-shifts";
+import PageNotFound from "./pages/404/PageNotFound";
+import HealthCareShiftDetails from "./pages/Healthcare/Shift-details";
 
 interface CustomJwtPayload extends JwtPayload {
   nickName: string;
@@ -52,9 +54,9 @@ function AppWrapper() {
 
   // healthcare
   const healthcareToken = Cookies.get("healthcareToken");
-  const healthcareTecode = healthcareToken ? jwtDecode<CustomJwtPayload>(healthcareToken) : null;
-
-  
+  const healthcareTecode = healthcareToken
+    ? jwtDecode<CustomJwtPayload>(healthcareToken)
+    : null;
 
   const isNavbarHidden =
     location.pathname === "/login-role" ||
@@ -144,12 +146,16 @@ function AppWrapper() {
             >
               <Route index element={<Dashboard />} />
               <Route path="all-shift" element={<AllShifts />} />
+              <Route
+                path="shift-details/:shiftId"
+                element={<HealthCareShiftDetails />}
+              />
             </Route>
           </Route>
           {/* Protected route for admin */}
 
           {/* Fallback route for undefined paths */}
-          <Route path="*" element={<Navigate to="/" />} />
+          <Route path="*" element={<PageNotFound />} />
         </Routes>
 
         <Toaster />
