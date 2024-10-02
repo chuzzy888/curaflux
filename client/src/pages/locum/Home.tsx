@@ -155,7 +155,7 @@ const Home: React.FC = () => {
                 <img
                   src={blc}
                   alt="Nurse working"
-                  className="rounded-lg shadow-lg h-1/2 md:h-full "
+                  className=" shadow-lg h-1/2 md:h-full "
                 />
               </div>
 
