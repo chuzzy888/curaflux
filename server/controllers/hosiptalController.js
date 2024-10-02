@@ -5,7 +5,7 @@ export const createHospital = async (req, res) => {
   try {
     const {
       adsNote,
-      name,
+      // name,
       date,
       location,
       duration,
@@ -19,7 +19,7 @@ export const createHospital = async (req, res) => {
     // Create a new Hospital instance
     const newHospital = new Hospital({
       adsNote,
-      name,
+      // name,
       date,
       location,
       duration,
@@ -33,8 +33,10 @@ export const createHospital = async (req, res) => {
     const savedHospital = await newHospital.save();
 
     // Send back the saved Hospital in the response
-    res.status(201).json(savedHospital);
+    res.status(201).json({ success: true, savedHospital });
   } catch (error) {
+    console.log(error);
+
     res.status(500).json({ message: "Error creating the Hospital", error });
   }
 };

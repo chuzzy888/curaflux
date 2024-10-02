@@ -6,10 +6,10 @@ const HospitalSchema = new Schema({
     type: String,
     default: "",
   },
-  name: {
-    type: String,
-    required: true, // Ensure the name is required
-  },
+  // name: {
+  //   type: String,
+  //   required: true, // Ensure the name is required
+  // },
   date: {
     type: Date,
     required: true,

@@ -10,17 +10,24 @@ export default function Dashboard() {
         </p>
       </Marquee>
 
-      <div className="grid grid-cols-3 bg-blue-500 p-10 rounded-md gap-4 mb-8">
+      <div className="grid grid-cols-4 bg-blue-500 p-10 rounded-md gap-4 mb-8">
         <div className="bg-blue-50 shadow rounded-lg p-4">
           <h3 className="text-gray-600">Total Applications</h3>
           <p className="text-2xl font-bold">0</p>
         </div>
+
         <div className="bg-green-50 shadow rounded-lg p-4">
           <h3 className="text-gray-600">Active Applications</h3>
           <p className="text-2xl font-bold text-green-500">0</p>
         </div>
+
         <div className="bg-purple-50 shadow rounded-lg p-4">
           <h3 className="text-gray-600">Pending Applications</h3>
+          <p className="text-2xl font-bold text-purple-500">0</p>
+        </div>
+
+        <div className="bg-purple-50 shadow rounded-lg p-4">
+          <h3 className="text-gray-600">Number of Created Shift</h3>
           <p className="text-2xl font-bold text-purple-500">0</p>
         </div>
       </div>
