@@ -3,7 +3,7 @@ import { Outlet, Navigate } from "react-router-dom";
 
 export const User = () => {
   const locumToken = Cookies.get("locumToken");
-  const verified = Cookies.get("verified");
+  const verified = Cookies.get("locumVerified");
 
   const isAuthenticated = locumToken && verified === "true";
 

@@ -39,7 +39,7 @@ interface CustomJwtPayload extends JwtPayload {
 function AppWrapper() {
   const location = useLocation();
   const token = Cookies.get("locumToken");
-  const verified = Cookies.get("verified");
+  const verified = Cookies.get("locumVerified");
 
   const decode = token ? jwtDecode<CustomJwtPayload>(token) : null;
 

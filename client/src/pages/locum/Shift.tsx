@@ -41,7 +41,7 @@ function Shift() {
   };
 
   const handleLogout = () => {
-    Cookies.remove("token");
+    Cookies.remove("locumToken");
     navigate("/");
   };
 
@@ -68,7 +68,7 @@ function Shift() {
   const { userInfo } = useAuthStore();
 
   useEffect(() => {
-    const token = Cookies.get("token");
+    const token = Cookies.get("locumVerified");
     if (token) {
       try {
         const decodedToken = jwtDecode<DecodedToken>(token);
@@ -182,7 +182,7 @@ function Shift() {
           <div className="flex gap-3 mt-4">
             <input
               type="text"
-              onChange={e => setLocation(e.target.value)}
+              onChange={(e) => setLocation(e.target.value)}
               value={location}
               placeholder="Enter Current Location Or Nearest Landmark.."
               className="md:w-1/2 w-full p-3 border border-gray-300 rounded-l-full focus:outline-none focus:ring-2 focus:ring-blue-600"
