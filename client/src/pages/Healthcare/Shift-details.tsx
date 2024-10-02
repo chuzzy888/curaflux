@@ -100,10 +100,22 @@ const HealthCareShiftDetails = () => {
             <span> {shiftDetails?.hospital?.hospitalName}</span>
           </p>
 
-          <p className=" flex items-center mt-2 gap-2 text-sm">
+          <p className="flex items-center mt-2 gap-2 text-sm">
             <IoLocationOutline />
 
-            <span> {shiftDetails?.hospital?.address}</span>
+            {shiftDetails?.hospital?.address ? (
+              <a
+                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                  shiftDetails.hospital.address
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {shiftDetails.hospital.address}
+              </a>
+            ) : (
+              <span>No address available</span>
+            )}
           </p>
 
           <p className=" flex items-center mt-2 gap-2 text-sm">
