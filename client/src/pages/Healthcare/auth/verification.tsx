@@ -18,10 +18,15 @@ import { useToast } from "../../../hooks/use-toast";
 import { useEffect, useState } from "react";
 import { Button } from "../../../components/ui/button";
 import Cookies from "js-cookie";
+import { jwtDecode, JwtPayload } from "jwt-decode";
 
 type otpTypes = {
   otp: string;
 };
+
+interface CustomJwtPayload extends JwtPayload {
+  hospitalName: string;
+}
 
 export const HealthCareVerification = () => {
   const navigate = useNavigate();
@@ -32,6 +37,9 @@ export const HealthCareVerification = () => {
     control,
   } = useForm<otpTypes>();
   const { email } = useAuth();
+
+   const token = Cookies.get("healthcareToken");
+   const decode = token ? jwtDecode<CustomJwtPayload>(token) : null;
 
   // Timer state
   const [timeLeft, setTimeLeft] = useState(60);
@@ -62,7 +70,7 @@ export const HealthCareVerification = () => {
 
       if (data.success === true) {
         Cookies.set("healthcareVerified", "true");
-        navigate("/curaflux/medixcare/admin");
+        navigate(`/curaflux/${decode?.hospitalName}/admin`);
       }
     } catch (error) {
       const axiosError = error as AxiosError<{ error: string }>;
