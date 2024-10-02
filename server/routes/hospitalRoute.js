@@ -3,6 +3,7 @@ import {
   createHospital,
   getAllHospitals,
   getHospitalById,
+  getShiftForAHealthCare,
 } from "../controllers/hosiptalController.js";
 import {
   forgottenPassword,
@@ -32,6 +33,8 @@ router.get(
   permission("healthcare", "locum"),
   getHospitalById
 );
+
+router.get("/getShiftForAHealthCare/:hospitalId", getShiftForAHealthCare);
 
 // Authentication
 router.post("/register", signUp);

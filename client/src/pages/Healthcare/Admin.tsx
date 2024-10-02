@@ -1,4 +1,4 @@
-import Dashboard from "../../components/health-care/Dashboard";
+import { Outlet } from "react-router-dom";
 import Header from "../../components/health-care/Header";
 import Sidebar from "../../components/health-care/Sidebar";
 
@@ -8,7 +8,7 @@ function Admin() {
       <Sidebar />
       <div className="flex-1">
         <Header />
-        <Dashboard />
+        <Outlet />
       </div>
     </div>
   );

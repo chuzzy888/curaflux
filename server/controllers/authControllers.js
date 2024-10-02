@@ -78,7 +78,7 @@ export const signUp = expressAsyncHandler(async (req, res) => {
     },
     process.env.JWT_SECRET,
     {
-      expiresIn: "1h",
+      expiresIn: "30d",
     }
   );
 
@@ -127,7 +127,7 @@ export const signIn = expressAsyncHandler(async (req, res) => {
     },
     process.env.JWT_SECRET,
     {
-      expiresIn: "1h",
+      expiresIn: "30d",
     }
   );
 
