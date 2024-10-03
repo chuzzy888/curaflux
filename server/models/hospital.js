@@ -16,20 +16,24 @@ const HospitalSchema = new Schema(
       required: true,
     },
     duration: {
-      type: String, 
-      required: true,
-    },
-    payRate: {
-      type: Number, // change later to string 
-      required: true,
-    },
-    specialization: { //skills and expertise[] change later
       type: String,
       required: true,
     },
-    licenseRequired: { // remove from schema
-      type: String, 
+    payRate: {
+      type: String,
       required: true,
+    },
+    jobType: {
+      type: String,
+      required: true,
+    },
+    specialRequirement: {
+      type: String,
+      required: true,
+    },
+
+    skills: {
+      type: [String],
     },
 
     hospital: {
@@ -44,6 +48,26 @@ const HospitalSchema = new Schema(
         ref: "Application",
       },
     ],
+
+    shiftSupervisorName: {
+      type: String,
+      required: true,
+    },
+
+    shiftSupervisorPosition: {
+      type: String,
+      required: true,
+    },
+
+    shiftSupervisorEmail: {
+      type: String,
+      required: true,
+    },
+
+    shiftSupervisorPhoneNumber: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,
@@ -52,9 +76,4 @@ const HospitalSchema = new Schema(
 
 export const Hospital = mongoose.model("Hospital", HospitalSchema);
 
-// Export the model
 
-//  to include 
-// jobType
-// specialRequirement
-// shift supervisor, name, position, email, phoneNumber
