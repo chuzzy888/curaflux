@@ -6,5 +6,5 @@ export const Healthcare = () => {
   const verified = Cookies.get("healthcareVerified");
 
   const isAuthenticated = healthcareToken && verified === "true";
-  return <main>{isAuthenticated ? <Outlet /> : <Navigate to="/login" />}</main>;
+  return <main>{isAuthenticated ? <Outlet /> : <Navigate to="/login/healthcare" />}</main>;
 };

@@ -35,6 +35,8 @@ import Dashboard from "./pages/Healthcare/Dashboard";
 import AllShifts from "./pages/Healthcare/All-shifts";
 import PageNotFound from "./pages/404/PageNotFound";
 import HealthCareShiftDetails from "./pages/Healthcare/Shift-details";
+import Help from "./pages/help/help";
+import AboutUs from "./pages/about-us/about-us";
 
 interface CustomJwtPayload extends JwtPayload {
   nickName: string;
@@ -53,10 +55,10 @@ function AppWrapper() {
   const decode = token ? jwtDecode<CustomJwtPayload>(token) : null;
 
   // healthcare
-  const healthcareToken = Cookies.get("healthcareToken");
-  const healthcareTecode = healthcareToken
-    ? jwtDecode<CustomJwtPayload>(healthcareToken)
-    : null;
+  // const healthcareToken = Cookies.get("healthcareToken");
+  // const healthcareTecode = healthcareToken
+  //   ? jwtDecode<CustomJwtPayload>(healthcareToken)
+  //   : null;
 
   const isNavbarHidden =
     location.pathname === "/login-role" ||
@@ -78,8 +80,6 @@ function AppWrapper() {
     // healthcare section
     location.pathname.includes("/curaflux");
 
-  
-
   return (
     <>
       <AuthProvider>
@@ -88,6 +88,8 @@ function AppWrapper() {
 
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/help" element={<Help />} />
+          <Route path="/about-curaflux" element={<AboutUs />} />
 
           {/* auth */}
           <Route path="/choose-role" element={<RegisterRole />} />
@@ -142,13 +144,7 @@ function AppWrapper() {
             element={<HealthCareVerification />}
           />
           <Route element={<Healthcare />}>
-            <Route
-              path={`/curaflux/${healthcareTecode?.hospitalName?.replace(
-                " ",
-                ""
-              )}/admin`}
-              element={<Admin />}
-            >
+            <Route path={`/curaflux/healthcare/admin`} element={<Admin />}>
               <Route index element={<Dashboard />} />
               <Route path="all-shift" element={<AllShifts />} />
               <Route

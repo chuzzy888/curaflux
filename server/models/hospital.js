@@ -1,55 +1,60 @@
 import mongoose, { Schema } from "mongoose";
 
 // Define the schema
-const HospitalSchema = new Schema({
-  adsNote: {
-    type: String,
-    default: "",
-  },
-  // name: {
-  //   type: String,
-  //   required: true, // Ensure the name is required
-  // },
-  date: {
-    type: Date,
-    required: true,
-  },
-  location: {
-    type: String,
-    required: true,
-  },
-  duration: {
-    type: String, // You can adjust the type if it's in hours, days, etc.
-    required: true,
-  },
-  payRate: {
-    type: Number, // Assuming payRate is a number, you can change it to String if necessary
-    required: true,
-  },
-  specialization: {
-    type: String,
-    required: true,
-  },
-  licenseRequired: {
-    type: String, // Assuming licenseRequired is a boolean (true/false)
-    required: true,
-  },
-
-  hospital: {
-    type: mongoose.Types.ObjectId,
-    ref: "Healthcare",
-    required: true,
-  },
-
-  applicants: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Application",
+const HospitalSchema = new Schema(
+  {
+    adsNote: {
+      type: String,
+      default: "",
     },
-  ],
-});
+    date: {
+      type: Date,
+      required: true,
+    },
+    location: {
+      type: String,
+      required: true,
+    },
+    duration: {
+      type: String, 
+      required: true,
+    },
+    payRate: {
+      type: Number, // change later to string 
+      required: true,
+    },
+    specialization: { //skills and expertise[] change later
+      type: String,
+      required: true,
+    },
+    licenseRequired: { // remove from schema
+      type: String, 
+      required: true,
+    },
 
-// Create the model
+    hospital: {
+      type: mongoose.Types.ObjectId,
+      ref: "Healthcare",
+      required: true,
+    },
+
+    applicants: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Application",
+      },
+    ],
+  },
+  {
+    timestamps: true,
+  }
+);
+
 export const Hospital = mongoose.model("Hospital", HospitalSchema);
 
 // Export the model
+
+//  to include 
+// jobType
+// specialRequirement
+// shift supervisor, name, position, email, phoneNumber

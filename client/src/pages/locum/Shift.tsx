@@ -40,11 +40,6 @@ function Shift() {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  const handleLogout = () => {
-    Cookies.remove("locumToken");
-    navigate("/");
-  };
-
   interface DecodedToken {
     userId: string;
     email: string;
@@ -132,6 +127,13 @@ function Shift() {
     } else if (e.value.code === "shift-for-you") {
       navigate("/shift-for-you");
     }
+  };
+
+  const handleLogout = () => {
+    Cookies.remove("locumToken");
+    Cookies.remove("locumVerified");
+
+    window.location.href = "/";
   };
 
   return (

@@ -11,16 +11,16 @@ import axios, { AxiosError } from "axios";
 import Cookies from "js-cookie";
 import signin from "../../../assets/images/signin.png";
 import { Modal } from "../../../components/modals/Success-Modal";
-import { jwtDecode, JwtPayload } from "jwt-decode";
+// import { jwtDecode, JwtPayload } from "jwt-decode";
 
 type loginType = {
   email: string;
   password: string;
 };
 
-interface CustomJwtPayload extends JwtPayload {
-  hospitalName: string;
-}
+// interface CustomJwtPayload extends JwtPayload {
+//   hospitalName: string;
+// }
 
 const HospitalLogin = () => {
   const {
@@ -35,10 +35,8 @@ const HospitalLogin = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
 
-  const token = Cookies.get("healthcareToken");
-  const decode = token ? jwtDecode<CustomJwtPayload>(token) : null;
-
-  console.log(decode?.hospitalName.replace(" ", ""));
+  // const token = Cookies.get("healthcareToken");
+  // const decode = token ? jwtDecode<CustomJwtPayload>(token) : null;
 
   const handleLogin: SubmitHandler<loginType> = async (form) => {
     try {
@@ -53,8 +51,14 @@ const HospitalLogin = () => {
         setModalMessage("You have successfully logged in.");
         setIsModalOpen(true);
 
+        // console.log(data);
+        
+
+        Cookies.set("healthcareVerified", "true");
         setTimeout(() => {
-          navigate(`/curaflux/${decode?.hospitalName?.replace(" ", "")}/admin`);
+          navigate(
+            `/curaflux/healthcare/admin`
+          );
         }, 2000);
       }
     } catch (error) {
