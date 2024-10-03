@@ -39,6 +39,7 @@ const Login = () => {
       );
 
       Cookies.set("locumToken", data.locumToken);
+      Cookies.set("locumVerified", "true");
 
       if (data.success === true) {
         setModalMessage("You have successfully logged in.");

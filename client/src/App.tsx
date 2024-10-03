@@ -53,10 +53,10 @@ function AppWrapper() {
   const decode = token ? jwtDecode<CustomJwtPayload>(token) : null;
 
   // healthcare
-  const healthcareToken = Cookies.get("healthcareToken");
-  const healthcareTecode = healthcareToken
-    ? jwtDecode<CustomJwtPayload>(healthcareToken)
-    : null;
+  // const healthcareToken = Cookies.get("healthcareToken");
+  // const healthcareTecode = healthcareToken
+  //   ? jwtDecode<CustomJwtPayload>(healthcareToken)
+  //   : null;
 
   const isNavbarHidden =
     location.pathname === "/login-role" ||
@@ -77,8 +77,6 @@ function AppWrapper() {
     matchPath(`/edit-profile-${decode?.nickName}/:userId`, location.pathname) ||
     // healthcare section
     location.pathname.includes("/curaflux");
-
-  
 
   return (
     <>
@@ -142,13 +140,7 @@ function AppWrapper() {
             element={<HealthCareVerification />}
           />
           <Route element={<Healthcare />}>
-            <Route
-              path={`/curaflux/${healthcareTecode?.hospitalName?.replace(
-                " ",
-                ""
-              )}/admin`}
-              element={<Admin />}
-            >
+            <Route path={`/curaflux/healthcare/admin`} element={<Admin />}>
               <Route index element={<Dashboard />} />
               <Route path="all-shift" element={<AllShifts />} />
               <Route

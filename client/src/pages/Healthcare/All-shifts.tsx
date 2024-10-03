@@ -85,10 +85,7 @@ const AllShifts = () => {
               <TableCell>{shift.status || "Active"}</TableCell>
               <TableCell>
                 <Link
-                  to={`/curaflux/${decode?.hospitalName.replace(
-                    " ",
-                    ""
-                  )}/admin/shift-details/${shift._id}`}
+                  to={`/curaflux/healthcare/admin/shift-details/${shift._id}`}
                 >
                   <Button
                     size={"sm"}

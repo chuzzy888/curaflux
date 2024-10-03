@@ -56,21 +56,19 @@ export const getAllApplications = expressAsync(async (req, res) => {
   res.status(200).json({ success: true, applications });
 });
 
-
 // accept shifts
 
 export const acceptApplication = async (req, res) => {
   const { applicationId } = req.params;
 
   try {
-    
     const application = await Application.findByIdAndUpdate(
       applicationId,
       { status: "accepted" },
       { new: true }
     )
       .populate("userId", "name email")
-      .populate("hospitalId"); 
+      .populate("hospitalId");
 
     if (!application) {
       return res.status(404).json({ message: "Application not found" });
@@ -83,21 +81,19 @@ export const acceptApplication = async (req, res) => {
   }
 };
 
-
 // reject shifts
 
 export const rejectApplication = async (req, res) => {
   const { applicationId } = req.params;
 
   try {
-    
     const application = await Application.findByIdAndUpdate(
       applicationId,
       { status: "rejected" },
       { new: true }
     )
       .populate("userId", "name email")
-      .populate("hospitalId"); 
+      .populate("hospitalId");
 
     if (!application) {
       return res.status(404).json({ message: "Application not found" });

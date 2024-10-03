@@ -16,7 +16,7 @@ import {
 import { Sidebar } from "primereact/sidebar";
 import { Badge } from "primereact/badge";
 import { Dialog } from "primereact/dialog";
-import { MdOutlineDateRange } from "react-icons/md";
+import { MdLogout, MdOutlineDateRange } from "react-icons/md";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -25,6 +25,7 @@ import Cookies from "js-cookie";
 import { Modal } from "../modals/Success-Modal";
 import { jwtDecode, JwtPayload } from "jwt-decode";
 import { useLocation, useParams } from "react-router-dom";
+import { Button } from "../ui/button";
 
 type postShiftTypes = {
   adsNote: string;
@@ -38,6 +39,7 @@ type postShiftTypes = {
 
 interface CustomJwtPayload extends JwtPayload {
   hospitalName: string;
+  address: string;
 }
 
 export default function Header() {
@@ -58,6 +60,15 @@ export default function Header() {
 
   const { shiftId } = useParams();
 
+  console.log(decode);
+
+  const handleLogout = () => {
+    Cookies.remove("healthcareToken");
+    Cookies.remove("healthcareVerified");
+
+    window.location.href = "/login/healthcare";
+  };
+
   const handlePostShift: SubmitHandler<postShiftTypes> = async (form) => {
     try {
       const { data } = await axios.post(
@@ -67,8 +78,6 @@ export default function Header() {
           headers: { Authorization: `Bearer ${healthcareToken}` },
         }
       );
-
-      console.log(data);
 
       if (data.success === true) {
         setShiftDialog(false);
@@ -98,7 +107,7 @@ export default function Header() {
             <p className="font-bold text-gray-800 text-xl">All Shift</p>
           </main>
         );
-      case `/curaflux/${decode?.hospitalName}/admin/shift-details/${shiftId}`:
+      case `/curaflux/healthcare/admin/shift-details/${shiftId}`:
         return (
           <main className="bg-white shadow p-4">
             <p className="font-bold text-gray-800 text-xl">Shift Details</p>
@@ -218,7 +227,7 @@ export default function Header() {
                   style={{ backgroundColor: "white" }}
                 >
                   {/* Profile dialog content */}
-                  <div className="card py-4  ">
+                  <div className="card">
                     <div className="text-center mb-6">
                       <div className="text-6xl text-gray-300 mb-2">
                         <span
@@ -234,37 +243,30 @@ export default function Header() {
                         </span>
                       </div>
                       <h3 className="text-xl font-bold">
-                        City General Hospital
+                        {decode?.hospitalName}
                       </h3>
-                      <p className="text-gray-500">Metropolis, NY</p>
+                      <p className="text-gray-500">
+                        {decode?.address || "soon"}
+                      </p>
                     </div>
 
-                    <div className="flex justify-center mb-6">
+                    <div className="flex justify-center">
+                      <Button
+                        className="flex items-center py-2 px-4 text-gray-700 bottom-0 bg-transparent border hover:text-white"
+                        onClick={handleLogout}
+                      >
+                        <p className="mr-3">
+                          <MdLogout />
+                        </p>
+                        Logout
+                      </Button>
+                    </div>
+
+                    {/* <div className="flex justify-center mb-6">
                       <button className="border rounded-full px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100">
                         Quick Actions
                       </button>
-                    </div>
-
-                    <div className="border-t pt-4">
-                      <div className="grid grid-cols-2 gap-y-2 text-sm text-gray-700">
-                        <div>
-                          <p className="font-medium">Open Shifts</p>
-                          <p>12</p>
-                        </div>
-                        <div>
-                          <p className="font-medium">Active Locums</p>
-                          <p>8</p>
-                        </div>
-                        <div>
-                          <p className="font-medium">Departments</p>
-                          <p>15</p>
-                        </div>
-                        <div>
-                          <p className="font-medium">Feedback</p>
-                          <p>24</p>
-                        </div>
-                      </div>
-                    </div>
+                    </div> */}
                   </div>
                 </Dialog>
               </div>
