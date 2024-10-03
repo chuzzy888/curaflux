@@ -78,6 +78,8 @@ function AppWrapper() {
     // healthcare section
     location.pathname.includes("/curaflux");
 
+  
+
   return (
     <>
       <AuthProvider>
@@ -141,7 +143,10 @@ function AppWrapper() {
           />
           <Route element={<Healthcare />}>
             <Route
-              path={`/curaflux/${healthcareTecode?.hospitalName}/admin`}
+              path={`/curaflux/${healthcareTecode?.hospitalName?.replace(
+                " ",
+                ""
+              )}/admin`}
               element={<Admin />}
             >
               <Route index element={<Dashboard />} />

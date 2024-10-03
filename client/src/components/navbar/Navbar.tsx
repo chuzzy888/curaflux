@@ -4,7 +4,6 @@ import { MdMenu, MdClose } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { ScreenLayout } from "../layout/ScreenLayout";
 import Cookies from "js-cookie";
-import { IoPersonAdd } from "react-icons/io5";
 
 const Navbar: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -55,10 +54,9 @@ const Navbar: React.FC = () => {
               <Link to={"/login-role"}>Login</Link>
               <Link
                 to={"/choose-role"}
-                className=" bg-blue-400  font-bold p-2 px-4 md:px-6 lg:px-4 hover:bg-blue-500 text-white rounded  flex items-center gap-2 "
+                className=" bg-blue-100  font-medium p-2 px-4   rounded-full   gap-2 "
               >
-                <IoPersonAdd />
-                Join Curaflux
+                Sign Up
               </Link>
             </>
           )}

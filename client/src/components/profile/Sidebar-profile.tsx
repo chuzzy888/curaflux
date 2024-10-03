@@ -37,6 +37,7 @@ export const SidebarProfile = ({
       const { data } = await axios(
         `${import.meta.env.VITE_BASE_URL}/auth/user/${userData.userId}`
       );
+      console.log(data);
 
       setUserInfo(data.user);
     } catch (error) {
@@ -48,7 +49,7 @@ export const SidebarProfile = ({
     getAUserInfo();
   }, [userData?.userId]);
 
-  // console.log(userInfo);
+  console.log(userInfo);
 
   return (
     <main
@@ -103,7 +104,7 @@ export const SidebarProfile = ({
               {" "}
               <AiOutlineMail />
             </p>
-            {userData.email}
+            {userInfo.email}
           </a>
           <p className="flex items-center gap-2 mb-1 text-sm">
             <p className="h-7 w-7 rounded-full bg-gray-200  flex justify-center items-center">

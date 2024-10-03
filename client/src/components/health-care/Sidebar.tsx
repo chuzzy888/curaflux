@@ -24,7 +24,7 @@ export default function Sidebar() {
       </div>
       <nav className="mt-6 flex justify-center flex-col gap-8">
         <Link
-          to={`/curaflux/${decode?.hospitalName}/admin`}
+          to={`/curaflux/${decode?.hospitalName?.replace(" ", "")}/admin`}
           className="flex items-center mx-3 py-2 px-4 text-gray-700 rounded-md hover:bg-gray-200"
         >
           <p className="mr-3">
@@ -33,7 +33,10 @@ export default function Sidebar() {
           Dashboard
         </Link>
         <Link
-          to={`/curaflux/${decode?.hospitalName}/admin/all-shift`}
+          to={`/curaflux/${decode?.hospitalName?.replace(
+            " ",
+            ""
+          )}/admin/all-shift`}
           className="flex items-center mx-3 py-2 px-4 text-gray-700 rounded-md hover:bg-gray-200"
         >
           <p className="mr-3">

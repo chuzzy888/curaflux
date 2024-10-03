@@ -38,7 +38,14 @@ export default function Dashboard() {
     return () => clearInterval(interval);
   }, []);
 
+
+// <<<<<<<< HEAD:client/src/pages/Healthcare/Dashboard.tsx
   // console.log(shiftsHealthcare); //do not remove. will change this flow later to socket io
+
+  // console.log(shiftsHealthcare); do not remove. will change this flow later to socket io
+// >>>>>>>> 4ac74538918c46212aef99b989ad0e95fe5631e3:client/src/components/health-care/Dashboard.tsx
+  // console.log(shiftsHealthcare); do not remove. will change this flow later to socket io
+
 
   return (
     <div className="p-8 ml-64 ">

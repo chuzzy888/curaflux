@@ -68,10 +68,12 @@ function Shift() {
   const { userInfo } = useAuthStore();
 
   useEffect(() => {
-    const token = Cookies.get("locumVerified");
+    const token = Cookies.get("locumToken");
     if (token) {
       try {
         const decodedToken = jwtDecode<DecodedToken>(token);
+        console.log(decodedToken);
+
         setUserData({
           userId: decodedToken.userId,
           email: decodedToken.email,

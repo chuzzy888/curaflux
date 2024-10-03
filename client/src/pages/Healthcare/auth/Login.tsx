@@ -38,6 +38,8 @@ const HospitalLogin = () => {
   const token = Cookies.get("healthcareToken");
   const decode = token ? jwtDecode<CustomJwtPayload>(token) : null;
 
+  console.log(decode?.hospitalName.replace(" ", ""));
+
   const handleLogin: SubmitHandler<loginType> = async (form) => {
     try {
       const { data } = await axios.post(
@@ -45,14 +47,14 @@ const HospitalLogin = () => {
         form
       );
 
-      Cookies.set("healthcareToken", data.healthcareToken);
+      Cookies.set("healthcareToken", data?.healthcareToken);
 
       if (data.success === true) {
         setModalMessage("You have successfully logged in.");
         setIsModalOpen(true);
 
         setTimeout(() => {
-          navigate(`/curaflux/${decode?.hospitalName}/admin`);
+          navigate(`/curaflux/${decode?.hospitalName?.replace(" ", "")}/admin`);
         }, 2000);
       }
     } catch (error) {
