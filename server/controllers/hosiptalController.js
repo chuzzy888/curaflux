@@ -5,13 +5,17 @@ export const createHospital = async (req, res) => {
   try {
     const {
       adsNote,
-      // name,
       date,
       location,
       duration,
       payRate,
-      specialization,
-      licenseRequired,
+      skills,
+      jobType,
+      specialRequirement,
+      shiftSupervisorName,
+      shiftSupervisorPosition,
+      shiftSupervisorEmail,
+      shiftSupervisorPhoneNumber,
     } = req.body;
 
     const { hospitalId } = req.user;
@@ -19,14 +23,18 @@ export const createHospital = async (req, res) => {
     // Create a new Hospital instance
     const newHospital = new Hospital({
       adsNote,
-      // name,
       date,
       location,
       duration,
       payRate,
-      specialization,
-      licenseRequired,
+      skills,
       hospital: hospitalId,
+      jobType,
+      specialRequirement,
+      shiftSupervisorName,
+      shiftSupervisorPosition,
+      shiftSupervisorEmail,
+      shiftSupervisorPhoneNumber,
     });
 
     // Save the Hospital to the database
