@@ -10,7 +10,7 @@ function LoginRole() {
         <Link to={"/login"}>
           <div className="flex flex-col gap-3">
             <img src={fr} alt="" className="md:h-80 h-60" />
-            <p className="text-center md:text-2xl text-lg font-bold text-blue-500">
+            <p className="text-center md:text-2xl text-lg font-bold text-blue-500  hover:text-blue-700">
               Login as Locum
             </p>
           </div>
@@ -18,7 +18,7 @@ function LoginRole() {
         <Link to={"/login/healthcare"}>
           <div className="flex flex-col justify-center items-center gap-3">
             <img src={fre} alt="" className="md:h-80 h-60 w-full" />
-            <p className="text-center md:text-2xl text-lg font-bold text-blue-500">
+            <p className="text-center md:text-2xl text-lg font-bold text-blue-500 hover:text-blue-700">
               Login as Healthcare
             </p>
           </div>
