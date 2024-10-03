@@ -29,19 +29,22 @@ const Navbar: React.FC = () => {
         <div className="hidden lg:flex items-center gap-3 rounded-full bg-blue-50 p-1 px-2">
           <Link
             to={"/"}
-            className="p-2 px-4 md:px-6 lg:px-8 xl:px-10 rounded-full text-white bg-blue-400 font-bold"
+            className="p-2 px-4 text-sm md:px-6 lg:px-8 xl:px-10 rounded-full text-white bg-blue-400 font-bold"
           >
             Home
           </Link>
-          <p className="p-2 px-4 md:px-6 lg:px-8 xl:px-10 rounded-full font-medium cursor-not-allowed">
+          <p className="p-2 px-4 text-sm md:px-6 lg:px-8 xl:px-10 rounded-full font-medium cursor-not-allowed">
             About Us
           </p>
-          <p className="p-2 px-4 md:px-6 lg:px-8 xl:px-10 rounded-full font-medium cursor-not-allowed">
+          <Link
+            to={"/help"}
+            className="p-2 px-4 text-sm md:px-6 lg:px-8 xl:px-10 rounded-full font-medium"
+          >
             Help
-          </p>
+          </Link>
           <Link
             to={"/shift"}
-            className="p-2 px-4 md:px-6 lg:px-8 xl:px-10 rounded-full font-medium"
+            className="p-2 px-4 text-sm md:px-6 lg:px-8 xl:px-10 rounded-full font-medium"
           >
             Shift
           </Link>
@@ -51,10 +54,12 @@ const Navbar: React.FC = () => {
         <div className="hidden lg:flex items-center gap-4 md:gap-6 lg:gap-8 font-medium">
           {!isAuthenticated && (
             <>
-              <Link to={"/login-role"}>Login</Link>
+              <Link to={"/login-role"} className="text-sm">
+                Login
+              </Link>
               <Link
                 to={"/choose-role"}
-                className=" bg-blue-100  font-medium p-2 px-4   rounded-full   gap-2 "
+                className=" bg-blue-100  font-medium p-2 px-4 text-sm rounded-full   gap-2 "
               >
                 Sign Up
               </Link>
@@ -86,7 +91,7 @@ const Navbar: React.FC = () => {
             </div>
             <ul className="flex flex-col items-center gap-8 p-4">
               <li className="text-blue-800 font-bold">
-                <Link to="/" onClick={toggleMobileMenu} className="text-lg">
+                <Link to="/" onClick={toggleMobileMenu} className="text-sm">
                   Home
                 </Link>
               </li>
@@ -94,13 +99,13 @@ const Navbar: React.FC = () => {
                 <Link
                   to="/about"
                   onClick={toggleMobileMenu}
-                  className="text-lg"
+                  className="text-sm"
                 >
                   About Us
                 </Link>
               </li>
               <li>
-                <Link to="/help" onClick={toggleMobileMenu} className="text-lg">
+                <Link to="/help" onClick={toggleMobileMenu} className="text-sm">
                   Help
                 </Link>
               </li>
@@ -108,7 +113,7 @@ const Navbar: React.FC = () => {
                 <Link
                   to="/shift"
                   onClick={toggleMobileMenu}
-                  className="text-lg"
+                  className="text-sm"
                 >
                   Shift
                 </Link>
@@ -117,12 +122,12 @@ const Navbar: React.FC = () => {
               {!isAuthenticated && (
                 <>
                   <li>
-                    <Link to="/login" className="text-lg">
+                    <Link to="/login" className="text-sm">
                       Login
                     </Link>
                   </li>
                   <li>
-                    <Link to="/register" className="text-lg">
+                    <Link to="/register" className="text-sm">
                       Sign Up
                     </Link>
                   </li>

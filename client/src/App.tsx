@@ -35,6 +35,7 @@ import Dashboard from "./pages/Healthcare/Dashboard";
 import AllShifts from "./pages/Healthcare/All-shifts";
 import PageNotFound from "./pages/404/PageNotFound";
 import HealthCareShiftDetails from "./pages/Healthcare/Shift-details";
+import Help from "./pages/help/help";
 
 interface CustomJwtPayload extends JwtPayload {
   nickName: string;
@@ -86,6 +87,7 @@ function AppWrapper() {
 
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/help" element={<Help />} />
 
           {/* auth */}
           <Route path="/choose-role" element={<RegisterRole />} />
