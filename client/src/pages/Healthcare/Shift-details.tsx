@@ -35,7 +35,7 @@ const HealthCareShiftDetails = () => {
     }
   };
 
-  // console.log(shiftDetails);
+  console.log(shiftDetails);
   useEffect(() => {
     getShiftDetails();
   }, [shiftId]);
@@ -50,37 +50,58 @@ const HealthCareShiftDetails = () => {
           {shiftDetails?.specialization}
         </p>
 
-        <div className=" mt-10">
-          <p className=" flex items-center mt-2 gap-2 text-sm">
-            <IoCalendarClearOutline />
+        <section className=" flex justify-between">
+          <div className=" mt-10">
+            <p className=" flex items-center mt-2 gap-2 text-sm">
+              <IoCalendarClearOutline />
 
-            <span>{formatDate(shiftDetails?.date)}</span>
-          </p>
+              <span>{formatDate(shiftDetails?.date)}</span>
+            </p>
 
-          <p className=" flex items-center mt-2 gap-2 text-sm">
-            <FaRegClock />
+            <p className=" flex items-center mt-2 gap-2 text-sm">
+              <FaRegClock />
 
-            <span>{shiftDetails?.duration}</span>
-          </p>
+              <span>{shiftDetails?.duration}</span>
+            </p>
 
-          <p className=" flex items-center mt-2 gap-2 text-sm">
-            <IoLocationOutline />
+            <p className=" flex items-center mt-2 gap-2 text-sm">
+              <IoLocationOutline />
 
-            <span> {shiftDetails?.location}</span>
-          </p>
+              <span> {shiftDetails?.location}</span>
+            </p>
 
-          <p className=" flex items-center mt-2 gap-2 text-sm">
-            <BsCashCoin />
+            <p className=" flex items-center mt-2 gap-2 text-sm">
+              <BsCashCoin />
 
-            <span> {shiftDetails?.payRate}</span>
-          </p>
-        </div>
+              <span> {shiftDetails?.payRate}</span>
+            </p>
+          </div>
+
+          <div>
+            <p className=" text-sm">Contract: {shiftDetails?.jobType}</p>
+          </div>
+        </section>
 
         <hr className=" my-4" />
 
-        <div>
-          <h3 className=" font-semibold">Required Skills:</h3>
-        </div>
+        <section className="flex justify-between flex-wrap gap-5">
+          <div>
+            <h3 className=" font-semibold">Required Skills:</h3>
+
+            <div className="flex items-center gap-3 flex-wrap mt-2">
+              {shiftDetails?.skills.map((skill, i) => (
+                <p key={i} className="text-sm bg-blue-200 p-2 rounded-lg">
+                  {skill}
+                </p>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <h3 className=" font-semibold">Special Requirement:</h3>
+            <p className=" text-sm">{shiftDetails?.specialRequirement}</p>
+          </div>
+        </section>
 
         <hr className=" my-4" />
 
