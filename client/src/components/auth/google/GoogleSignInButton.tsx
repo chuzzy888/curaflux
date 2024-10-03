@@ -45,6 +45,7 @@ const GoogleSignInButton = () => {
 
         if (data.locumToken) {
           Cookies.set("locumToken", data.locumToken);
+          Cookies.set("locumVerified", "true");
 
           setModalMessage("You have successfully logged in.");
           setIsModalOpen(true);
