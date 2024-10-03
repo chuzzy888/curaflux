@@ -4,6 +4,7 @@ import { MdMenu, MdClose } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { ScreenLayout } from "../layout/ScreenLayout";
 import Cookies from "js-cookie";
+import { IoIosArrowForward } from "react-icons/io";
 
 const Navbar: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);

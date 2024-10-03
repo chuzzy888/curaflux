@@ -69,7 +69,7 @@ export default function Header() {
     window.location.href = "/login/healthcare";
   };
 
-  const handlePostShift: SubmitHandler<postShiftTypes> = async (form) => {
+  const handlePostShift: SubmitHandler<postShiftTypes> = async form => {
     try {
       const { data } = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/hospital/createHospital`,

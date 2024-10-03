@@ -38,14 +38,12 @@ export default function Dashboard() {
     return () => clearInterval(interval);
   }, []);
 
-
-// <<<<<<<< HEAD:client/src/pages/Healthcare/Dashboard.tsx
+  // <<<<<<<< HEAD:client/src/pages/Healthcare/Dashboard.tsx
   // console.log(shiftsHealthcare); //do not remove. will change this flow later to socket io
 
   // console.log(shiftsHealthcare); do not remove. will change this flow later to socket io
-// >>>>>>>> 4ac74538918c46212aef99b989ad0e95fe5631e3:client/src/components/health-care/Dashboard.tsx
+  // >>>>>>>> 4ac74538918c46212aef99b989ad0e95fe5631e3:client/src/components/health-care/Dashboard.tsx
   // console.log(shiftsHealthcare); do not remove. will change this flow later to socket io
-
 
   return (
     <div className="p-8 ml-64 ">
@@ -72,9 +70,9 @@ export default function Dashboard() {
           <p className="text-2xl font-bold text-purple-500">0</p>
         </div>
 
-        <div className="bg-purple-50 shadow rounded-lg p-4">
+        <div className="bg-orange-50 shadow rounded-lg p-4">
           <h3 className="text-gray-600">Created Applications</h3>
-          <p className="text-2xl font-bold text-purple-500">
+          <p className="text-2xl font-bold text-orange-500">
             {" "}
             {shiftsHealthcare?.NumOfShifts}
           </p>
