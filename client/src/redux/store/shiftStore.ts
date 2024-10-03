@@ -29,6 +29,9 @@ type shiftDetailsType = {
   location: string;
   payRate: string;
   specialization: string;
+  jobType: string;
+  specialRequirement: string;
+  skills: string[];
   status: string; // Added missing status property
 };
 
