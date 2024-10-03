@@ -33,9 +33,9 @@ const Navbar: React.FC = () => {
           >
             Home
           </Link>
-          <p className="p-2 px-4 text-sm md:px-6 lg:px-8 xl:px-10 rounded-full font-medium cursor-not-allowed">
+          <Link to={"/about-curaflux"} className="p-2 px-4 text-sm md:px-6 lg:px-8 xl:px-10 rounded-full font-medium">
             About Us
-          </p>
+          </Link>
           <Link
             to={"/help"}
             className="p-2 px-4 text-sm md:px-6 lg:px-8 xl:px-10 rounded-full font-medium"
@@ -97,7 +97,7 @@ const Navbar: React.FC = () => {
               </li>
               <li>
                 <Link
-                  to="/about"
+                  to="/about-curaflux"
                   onClick={toggleMobileMenu}
                   className="text-sm"
                 >

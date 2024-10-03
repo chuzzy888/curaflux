@@ -36,6 +36,7 @@ import AllShifts from "./pages/Healthcare/All-shifts";
 import PageNotFound from "./pages/404/PageNotFound";
 import HealthCareShiftDetails from "./pages/Healthcare/Shift-details";
 import Help from "./pages/help/help";
+import AboutUs from "./pages/about-us/about-us";
 
 interface CustomJwtPayload extends JwtPayload {
   nickName: string;
@@ -88,6 +89,7 @@ function AppWrapper() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/help" element={<Help />} />
+          <Route path="/about-curaflux" element={<AboutUs />} />
 
           {/* auth */}
           <Route path="/choose-role" element={<RegisterRole />} />
