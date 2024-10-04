@@ -1,9 +1,12 @@
-import React from "react";
 import { ScreenLayout } from "../../components/layout/ScreenLayout";
 import { FiCheckCircle } from "react-icons/fi";
 import { FaRegClock, FaUsers } from "react-icons/fa";
 import { GiHospital } from "react-icons/gi";
 import { LuAward } from "react-icons/lu";
+import chizu from "../../assets/images/chizu.jpg";
+import ike from "../../assets/images/ike.jpeg";
+import ben from "../../assets/images/ben.jpeg";
+import cf from "../../assets/images/cf1 1.png";
 
 import {
   Accordion,
@@ -55,21 +58,18 @@ const choose = [
 
 const teams = [
   {
-    image:
-      "https://g-1rvcqrcptp9.vusercontent.net/placeholder.svg?height=200&width=200",
+    image: ben,
     name: "Benjamin Chidera",
     role: "Software Engineer",
   },
   {
-    image:
-      "https://g-1rvcqrcptp9.vusercontent.net/placeholder.svg?height=200&width=200",
+    image: chizu,
     name: "Chizu Praise",
     role: "Software Engineer",
   },
   {
-    image:
-      "https://g-1rvcqrcptp9.vusercontent.net/placeholder.svg?height=200&width=200",
-    name: "Sarah Lee",
+    image: ike,
+    name: "Ikechukwu Abaleke",
     role: "Product Manager",
   },
   //   {
@@ -102,19 +102,32 @@ const AboutUs = () => {
   return (
     <main className="pb-12">
       <ScreenLayout>
-        <div className=" text-center">
-          <h1 className=" font-bold text-xl">About Curaflux</h1>
-          <p className=" text-sm text-gray-600">
+        <div className=" text-center p-4">
+          <h1 className=" font-bold text-3xl">
+            About <span className="text-blue-500">Curaflux</span>
+          </h1>
+          <p className=" text-sm text-gray-600 p-2">
             Connecting Healthcare Professionals with Opportunities
           </p>
         </div>
 
-        <div className=" my-7">
-          <img
-            src="https://g-1rvcqrcptp9.vusercontent.net/placeholder.svg"
-            alt=""
-            className="h-[500px] w-full object-cover"
-          />
+        <div className=" my-7 flex  items-center w-full gap-10">
+          <img src={cf} alt="" className="h-[500px] w-1/2 object-cover" />
+          <div className="text-center ">
+            <h1 className="text-3xl font-bold text-center">Our Mission</h1>
+            <h2>
+              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eveniet
+              hic ducimus reiciendis incidunt rerum laboriosam repellat omnis
+              sunt provident, quaerat dignissimos! Natus, voluptatibus? Deserunt
+              error doloremque dolore eveniet laudantium. Nobis?
+            </h2>
+            <br />
+
+            <h4>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              Aspernatur beatae consectetur veniam omnis, ipsa perspiciatis,
+            </h4>
+          </div>
         </div>
 
         <section>
@@ -154,7 +167,7 @@ const AboutUs = () => {
         <section className=" py-8">
           <h2 className=" text-xl font-bold">Why Choose Curaflux?</h2>
 
-          <div className=" mt-4 grid grid-cols-4 gap-5">
+          <div className=" mt-4 grid grid-cols-2 md:grid-cols-4 gap-5">
             {choose.map((values, i) => (
               <div key={i} className=" border p-4 rounded-md">
                 {values.icon}
@@ -169,12 +182,12 @@ const AboutUs = () => {
           <p className=" text-xl font-bold">Meet Our Team</p>
 
           <div className="mt-5 grid grid-cols-3 gap-5">
-            {teams.map((team) => (
+            {teams.map(team => (
               <div className=" text-center border p-5 rounded-md">
                 <img
                   src={team.image}
                   alt={team.name}
-                  className=" w-28 rounded-full mx-auto"
+                  className=" w-28 h-28 rounded-full mx-auto object-cover"
                 />
 
                 <p className=" mt-2 text-center font-bold">{team.name}</p>
@@ -190,18 +203,16 @@ const AboutUs = () => {
           <div className="mt-6">
             <Accordion type="single" collapsible className="w-full">
               <AccordionItem value="item-1">
-                <AccordionTrigger>How does LocumLink work?</AccordionTrigger>
+                <AccordionTrigger>How does Curaflux work?</AccordionTrigger>
                 <AccordionContent>
-                  LocumLink connects healthcare professionals with facilities in
+                  Curaflux connects healthcare professionals with facilities in
                   need of temporary staffing. We handle the matching process,
                   credentialing, and placement to ensure a smooth experience for
                   both parties.
                 </AccordionContent>
               </AccordionItem>
               <AccordionItem value="item-2">
-                <AccordionTrigger>
-                  What types of healthcare professionals can use LocumLink?
-                </AccordionTrigger>
+                <AccordionTrigger>Who can use Curaflux? </AccordionTrigger>
                 <AccordionContent>
                   We work with a wide range of healthcare professionals,
                   including doctors, nurses, nurse practitioners, physician
@@ -221,12 +232,12 @@ const AboutUs = () => {
               </AccordionItem>
               <AccordionItem value="item-4">
                 <AccordionTrigger>
-                  Is LocumLink available nationwide?
+                  Is Curaflux available nationwide?
                 </AccordionTrigger>
                 <AccordionContent>
-                  Yes, LocumLink operates across the United States, connecting
-                  healthcare professionals with opportunities in various states
-                  and regions.
+                  Not yet, Curaflux operates within Nigeria, connecting
+                  healthcare professionals with opportunities across all 36
+                  states hope to expand to other african countries .
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
@@ -240,18 +251,16 @@ const AboutUs = () => {
             opportunity.
           </p>
 
-          <div className="flex items-center gap-5 mt-5 justify-center">
+          <div className="flex items-center md:flex-row flex-col gap-5 mt-5 justify-center">
             <Link to={"/register"}>
-              <Button className=" bg-blue-400">
-                Sign Up as a Professional
-              </Button>
+              <Button className=" bg-blue-400">Get Started</Button>
             </Link>
-
+            {/* 
             <Link to={"/register/healthcare"}>
               <Button className=" bg-blue-400">
                 Sign Up as a Healthcare Service
               </Button>
-            </Link>
+            </Link> */}
           </div>
         </section>
       </ScreenLayout>

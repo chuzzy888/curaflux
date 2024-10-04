@@ -15,12 +15,13 @@ import axios from "axios";
 import { jwtDecode, JwtPayload } from "jwt-decode";
 import { Button } from "../../components/ui/button";
 import { useShiftStore } from "../../redux/store/shiftStore";
+import { formatDate } from "../../lib/DateFormatter";
+import { format } from "timeago.js";
 
 interface CustomJwtPayload extends JwtPayload {
   userId: string;
-
 }
-   
+
 const ShiftDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
 
@@ -40,6 +41,7 @@ const ShiftDetails: React.FC = () => {
   const decode = token ? jwtDecode<CustomJwtPayload>(token) : null;
 
   // console.log(shift?._id);
+  console.log(shift?.location);
 
   useEffect(() => {
     const fetchShiftDetails = async () => {
@@ -87,10 +89,10 @@ const ShiftDetails: React.FC = () => {
       );
       // console.log(data);
       // Update the appliedShifts state
-      setAppliedShifts((prev) => ({ ...prev, [hospitalId]: true }));
+      setAppliedShifts(prev => ({ ...prev, [hospitalId]: true }));
     } catch (error) {
       console.error("Failed to apply for shift:", error);
-      setError("Failed to apply for shift. Please try again later.");
+      ("Failed to apply for shift. Please try again later.");
     }
   };
 
@@ -104,7 +106,11 @@ const ShiftDetails: React.FC = () => {
               <FaArrowCircleLeft />
               Shift Details
             </h1>
-            <div className="text-sm text-gray-500 ">Posted 7 mins ago</div>
+            <div className="text-sm text-gray-500 ">
+              {shift?.createdAt
+                ? format(shift.createdAt)
+                : "Date not available"}
+            </div>
           </div>
           <div className="border-b-2 border-gray-300"></div>
           {/* Title and Location */}
@@ -114,7 +120,7 @@ const ShiftDetails: React.FC = () => {
               alt="Hospital"
               className="h-12 w-12 rounded-full mr-4"
             />
-            {shift?.name}
+            {shift?.hospital.hospitalName}
           </div>
           <div className="flex items-center text-gray-500 mb-4 text-sm md:text-[16px]">
             <FaMapMarkerAlt className="mr-2 text-blue-600 h-5" />
@@ -123,7 +129,7 @@ const ShiftDetails: React.FC = () => {
           {/* Date and Time */}
           <div className="flex flex-wrap items-center justify-between mt-2 mb-4">
             <div className="flex items-center gap-2 text-gray-500">
-              <img src={cld} alt="" className="h-5" /> {shift?.date}
+              <img src={cld} alt="" className="h-5" /> {formatDate(shift?.date)}
             </div>
             <div className="flex items-center  bg-[#D9F1FD] px-5 p-1 rounded-lg">
               {shift?.duration}
@@ -131,9 +137,7 @@ const ShiftDetails: React.FC = () => {
           </div>
           {/* Hospital Info */}
           <div className="flex items-start mb-6">
-            <p className="text-sm text-gray-700 mt-2">
-              {shift?.jobDescription}
-            </p>
+            <p className="text-sm text-gray-700 mt-2">{shift?.adsNote}</p>
           </div>
           {/* Skills and Expertise */}
 
@@ -159,7 +163,7 @@ const ShiftDetails: React.FC = () => {
               <img src={clk} alt="" className="h-8 mr-2" />
               <div className="flex flex-col">
                 <p className="text-sm sm:text-base">Duration</p>
-                <span className="text-sm sm:text-base">8 Hours</span>
+                <span className="text-sm sm:text-base">{shift?.duration}</span>
               </div>
             </div>
 
@@ -167,7 +171,7 @@ const ShiftDetails: React.FC = () => {
               <img src={jbt} alt="" className="h-7 mr-2" />
               <div className="flex flex-col">
                 <p className="text-sm sm:text-base">Job Type</p>
-                <span className="text-sm sm:text-base">One Time</span>
+                <span className="text-sm sm:text-base">{shift?.jobType}</span>
               </div>
             </div>
 
@@ -190,13 +194,25 @@ const ShiftDetails: React.FC = () => {
 
             {/* Address Text */}
             <p className="text-gray-700 text-center text-lg">
-              23, Ozumba Mbadiwe Ave, Eti-Osa, Lagos, Nigeria
+              {shift?.location}
             </p>
 
             {/* Get Directions Button */}
-            <button className="bg-[#009FF5] text-white px-6 py-2 rounded-lg hover:bg-blue-600">
-              Get Directions
-            </button>
+            {shift?.location ? (
+              <a
+                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                  shift.location
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <button className="bg-[#009FF5] text-white px-6 py-2 rounded-lg hover:bg-blue-600">
+                  Get Directions
+                </button>
+              </a>
+            ) : (
+              <span>No address available</span>
+            )}
           </div>
 
           {/* <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
@@ -230,22 +246,20 @@ const ShiftDetails: React.FC = () => {
           {/* Special Requirements */}
           <div className="mb-6">
             <h3 className="font-bold text-lg mb-2">Special Requirements</h3>
-            <p className="text-sm text-gray-700">
-              Bring your health care license and work ID for verification.
-            </p>
-            <p className="text-sm text-gray-700">
-              Ensure that you have the necessary tools (stethoscope, therapeutic
-              aids, etc.).
-            </p>
+            <p className="text-sm text-gray-700">{shift?.specialRequirement}</p>
           </div>
           {/* Shift Supervisor */}
           <div className="mb-6">
             <h3 className="font-bold text-lg mb-2">Shift Supervisor</h3>
             <p className="text-sm text-gray-700">
-              John Friday, Lead Physiotherapist
+              {shift?.shiftSupervisorName}
             </p>
-            <p className="text-sm text-gray-700">Email: johnfriday@gmail.com</p>
-            <p className="text-sm text-gray-700">Phone: (234) 256-78910</p>
+            <p className="text-sm text-gray-700">
+              {shift?.shiftSupervisorEmail}
+            </p>
+            <p className="text-sm text-gray-700">
+              Phone: {shift?.shiftSupervisorPhoneNumber}
+            </p>
           </div>
         </div>
 
@@ -317,7 +331,9 @@ const ShiftDetails: React.FC = () => {
                   {/* Shift Details */}
                   <div className="flex justify-center flex-col items-center mb-4">
                     <img src={lg} alt="Logo" className="h-12 mb-4" />
-                    <p className="text-blue-300 text-sm">{shift?.name}</p>
+                    <p className="text-blue-300 text-sm">
+                      {shift?.hospital.hospitalName}
+                    </p>
                   </div>
 
                   {/* Shift Description */}
