@@ -30,9 +30,14 @@ type shiftDetailsType = {
   payRate: string;
   specialization: string;
   jobType: string;
+  createdAt: string | undefined;
   specialRequirement: string;
   skills: string[];
   status: string; // Added missing status property
+  shiftSupervisorName: string;
+  shiftSupervisorPosition: string;
+  shiftSupervisorEmail: string;
+  shiftSupervisorPhoneNumber: string;
 };
 
 type ShiftTypes = {
@@ -41,28 +46,28 @@ type ShiftTypes = {
   shiftsHealthcare: ShiftDataTypes | null;
   setShiftsHealthcare: (shiftsHealthcare: ShiftDataTypes) => void;
 
-  shiftDetails: shiftDetailsType | null; 
+  shiftDetails: shiftDetailsType | null;
   setShiftDetails: (shiftDetails: shiftDetailsType) => void;
 };
 
-export const useShiftStore = create<ShiftTypes>((set) => ({
+export const useShiftStore = create<ShiftTypes>(set => ({
   shifts: [],
-  setShifts: (shifts) =>
-    set((state) => ({
+  setShifts: shifts =>
+    set(state => ({
       ...state,
       shifts,
     })),
 
   shiftsHealthcare: null,
-  setShiftsHealthcare: (shiftsHealthcare) =>
-    set((state) => ({
+  setShiftsHealthcare: shiftsHealthcare =>
+    set(state => ({
       ...state,
       shiftsHealthcare,
     })),
 
-  shiftDetails: null, 
-  setShiftDetails: (shiftDetails) =>
-    set((state) => ({
+  shiftDetails: null,
+  setShiftDetails: shiftDetails =>
+    set(state => ({
       ...state,
       shiftDetails,
     })),
