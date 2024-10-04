@@ -99,6 +99,8 @@ export default function Header() {
         }, 2000);
       }
     } catch (error) {
+      console.log(error);
+      
       const axiosError = error as AxiosError<{ message: string }>;
       setModalMessage(
         axiosError?.response?.data?.message || "Failed to create shift"

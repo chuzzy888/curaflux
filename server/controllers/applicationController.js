@@ -1,14 +1,16 @@
 import { Application } from "../models/application.js";
-import { Hospital } from "../models/hospital.js";
+import { Shifts } from "../models/hospital.js";
 import expressAsync from "express-async-handler";
 import User from "../models/user.js";
 
 export const applyForShift = expressAsync(async (req, res) => {
-  const { hospitalId, userId } = req.body;
+  const { shiftId, userId } = req.body;
 
   try {
-    const shift = await Hospital.findById(hospitalId);
+    const shift = await Shifts.findById(shiftId);
     const user = await User.findById(userId);
+
+    console.log(shiftId);
 
     if (!shift) {
       return res.status(400).json({ message: "Shift not available" });
@@ -20,7 +22,7 @@ export const applyForShift = expressAsync(async (req, res) => {
 
     const existingApplication = await Application.findOne({
       userId,
-      hospitalId,
+      shiftId,
     });
 
     if (existingApplication) {
@@ -32,7 +34,7 @@ export const applyForShift = expressAsync(async (req, res) => {
     // Create a new application
     const application = new Application({
       userId,
-      hospitalId,
+      shiftId,
       hasApplied: true,
     });
     await application.save();
@@ -50,21 +52,57 @@ export const applyForShift = expressAsync(async (req, res) => {
 
 // get application for a specific hospital
 
+// export const getApplicationsForHospital = async (req, res) => {
+//   const hospitalId = req.user.hospitalId;
+
+//   console.log(hospitalId);
+
+//   try {
+//     const applications = await Application.find({ hospitalId })
+//       .populate("userId", "fullName email photo gender")
+//       .populate("hospitalId");
+
+//     if (applications.length === 0) {
+//       return res
+//         .status(404)
+//         .json({ message: "No applications found for this hospital" });
+//     }
+
+//     res.status(200).json(applications);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: "Server error" });
+//   }
+// };
+
 export const getApplicationsForHospital = async (req, res) => {
-  const { hospitalId } = req.params;
+  const hospitalId = req.user.hospitalId;
 
   try {
-    const applications = await Application.find({ hospitalId })
-      .populate("userId", "fullName email photo gender")
-      .populate("hospitalId");
+    // Find all applications where the associated shift's hospital matches the current admin's hospital
+    const applications = await Application.find()
+      .populate({
+        path: "shiftId",
+        match: { hospital: hospitalId }, // Match shifts that belong to the admin's hospital
+        populate: {
+          path: "hospital", // Populate the hospital details
+          select: "name", // Select only the required fields for hospital
+        },
+      })
+      .populate("userId"); // Populate the user details
 
-    if (applications.length === 0) {
+    // Filter out any applications where the shiftId doesn't match the hospitalId
+    const filteredApplications = applications.filter(
+      (application) => application.shiftId !== null
+    );
+
+    if (filteredApplications.length === 0) {
       return res
         .status(404)
-        .json({ message: "No applications found for this hospital" });
+        .json({ message: "No applications found for this hospital's shifts" });
     }
 
-    res.status(200).json(applications);
+    res.status(200).json(filteredApplications);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });

@@ -15,6 +15,9 @@ interface Shift {
   date: string;
   createdAt: string;
   imageUrl: string;
+  hospital: {
+    _id: string;
+  };
 }
 
 interface CustomJwtPayload extends JwtPayload {
@@ -50,9 +53,9 @@ const ShiftForYou = () => {
       const appliedShiftsMap = data.appliedShift.reduce(
         (
           acc: { [x: string]: boolean },
-          application: { hospitalId: string | number }
+          application: { shiftId: string | number }
         ) => {
-          acc[application.hospitalId] = true;
+          acc[application.shiftId] = true;
           return acc;
         },
         {}
@@ -80,18 +83,20 @@ const ShiftForYou = () => {
     return () => clearInterval(getShiftInterval);
   }, []);
 
-  const applyForShift = async (hospitalId: string) => {
+  const applyForShift = async (shiftId: string) => {
+    console.log(shiftId);
+
     try {
       await axios.post(
         `${import.meta.env.VITE_BASE_URL}/shift/application`,
-        { hospitalId: hospitalId, userId: decode?.userId },
+        { shiftId: shiftId, userId: decode?.userId },
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
 
       // Update the appliedShifts state
-      setAppliedShifts((prev) => ({ ...prev, [hospitalId]: true }));
+      setAppliedShifts((prev) => ({ ...prev, [shiftId]: true }));
     } catch (error) {
       console.log(error);
     }
@@ -125,6 +130,7 @@ const ShiftForYou = () => {
     <div className="space-y-4">
       {shiftList?.map((shift) => (
         <div className="relative" key={shift._id}>
+          {/* { console.log(shift.hospital._id)} */}
           <Link
             to={`/shifts/${shift._id}`}
             className="flex flex-col sm:flex-row items-start bg-white p-4 shadow-md rounded-lg hover:border-blue-400"
@@ -148,17 +154,17 @@ const ShiftForYou = () => {
           <div className="ml-auto absolute top-16 right-5">
             <Button
               className={`text-white px-4 py-2 rounded-full ${
-                appliedShifts[shift._id] && "cursor-not-allowed"
+                appliedShifts[shift?._id] && "cursor-not-allowed"
               } ${
-                appliedShifts[shift._id]
+                appliedShifts[shift?._id]
                   ? "bg-green-500 hover:bg-green-600"
                   : "bg-blue-500 hover:bg-blue-600"
               }`}
               size="sm"
-              onClick={() => applyForShift(shift._id)}
-              disabled={appliedShifts[shift._id]}
+              onClick={() => applyForShift(shift?._id)}
+              disabled={appliedShifts[shift?._id]}
             >
-              {appliedShifts[shift._id] ? "Applied" : "Apply Now"}
+              {appliedShifts[shift?._id] ? "Applied" : "Apply Now"}
             </Button>
           </div>
         </div>

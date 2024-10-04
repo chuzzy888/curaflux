@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 
 // Define the schema
-const HospitalSchema = new Schema(
+const ShiftSchema = new Schema(
   {
     adsNote: {
       type: String,
@@ -74,6 +74,6 @@ const HospitalSchema = new Schema(
   }
 );
 
-export const Hospital = mongoose.model("Hospital", HospitalSchema);
+export const Shifts = mongoose.model("Shifts", ShiftSchema);
 
 

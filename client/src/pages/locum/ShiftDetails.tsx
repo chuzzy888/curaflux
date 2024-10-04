@@ -18,7 +18,7 @@ import { useShiftStore } from "../../redux/store/shiftStore";
 
 interface CustomJwtPayload extends JwtPayload {
   userId: string;
-  
+
 }
    
 const ShiftDetails: React.FC = () => {
@@ -268,17 +268,17 @@ const ShiftDetails: React.FC = () => {
           <div className=" text-center">
             <Button
               className={`text-white px-4 py-2 rounded-full ${
-                shift && appliedShifts[shift._id] && "cursor-not-allowed"
+                shift && appliedShifts[shift?.hospital?._id] && "cursor-not-allowed"
               } ${
-                shift && appliedShifts[shift._id]
+                shift && appliedShifts[shift?.hospital?._id]
                   ? "bg-green-500 hover:bg-green-600"
                   : "bg-blue-500 hover:bg-blue-600"
               }`}
               size="sm"
-              onClick={() => shift && applyForShift(shift._id)}
-              disabled={shift && appliedShifts[shift._id] ? true : false}
+              onClick={() => shift && applyForShift(shift?.hospital?._id)}
+              disabled={shift && appliedShifts[shift?.hospital?._id] ? true : false}
             >
-              {shift && appliedShifts[shift._id] ? "Applied" : "Apply Now"}
+              {shift && appliedShifts[shift?.hospital?._id] ? "Applied" : "Apply Now"}
             </Button>
           </div>
         )}

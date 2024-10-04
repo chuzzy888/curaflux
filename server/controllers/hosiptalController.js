@@ -1,5 +1,5 @@
 import { Application } from "../models/application.js";
-import { Hospital } from "../models/hospital.js";
+import { Shifts } from "../models/hospital.js";
 
 // POST: Create a new Hospital
 export const createHospital = async (req, res) => {
@@ -22,7 +22,7 @@ export const createHospital = async (req, res) => {
     const { hospitalId } = req.user;
 
     // Create a new Hospital instance
-    const newHospital = new Hospital({
+    const newHospital = new Shifts({
       adsNote,
       date,
       location,
@@ -56,7 +56,7 @@ export const getAllHospitals = async (req, res) => {
     const appliedShift = await Application.find({ hasApplied: true });
 
     // Fetch all Hospitals from the database
-    const Hospitals = await Hospital.find()
+    const Hospitals = await Shifts.find()
       .sort("-created")
       .populate("hospital", "-password");
 
@@ -76,7 +76,7 @@ export const getHospitalById = async (req, res) => {
 
   try {
     // Fetch the Hospital from the database by its ID
-    const singleHospital = await Hospital.findById(HospitalId).populate(
+    const singleHospital = await Shifts.findById(HospitalId).populate(
       "hospital",
       "-password"
     );
@@ -103,7 +103,7 @@ export const getHospitalById = async (req, res) => {
 export const getShiftForAHealthCare = async (req, res) => {
   const { hospitalId } = req.params;
   try {
-    const yourShift = await Hospital.find({ hospital: hospitalId })
+    const yourShift = await Shifts.find({ hospital: hospitalId })
       .sort("-created")
       .populate("hospital", "-password");
 
@@ -135,7 +135,7 @@ export const searchShift = async (req, res) => {
       queryObj.location = { $regex: location, $options: "i" };
     }
 
-    const search = await Hospital.find(queryObj);
+    const search = await Shifts.find(queryObj);
 
     if (search.length === 0) {
       return res

@@ -25,6 +25,7 @@ type shiftDetailsType = {
     email: string;
     hospitalType: string;
     phoneNumber: string;
+    _id: string;
   };
   location: string;
   payRate: string;
@@ -41,7 +42,7 @@ type ShiftTypes = {
   shiftsHealthcare: ShiftDataTypes | null;
   setShiftsHealthcare: (shiftsHealthcare: ShiftDataTypes) => void;
 
-  shiftDetails: shiftDetailsType | null; 
+  shiftDetails: shiftDetailsType | null;
   setShiftDetails: (shiftDetails: shiftDetailsType) => void;
 };
 
@@ -60,7 +61,7 @@ export const useShiftStore = create<ShiftTypes>((set) => ({
       shiftsHealthcare,
     })),
 
-  shiftDetails: null, 
+  shiftDetails: null,
   setShiftDetails: (shiftDetails) =>
     set((state) => ({
       ...state,

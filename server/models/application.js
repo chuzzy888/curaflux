@@ -6,10 +6,10 @@ const ApplicationSchema = new Schema({
     required: true,
     ref: "User",
   },
-  hospitalId: {
+  shiftId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref: "Hospital",
+    ref: "Shifts",
   },
   status: {
     type: String,
