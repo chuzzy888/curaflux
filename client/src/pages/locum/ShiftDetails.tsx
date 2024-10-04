@@ -18,8 +18,9 @@ import { useShiftStore } from "../../redux/store/shiftStore";
 
 interface CustomJwtPayload extends JwtPayload {
   userId: string;
+  
 }
-
+   
 const ShiftDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
 
