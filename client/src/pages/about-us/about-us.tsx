@@ -102,61 +102,78 @@ const AboutUs = () => {
   return (
     <main className="pb-12">
       <ScreenLayout>
-        <div className=" text-center p-4">
+        {/* <div className=" text-center p-4">
           <h1 className=" font-bold text-3xl">
             About <span className="text-blue-500">Curaflux</span>
           </h1>
           <p className=" text-sm text-gray-600 p-2">
             Connecting Healthcare Professionals with Opportunities
           </p>
+        </div> */}
+        <div className="text-center py-8 px-4 bg-gray-50 rounded-lg shadow-lg">
+          <h1 className="font-extrabold text-2xl md:text-4xl mb-2 text-gray-800">
+            About <span className="text-blue-600">Curaflux</span>
+          </h1>
+          <p className="text-gray-500 text-base md:text-lg px-4 leading-relaxed">
+            Connecting Healthcare Professionals with Opportunities
+          </p>
         </div>
 
-        <div className=" my-7 flex  items-center w-full gap-10">
-          <img src={cf} alt="" className="h-[500px] w-1/2 object-cover" />
-          <div className="text-center ">
-            <h1 className="text-3xl font-bold text-center">Our Mission</h1>
-            <h2>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eveniet
-              hic ducimus reiciendis incidunt rerum laboriosam repellat omnis
-              sunt provident, quaerat dignissimos! Natus, voluptatibus? Deserunt
-              error doloremque dolore eveniet laudantium. Nobis?
+        <div className="my-7 flex flex-col md:flex-row items-center w-full gap-10">
+          {/* Image section */}
+          <img
+            src={cf}
+            alt="Curaflux Mission"
+            className="h-[300px] md:h-[400px] w-full md:w-1/2 object-cover rounded-lg "
+          />
+
+          {/* Text section */}
+          <div className="text-center md:text-left px-4">
+            <h1 className="text-2xl md:text-3xl font-bold mb-4 text-blue-600">
+              Our Mission
+            </h1>
+            <h2 className="text-gray-700 text-sm md:text-base leading-relaxed">
+              Curaflux is dedicated to connecting healthcare professionals with
+              temporary staffing opportunities in facilities that need their
+              expertise. Our mission is to simplify staffing processes, ensuring
+              both professionals and facilities can focus on what matters most —
+              delivering quality healthcare.
             </h2>
+
             <br />
 
-            <h4>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Aspernatur beatae consectetur veniam omnis, ipsa perspiciatis,
+            <h4 className="text-gray-600 text-sm md:text-base">
+              We aim to build an efficient, transparent, and user-friendly
+              platform that empowers healthcare workers and facilities to
+              collaborate seamlessly, enhancing patient care outcomes.
             </h4>
           </div>
         </div>
 
-        <section>
-          <div>
-            <p className=" text-xl font-bold">Our Mission & Values</p>
+        <section className="py-8 px-4 bg-gray-50">
+          <div className="text-center mb-8">
+            <p className="text-2xl font-extrabold text-blue-600">
+              Our Mission & Values
+            </p>
           </div>
 
-          <div className="grid grid-cols-2 mt-5 gap-6">
-            <div className=" border mt-4 p-3 rounded-md">
-              <p className=" text-lg font-bold">Our Mission</p>
-
-              <p className=" mt-2 text-sm text-gray-700">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="border bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+              <p className="text-xl font-bold text-blue-600">Our Mission</p>
+              <p className="mt-4 text-gray-700 leading-relaxed">
                 To revolutionize healthcare staffing by providing seamless
                 connections between skilled professionals and healthcare
                 facilities, ensuring quality care for patients everywhere.
               </p>
             </div>
 
-            <div className=" border mt-4 p-3 rounded-md">
-              <div>
-                <p className=" text-xl font-bold">Our Values</p>
-              </div>
-
-              <div>
-                {values.map((values, i) => (
-                  <div key={i}>
-                    <p className=" flex items-center gap-2 mt-1 text-sm">
-                      <FiCheckCircle color="green" /> {values.text}
-                    </p>
+            <div className="border bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+              <p className="text-xl font-bold text-blue-600">Our Values</p>
+              <div className="mt-4 space-y-2">
+                {values.map((value, i) => (
+                  <div key={i} className="flex items-center gap-2">
+                    <FiCheckCircle color="green" size={20} />
+                    <p className="text-gray-700 text-sm">{value.text}</p>
                   </div>
                 ))}
               </div>
@@ -164,7 +181,7 @@ const AboutUs = () => {
           </div>
         </section>
 
-        <section className=" py-8">
+        {/* <section className=" py-8">
           <h2 className=" text-xl font-bold">Why Choose Curaflux?</h2>
 
           <div className=" mt-4 grid grid-cols-2 md:grid-cols-4 gap-5">
@@ -176,9 +193,34 @@ const AboutUs = () => {
               </div>
             ))}
           </div>
+        </section> */}
+
+        <section className="py-8 bg-gray-50">
+          <h2 className="text-2xl font-extrabold text-center text-blue-600">
+            Why Choose Curaflux?
+          </h2>
+
+          <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {choose.map((value, i) => (
+              <div
+                key={i}
+                className="border border-gray-200 bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
+              >
+                <div className="flex justify-center items-center mb-4">
+                  {value.icon}
+                </div>
+                <p className="py-2 text-lg font-semibold text-blue-700 text-center">
+                  {value.title}
+                </p>
+                <p className="text-sm text-gray-600 text-center">
+                  {value.subTitle}
+                </p>
+              </div>
+            ))}
+          </div>
         </section>
 
-        <section>
+        {/* <section>
           <p className=" text-xl font-bold">Meet Our Team</p>
 
           <div className="mt-5 grid grid-cols-3 gap-5">
@@ -195,9 +237,32 @@ const AboutUs = () => {
               </div>
             ))}
           </div>
+        </section> */}
+
+        <section className="py-8 bg-gray-50">
+          <h2 className="text-2xl font-extrabold text-center text-blue-600">
+            Meet Our Team
+          </h2>
+
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {teams.map((team, index) => (
+              <div
+                key={index}
+                className="border border-gray-200 bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300"
+              >
+                <img
+                  src={team.image}
+                  alt={team.name}
+                  className="w-28 h-28 rounded-full mx-auto object-cover mb-4 border-4 border-blue-500"
+                />
+                <h3 className="mt-2 text-lg font-semibold">{team.name}</h3>
+                <p className="text-sm text-gray-600">{team.role}</p>
+              </div>
+            ))}
+          </div>
         </section>
 
-        <section className="mt-14">
+        {/* <section className="mt-14">
           <p className=" text-xl font-bold">Frequently Asked Questions</p>
 
           <div className="mt-6">
@@ -242,25 +307,87 @@ const AboutUs = () => {
               </AccordionItem>
             </Accordion>
           </div>
+        </section> */}
+
+        <section className="mt-14 px-4">
+          <h2 className="text-2xl font-bold text-center text-blue-600">
+            Frequently Asked Questions
+          </h2>
+
+          <div className="mt-6">
+            <Accordion type="single" collapsible className="w-full">
+              <div className="space-y-4">
+                <AccordionItem value="item-1">
+                  <AccordionTrigger className="bg-blue-100 text-blue-700 rounded-md p-4 transition duration-300 hover:bg-blue-200">
+                    How does Curaflux work?
+                  </AccordionTrigger>
+                  <AccordionContent className="bg-gray-50 p-4 rounded-md">
+                    Curaflux connects healthcare professionals with facilities
+                    in need of temporary staffing. We handle the matching
+                    process, credentialing, and placement to ensure a smooth
+                    experience for both parties.
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="item-2">
+                  <AccordionTrigger className="bg-blue-100 text-blue-700 rounded-md p-4 transition duration-300 hover:bg-blue-200">
+                    Who can use Curaflux?
+                  </AccordionTrigger>
+                  <AccordionContent className="bg-gray-50 p-4 rounded-md">
+                    We work with a wide range of healthcare professionals,
+                    including doctors, nurses, nurse practitioners, physician
+                    assistants, and specialists across various fields.
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="item-3">
+                  <AccordionTrigger className="bg-blue-100 text-blue-700 rounded-md p-4 transition duration-300 hover:bg-blue-200">
+                    How long does the placement process take?
+                  </AccordionTrigger>
+                  <AccordionContent className="bg-gray-50 p-4 rounded-md">
+                    The placement process can vary depending on the specific
+                    requirements, but we strive to make matches as quickly as
+                    possible. Many placements can be completed within a few days
+                    to a week.
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="item-4">
+                  <AccordionTrigger className="bg-blue-100 text-blue-700 rounded-md p-4 transition duration-300 hover:bg-blue-200">
+                    Is Curaflux available nationwide?
+                  </AccordionTrigger>
+                  <AccordionContent className="bg-gray-50 p-4 rounded-md">
+                    Not yet, Curaflux operates within Nigeria, connecting
+                    healthcare professionals with opportunities across all 36
+                    states. We hope to expand to other African countries.
+                  </AccordionContent>
+                </AccordionItem>
+              </div>
+            </Accordion>
+          </div>
         </section>
 
-        <section className="mt-14 text-center">
-          <p className="font-bold text-xl">Ready to Join Curaflux?</p>
-          <p className=" text-gray-700">
+        <section className="mt-14 text-center px-4">
+          <h2 className="font-bold text-2xl text-blue-600">
+            Ready to Join Curaflux?
+          </h2>
+          <p className="text-gray-700 mt-2">
             Start your journey with us today and discover the perfect healthcare
             opportunity.
           </p>
 
           <div className="flex items-center md:flex-row flex-col gap-5 mt-5 justify-center">
             <Link to={"/register"}>
-              <Button className=" bg-blue-400">Get Started</Button>
+              <Button className="bg-blue-500 text-white hover:bg-blue-600 transition duration-300 px-6 py-3 rounded-md">
+                Get Started
+              </Button>
             </Link>
             {/* 
-            <Link to={"/register/healthcare"}>
-              <Button className=" bg-blue-400">
-                Sign Up as a Healthcare Service
-              </Button>
-            </Link> */}
+    <Link to={"/register/healthcare"}>
+      <Button className="bg-blue-500 text-white hover:bg-blue-600 transition duration-300 px-6 py-3 rounded-md">
+        Sign Up as a Healthcare Service
+      </Button>
+    </Link> */}
           </div>
         </section>
       </ScreenLayout>
