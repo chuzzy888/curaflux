@@ -112,3 +112,31 @@ export const getShiftForAHealthCare = async (req, res) => {
       .json({ message: "Error retrieving the your created shifts", error });
   }
 };
+
+export const searchShift = async (req, res) => {
+  const { location } = req.query;
+
+  let queryObj = {};
+
+  try {
+    if (location) {
+      queryObj.location = { $regex: location, $options: "i" };
+    }
+
+    const search = await Hospital.find(queryObj);
+
+    if (search.length === 0) {
+      return res
+        .status(404)
+        .json({ msg: `There are no results for "${location}" ` });
+    }
+
+    res.status(200).json({ success: true, search });
+  } catch (error) {
+    console.log(error);
+
+    res
+      .status(500)
+      .json({ message: "Error retrieving the your search result", error });
+  }
+};

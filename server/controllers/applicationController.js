@@ -1,15 +1,32 @@
 import { Application } from "../models/application.js";
 import { Hospital } from "../models/hospital.js";
 import expressAsync from "express-async-handler";
+import User from "../models/user.js";
 
 export const applyForShift = expressAsync(async (req, res) => {
   const { hospitalId, userId } = req.body;
 
   try {
     const shift = await Hospital.findById(hospitalId);
+    const user = await User.findById(userId);
 
     if (!shift) {
       return res.status(400).json({ message: "Shift not available" });
+    }
+
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
+    }
+
+    const existingApplication = await Application.findOne({
+      userId,
+      hospitalId,
+    });
+
+    if (existingApplication) {
+      return res.status(400).json({
+        message: "You already applied for this shift please wait for a respond",
+      });
     }
 
     // Create a new application
