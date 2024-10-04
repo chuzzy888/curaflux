@@ -33,8 +33,6 @@ const ShiftForYou = () => {
   );
   const token = Cookies.get("locumToken");
 
-
-
   const decode = token ? jwtDecode<CustomJwtPayload>(token) : null;
 
   const fetchShifts = async () => {
@@ -49,10 +47,16 @@ const ShiftForYou = () => {
       setShifts(data.Hospitals);
 
       // Create a map of applied shifts
-      const appliedShiftsMap = data.appliedShift.reduce((acc: { [x: string]: boolean; }, application: { hospitalId: string | number; }) => {
-        acc[application.hospitalId] = true;
-        return acc;
-      }, {});
+      const appliedShiftsMap = data.appliedShift.reduce(
+        (
+          acc: { [x: string]: boolean },
+          application: { hospitalId: string | number }
+        ) => {
+          acc[application.hospitalId] = true;
+          return acc;
+        },
+        {}
+      );
       setAppliedShifts(appliedShiftsMap);
       // console.log(data);
     } catch (error) {
@@ -78,7 +82,7 @@ const ShiftForYou = () => {
 
   const applyForShift = async (hospitalId: string) => {
     try {
-     await axios.post(
+      await axios.post(
         `${import.meta.env.VITE_BASE_URL}/shift/application`,
         { hospitalId: hospitalId, userId: decode?.userId },
         {
@@ -144,6 +148,8 @@ const ShiftForYou = () => {
           <div className="ml-auto absolute top-16 right-5">
             <Button
               className={`text-white px-4 py-2 rounded-full ${
+                appliedShifts[shift._id] && "cursor-not-allowed"
+              } ${
                 appliedShifts[shift._id]
                   ? "bg-green-500 hover:bg-green-600"
                   : "bg-blue-500 hover:bg-blue-600"

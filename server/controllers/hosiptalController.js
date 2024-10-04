@@ -76,20 +76,26 @@ export const getHospitalById = async (req, res) => {
 
   try {
     // Fetch the Hospital from the database by its ID
-    const singleHospital = await Hospital.findById({
-      _id: HospitalId,
-    }).populate("hospital", "-password");
+    const singleHospital = await Hospital.findById(HospitalId).populate(
+      "hospital",
+      "-password"
+    );
 
     // If no Hospital is found, return a 404
     if (!singleHospital) {
       return res.status(404).json({ message: "Hospital not found" });
     }
 
-    // Send back the Hospital in the response
-    res.status(200).json(singleHospital);
+    // Fetch all applications with hasApplied true and related to the specific hospital
+    const appliedShift = await Application.find({
+      hospitalId: HospitalId,
+      hasApplied: true,
+    });
+
+    // Send back the Hospital and appliedShift in the response
+    res.status(200).json({ singleHospital, appliedShift });
   } catch (error) {
     console.log(error);
-
     res.status(500).json({ message: "Error retrieving the Hospital", error });
   }
 };
