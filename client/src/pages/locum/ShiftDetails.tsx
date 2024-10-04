@@ -86,10 +86,10 @@ const ShiftDetails: React.FC = () => {
       );
       // console.log(data);
       // Update the appliedShifts state
-      setAppliedShifts((prev) => ({ ...prev, [hospitalId]: true }));
+      setAppliedShifts(prev => ({ ...prev, [hospitalId]: true }));
     } catch (error) {
       console.error("Failed to apply for shift:", error);
-      setError("Failed to apply for shift. Please try again later.");
+      ("Failed to apply for shift. Please try again later.");
     }
   };
 
@@ -113,7 +113,7 @@ const ShiftDetails: React.FC = () => {
               alt="Hospital"
               className="h-12 w-12 rounded-full mr-4"
             />
-            {shift?.name}
+            {shift?.hospital.hospitalName}
           </div>
           <div className="flex items-center text-gray-500 mb-4 text-sm md:text-[16px]">
             <FaMapMarkerAlt className="mr-2 text-blue-600 h-5" />
@@ -130,9 +130,7 @@ const ShiftDetails: React.FC = () => {
           </div>
           {/* Hospital Info */}
           <div className="flex items-start mb-6">
-            <p className="text-sm text-gray-700 mt-2">
-              {shift?.jobDescription}
-            </p>
+            <p className="text-sm text-gray-700 mt-2">{shift?.adsNote}</p>
           </div>
           {/* Skills and Expertise */}
 
@@ -316,7 +314,9 @@ const ShiftDetails: React.FC = () => {
                   {/* Shift Details */}
                   <div className="flex justify-center flex-col items-center mb-4">
                     <img src={lg} alt="Logo" className="h-12 mb-4" />
-                    <p className="text-blue-300 text-sm">{shift?.name}</p>
+                    <p className="text-blue-300 text-sm">
+                      {shift?.hospital.hospitalName}
+                    </p>
                   </div>
 
                   {/* Shift Description */}
