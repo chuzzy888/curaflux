@@ -136,7 +136,7 @@ const ShiftDetails: React.FC = () => {
           <div className="mb-6">
             <h3 className="font-bold text-lg mb-2 ">Skills and Expertise -</h3>
             <div className="flex flex-wrap gap-2">
-              {shift?.skills.map((skill, i) => (
+              {shift?.skills?.map((skill, i) => (
                 <span
                   key={i}
                   className="px-3 py-2  bg-[#D9F1FD] rounded-lg text-sm "
