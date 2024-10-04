@@ -1,3 +1,4 @@
+import { Application } from "../models/application.js";
 import { Hospital } from "../models/hospital.js";
 
 // POST: Create a new Hospital
@@ -52,13 +53,18 @@ export const createHospital = async (req, res) => {
 // GET: Retrieve all Hospitals
 export const getAllHospitals = async (req, res) => {
   try {
+    const appliedShift = await Application.find({ hasApplied: true });
+
     // Fetch all Hospitals from the database
     const Hospitals = await Hospital.find()
       .sort("-created")
       .populate("hospital", "-password");
 
     // Send back the Hospitals in the response
-    res.status(200).json(Hospitals);
+
+    // console.log(appliedShift);
+
+    res.status(200).json({ Hospitals, appliedShift });
   } catch (error) {
     res.status(500).json({ message: "Error retrieving Hospitals", error });
   }
@@ -70,20 +76,26 @@ export const getHospitalById = async (req, res) => {
 
   try {
     // Fetch the Hospital from the database by its ID
-    const singleHospital = await Hospital.findById({
-      _id: HospitalId,
-    }).populate("hospital", "-password");
+    const singleHospital = await Hospital.findById(HospitalId).populate(
+      "hospital",
+      "-password"
+    );
 
     // If no Hospital is found, return a 404
     if (!singleHospital) {
       return res.status(404).json({ message: "Hospital not found" });
     }
 
-    // Send back the Hospital in the response
-    res.status(200).json(singleHospital);
+    // Fetch all applications with hasApplied true and related to the specific hospital
+    const appliedShift = await Application.find({
+      hospitalId: HospitalId,
+      hasApplied: true,
+    });
+
+    // Send back the Hospital and appliedShift in the response
+    res.status(200).json({ singleHospital, appliedShift });
   } catch (error) {
     console.log(error);
-
     res.status(500).json({ message: "Error retrieving the Hospital", error });
   }
 };

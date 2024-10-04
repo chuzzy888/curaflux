@@ -38,20 +38,33 @@ const ShiftDetails: React.FC = () => {
 
   const decode = token ? jwtDecode<CustomJwtPayload>(token) : null;
 
-  console.log(shift?._id);
+  // console.log(shift?._id);
 
   useEffect(() => {
     const fetchShiftDetails = async () => {
       /// this is for getting the shift details
       try {
         const { data } = await axios(
-          `https://curaflux-server.onrender.com/hospital/getHospitalById/${id}`,
+          `${import.meta.env.VITE_BASE_URL}/hospital/getHospitalById/${id}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
 
-        setShiftDetails(data); // the code is working fine now
+        setShiftDetails(data.singleHospital); // the code is working fine now
+
+        // Create a map of applied shifts
+        const appliedShiftsMap = data.appliedShift.reduce(
+          (
+            acc: { [x: string]: boolean },
+            application: { hospitalId: string | number }
+          ) => {
+            acc[application.hospitalId] = true;
+            return acc;
+          },
+          {}
+        );
+        setAppliedShifts(appliedShiftsMap);
 
         // console.log(data); // make use of axios
       } catch (error) {
@@ -60,12 +73,6 @@ const ShiftDetails: React.FC = () => {
     };
 
     fetchShiftDetails();
-
-    // Load applied shifts from local storage
-    const storedAppliedShifts = localStorage.getItem("appliedShifts");
-    if (storedAppliedShifts) {
-      setAppliedShifts(JSON.parse(storedAppliedShifts));
-    }
   }, [id]);
 
   const applyForShift = async (hospitalId: string) => {
@@ -78,12 +85,8 @@ const ShiftDetails: React.FC = () => {
         }
       );
       // console.log(data);
-      const updatedAppliedShifts = { ...appliedShifts, [hospitalId]: true };
-      setAppliedShifts(updatedAppliedShifts);
-      localStorage.setItem(
-        "appliedShifts",
-        JSON.stringify(updatedAppliedShifts)
-      );
+      // Update the appliedShifts state
+      setAppliedShifts((prev) => ({ ...prev, [hospitalId]: true }));
     } catch (error) {
       console.error("Failed to apply for shift:", error);
       setError("Failed to apply for shift. Please try again later.");
@@ -264,14 +267,17 @@ const ShiftDetails: React.FC = () => {
           <div className=" text-center">
             <Button
               className={`text-white px-4 py-2 rounded-full ${
+                shift && appliedShifts[shift._id] && "cursor-not-allowed"
+              } ${
                 shift && appliedShifts[shift._id]
                   ? "bg-green-500 hover:bg-green-600"
                   : "bg-blue-500 hover:bg-blue-600"
               }`}
-              disabled={shift ? appliedShifts[shift._id] : false}
               size="sm"
+              onClick={() => shift && applyForShift(shift._id)}
+              disabled={shift && appliedShifts[shift._id] ? true : false}
             >
-              Applied
+              {shift && appliedShifts[shift._id] ? "Applied" : "Apply Now"}
             </Button>
           </div>
         )}

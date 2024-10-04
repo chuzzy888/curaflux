@@ -30,7 +30,11 @@ export const applyForShift = expressAsync(async (req, res) => {
     }
 
     // Create a new application
-    const application = new Application({ userId, hospitalId });
+    const application = new Application({
+      userId,
+      hospitalId,
+      hasApplied: true,
+    });
     await application.save();
 
     shift.applicants.push(application._id);
