@@ -28,6 +28,7 @@ const ShiftForYou = () => {
         }
         const data: Shift[] = await response.json();
         setShifts(data);
+        console.log(data);
       } catch (error) {
         if (error instanceof Error) {
           setError(error.message);
@@ -85,24 +86,34 @@ const ShiftForYou = () => {
         </h2> */}
 
         {/* Shifts List */}
+
         <div className="space-y-4">
           {shifts.map(shift => (
             <div
               key={shift.id}
-              className="flex flex-col sm:flex-row items-start sm:items-center bg-white p-4 shadow-md rounded-lg space-y-4 sm:space-y-0 sm:space-x-4"
+              className="flex flex-col sm:flex-row items-start bg-white p-4 shadow-md rounded-lg"
             >
-              <img
-                src={shift.imageUrl}
-                alt={shift.payRate}
-                className="w-24 h-24 object-cover rounded-lg"
-              />
-              <div>
-                <p className="text-gray-500 text-sm mb-2">
-                  Posted {shift.date}
+              <div className="flex flex-col">
+                <img
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTg4fFT8h4q-vXnYeZqikC3UfbkHgmMtlUV6A&s"
+                  alt=""
+                  className="w-12 h-12 object-cover rounded-full mb-2"
+                />
+              </div>
+
+              <div className="flex-1 ml-4">
+                <p className="text-gray-500 text-sm mb-1">
+                  Posted {shift.date} ago
                 </p>
-                <h3 className="text-xl font-semibold">{shift.payRate}</h3>
-                <p className="text-gray-600">{shift.location}</p>
+                <h3 className="text-lg font-semibold mb-1">Medix care</h3>
+                <p className="text-gray-600 mb-1">{shift.location}</p>
                 <p className="text-gray-700 mt-2">{shift.adsNote}</p>
+              </div>
+
+              <div className="ml-auto">
+                <button className="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600">
+                  Apply Now
+                </button>
               </div>
             </div>
           ))}

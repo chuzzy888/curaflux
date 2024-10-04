@@ -1,12 +1,10 @@
 import { useState } from "react";
 import dp from "../../assets/images/dp.jpg";
-import bg from "../../assets/images/bg.jpg";
 import { FaBell } from "react-icons/fa";
 import {
   IoCardOutline,
   IoHelpCircleOutline,
   IoLinkOutline,
-  IoLocationOutline,
   IoLockClosedOutline,
   IoNotificationsOutline,
   IoSettings,
@@ -16,7 +14,7 @@ import {
 import { Sidebar } from "primereact/sidebar";
 import { Badge } from "primereact/badge";
 import { Dialog } from "primereact/dialog";
-import { MdLogout, MdOutlineDateRange } from "react-icons/md";
+import { MdLogout } from "react-icons/md";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -26,15 +24,19 @@ import { Modal } from "../modals/Success-Modal";
 import { jwtDecode, JwtPayload } from "jwt-decode";
 import { useLocation, useParams } from "react-router-dom";
 import { Button } from "../ui/button";
-
 type postShiftTypes = {
   adsNote: string;
   date: string;
   location: string;
   duration: string;
   payRate: string;
-  specialization: string;
-  licenseRequired: string;
+  jobType: string;
+  specialRequirement: string;
+  skills: string[];
+  shiftSupervisorName: string;
+  shiftSupervisorPosition: string;
+  shiftSupervisorEmail: string;
+  shiftSupervisorPhoneNumber: string;
 };
 
 interface CustomJwtPayload extends JwtPayload {
@@ -49,39 +51,48 @@ export default function Header() {
   const healthcareToken = Cookies.get("healthcareToken");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
+  const [currentStep, setCurrentStep] = useState(1);
+  const [skills, setSkills] = useState<string[]>([""]); // Initial skill input
 
   const token = Cookies.get("healthcareToken");
   const decode = token ? jwtDecode<CustomJwtPayload>(token) : null;
+
   const {
     handleSubmit,
     register,
-    formState: { errors, isValid, isSubmitting },
+    reset,
+    formState: { errors, isSubmitting },
   } = useForm<postShiftTypes>();
 
   const { shiftId } = useParams();
 
-  console.log(decode);
-
   const handleLogout = () => {
     Cookies.remove("healthcareToken");
     Cookies.remove("healthcareVerified");
-
     window.location.href = "/login/healthcare";
   };
 
   const handlePostShift: SubmitHandler<postShiftTypes> = async form => {
     try {
+      const formData = {
+        ...form,
+        skills,
+        hospital: decode?.hospitalName, // Assuming hospitalName is needed
+      };
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/hospital/createHospital`,
-        form,
+        formData,
         {
           headers: { Authorization: `Bearer ${healthcareToken}` },
         }
       );
 
       if (data.success === true) {
+        // Reset the form fields and skills state on success
+        reset(); // Reset all form inputs
+        setSkills([""]); // Reset skills state to initial value
         setShiftDialog(false);
-
         setTimeout(() => {
           setModalMessage("Your shift has been posted successfully");
           setIsModalOpen(true);
@@ -89,7 +100,6 @@ export default function Header() {
       }
     } catch (error) {
       const axiosError = error as AxiosError<{ message: string }>;
-
       setModalMessage(
         axiosError?.response?.data?.message || "Failed to create shift"
       );
@@ -97,6 +107,28 @@ export default function Header() {
     }
   };
 
+  const handleAddSkill = () => {
+    setSkills([...skills, ""]); // Add new skill input
+  };
+
+  const handleSkillChange = (index: number, value: string) => {
+    const newSkills = [...skills];
+    newSkills[index] = value; // Update specific skill input
+    setSkills(newSkills);
+  };
+
+  const handleRemoveSkill = (index: number) => {
+    const newSkills = skills.filter((_, i) => i !== index); // Remove skill input
+    setSkills(newSkills);
+  };
+
+  const handleNextStep = () => {
+    setCurrentStep(prev => prev + 1);
+  };
+
+  const handlePreviousStep = () => {
+    setCurrentStep(prev => prev - 1);
+  };
   const location = useLocation();
 
   const renderContent = () => {
@@ -223,8 +255,9 @@ export default function Header() {
                 <Dialog
                   visible={profileDialog}
                   onHide={() => setProfileDialog(false)}
-                  className="w-50  surface-overlay absolute top-7 right-3 tranlate-x-1/2"
+                  className="w-50 static-dialog surface-overlay absolute top-7 right-3 tranlate-x-1/2"
                   style={{ backgroundColor: "white" }}
+                  draggable={false}
                 >
                   {/* Profile dialog content */}
                   <div className="card">
@@ -275,216 +308,289 @@ export default function Header() {
                 visible={shiftDialog}
                 onHide={() => setShiftDialog(false)}
                 header="Medix Care"
-                className="w-1/2"
+                className="w-1/2 static-dialog"
+                draggable={false}
               >
-                <form
-                  className="max-w-lg mx-auto p-6 bg-card rounded-lg shadow-md"
-                  style={{
-                    backgroundImage: `url(${bg})`,
-                    backgroundSize: "cover",
-                    backgroundRepeat: "no-repeat",
-                    backgroundPosition: "center",
-                    objectFit: "cover",
-                  }}
-                  onSubmit={handleSubmit(handlePostShift)}
-                >
+                {/* Multi-step form */}
+                <form onSubmit={handleSubmit(handlePostShift)} className="p-6">
                   <h2 className="text-2xl font-bold text-foreground text-center">
-                    Post Locum Shift
+                    {currentStep === 1
+                      ? "Post Locum Shift"
+                      : "Shift Supervisor Details"}
                   </h2>
-                  <p className="text-muted-foreground mb-6 text-center">
-                    Fill in the details for the locum shift you want to post.
-                  </p>
-                  <div>
-                    <label className="block text-sm font-medium text-muted-foreground">
-                      ADS Note*
-                    </label>
-                    <textarea
-                      className="mt-1 block w-full p-3 border border-border rounded-md focus:ring-2 focus:ring-ring"
-                      {...register("adsNote", {
-                        required: "Please add your adsNote",
-                      })}
-                      rows={3}
-                      placeholder="E.g., Join our General Medicine SHO Position in Lagos: Elevate Your Career, Impact Patient Care"
-                    ></textarea>
 
-                    {errors.adsNote && (
-                      <p className=" text-[12px] text-red-500">
-                        {errors.adsNote.message}
-                      </p>
-                    )}
-                  </div>
+                  {currentStep === 1 && (
+                    <>
+                      <div>
+                        <label className="block text-sm font-medium text-muted-foreground">
+                          ADS Note*
+                        </label>
+                        <textarea
+                          className="mt-1 block w-full p-3 border border-border border-blue-400 rounded-md focus:ring-2 focus:ring-ring"
+                          {...register("adsNote", {
+                            required: "Please add your ADS Note",
+                          })}
+                          rows={3}
+                          placeholder="E.g., Looking for a certified doctor with experience."
+                        ></textarea>
+                        {errors.adsNote && (
+                          <p className="text-[12px] text-red-500">
+                            {errors.adsNote.message}
+                          </p>
+                        )}
+                      </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                    <div>
-                      <label className="block text-sm font-medium text-muted-foreground flex items-center gap-0.5">
-                        Date <MdOutlineDateRange className="text-gray-500" />
-                      </label>
-                      <input
-                        type="date"
-                        className="mt-1 block w-full p-3 border border-border rounded-md focus:ring-2 focus:ring-ring"
-                        placeholder="mm/dd/yyyy"
-                        {...register("date", {
-                          required: "Please add your date",
-                        })}
-                      />
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                        <div>
+                          <label className="block text-sm font-medium text-muted-foreground ">
+                            Date*{" "}
+                          </label>
+                          <input
+                            type="date"
+                            className="mt-1 block w-full p-3 border border-border rounded-md focus:ring-2 focus:ring-ring"
+                            {...register("date", {
+                              required: "Date is required.",
+                            })}
+                          />
+                          {errors.date && (
+                            <p className="text-[12px] text-red-500">
+                              {errors.date.message}
+                            </p>
+                          )}
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-muted-foreground">
+                            Location*
+                          </label>
+                          <input
+                            type="text"
+                            className="mt-1 block w-full p-3 border border-border rounded-md focus:ring-2 focus:ring-ring"
+                            {...register("location", {
+                              required: "Location is required.",
+                            })}
+                            placeholder="E.g., Hospital X"
+                          />
+                          {errors.location && (
+                            <p className="text-[12px] text-red-500">
+                              {errors.location.message}
+                            </p>
+                          )}
+                        </div>
+                      </div>
 
-                      {errors.date && (
-                        <p className=" text-[12px] text-red-500">
-                          {errors.date.message}
-                        </p>
-                      )}
-                    </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                        <div>
+                          <label className="block text-sm font-medium text-muted-foreground">
+                            Duration*
+                          </label>
+                          <input
+                            type="text"
+                            className="mt-1 block w-full p-3 border border-border rounded-md focus:ring-2 focus:ring-ring"
+                            {...register("duration", {
+                              required: "Duration is required.",
+                            })}
+                            placeholder="E.g., 8 hours"
+                          />
+                          {errors.duration && (
+                            <p className="text-[12px] text-red-500">
+                              {errors.duration.message}
+                            </p>
+                          )}
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-muted-foreground">
+                            Pay Rate*
+                          </label>
+                          <input
+                            type="text"
+                            className="mt-1 block w-full p-3 border border-border rounded-md focus:ring-2 focus:ring-ring"
+                            {...register("payRate", {
+                              required: "Pay rate is required.",
+                            })}
+                            placeholder="E.g., $50/hr"
+                          />
+                          {errors.payRate && (
+                            <p className="text-[12px] text-red-500">
+                              {errors.payRate.message}
+                            </p>
+                          )}
+                        </div>
+                      </div>
 
-                    <div>
-                      <label className="block text-sm font-medium text-muted-foreground flex items-center gap-0.5">
-                        Location
-                        <IoLocationOutline />
-                      </label>
-                      <input
-                        type="text"
-                        className="mt-1 block w-full p-3 border border-border rounded-md focus:ring-2 focus:ring-ring"
-                        placeholder="Location"
-                        {...register("location", {
-                          required: "Please add your location",
-                        })}
-                      />
+                      <div className="mt-4">
+                        <label className="block text-sm font-medium text-muted-foreground">
+                          Job Type*
+                        </label>
+                        <input
+                          type="text"
+                          className="mt-1 block w-full p-3 border border-border rounded-md focus:ring-2 focus:ring-ring"
+                          {...register("jobType", {
+                            required: "Job type is required.",
+                          })}
+                          placeholder="E.g., Nurse"
+                        />
+                        {errors.jobType && (
+                          <p className="text-[12px] text-red-500">
+                            {errors.jobType.message}
+                          </p>
+                        )}
+                      </div>
 
-                      {errors.location && (
-                        <p className=" text-[12px] text-red-500">
-                          {errors.location.message}
-                        </p>
-                      )}
-                    </div>
-                  </div>
+                      <div className="mt-4">
+                        <label className="block text-sm font-medium text-muted-foreground">
+                          Special Requirements
+                        </label>
+                        <input
+                          type="text"
+                          className="mt-1 block w-full p-3 border border-border rounded-md focus:ring-2 focus:ring-ring"
+                          {...register("specialRequirement")}
+                          placeholder="E.g., CPR certified"
+                        />
+                      </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                    <div>
-                      <label className="block text-sm font-medium text-muted-foreground flex items-center gap-0.5">
-                        Shift Duration <IoTimeOutline />
-                      </label>
-                      <input
-                        type="text"
-                        className="mt-1 block w-full p-3 border border-border rounded-md focus:ring-2 focus:ring-ring"
-                        placeholder="E.g., 8 AM - 4 PM"
-                        {...register("duration", {
-                          required: "Please add your duration",
-                        })}
-                      />
-
-                      {errors.duration && (
-                        <p className=" text-[12px] text-red-500">
-                          {errors.duration.message}
-                        </p>
-                      )}
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-muted-foreground">
-                        Pay Rate ($/hr)
-                      </label>
-                      <input
-                        type="number"
-                        className="mt-1 block w-full p-3 border border-border rounded-md focus:ring-2 focus:ring-ring"
-                        placeholder="Enter pay rate"
-                        {...register("payRate", {
-                          required: "Please add your payRate",
-                        })}
-                      />
-
-                      {errors.payRate && (
-                        <p className=" text-[12px] text-red-500">
-                          {errors.payRate.message}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                    <div>
-                      <label className="block text-sm font-medium text-muted-foreground">
-                        Specialization
-                      </label>
-
-                      <select
-                        className="mt-1 block w-full p-3 border border-border rounded-md focus:ring-2 focus:ring-ring"
-                        {...register("specialization", {
-                          required: "Please add your specialization",
-                        })}
-                      >
-                        <option value="">Select position</option>
-                        <option value="Registered Nurse (RN)">
-                          Registered Nurse (RN)
-                        </option>
-                        <option value="Pediatric Nurse">Pediatric Nurse</option>
-                        <option value="Clinical Nurse Specialist">
-                          Clinical Nurse Specialist
-                        </option>
-                        <option value="Public Health Nurse">
-                          Public Health Nurse
-                        </option>
-                        <option value="Emergency Room Nurse">
-                          Emergency Room Nurse
-                        </option>
-                      </select>
-
-                      {errors.specialization && (
-                        <p className=" text-[12px] text-red-500">
-                          {errors.specialization.message}
-                        </p>
-                      )}
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-muted-foreground">
-                        License/Certification Required
-                      </label>
-                      <input
-                        type="text"
-                        className="mt-1 block w-full p-3 border border-border rounded-md focus:ring-2 focus:ring-ring"
-                        placeholder="Enter license or certification required"
-                        {...register("licenseRequired", {
-                          required: "Please add your license Requirement",
-                        })}
-                      />
-
-                      {errors.licenseRequired && (
-                        <p className=" text-[12px] text-red-500">
-                          {errors.licenseRequired.message}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-
-                  <button
-                    type="submit"
-                    className="w-full py-3 mt-6 text-white bg-slate-700 rounded-md hover:bg-primary/90"
-                    disabled={!isValid}
-                  >
-                    {isSubmitting ? (
-                      <span className="flex justify-center">
-                        <svg
-                          className="animate-spin h-5 w-5 text-white"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
+                      <div className="mt-4">
+                        <label className="block text-sm font-medium text-muted-foreground">
+                          Skills
+                        </label>
+                        {skills.map((skill, index) => (
+                          <div
+                            key={index}
+                            className="flex items-center gap-2 mb-2"
+                          >
+                            <input
+                              type="text"
+                              className="mt-1 block w-full p-3 border border-border rounded-md focus:ring-2 focus:ring-ring"
+                              value={skill}
+                              onChange={e =>
+                                handleSkillChange(index, e.target.value)
+                              }
+                              placeholder="E.g., Emergency Care"
+                            />
+                            <button
+                              type="button"
+                              className="bg-red-500 text-white px-2 py-1 rounded"
+                              onClick={() => handleRemoveSkill(index)}
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        ))}
+                        <button
+                          type="button"
+                          className="bg-blue-500 text-white px-4 py-2 rounded mt-2"
+                          onClick={handleAddSkill}
                         >
-                          <circle
-                            className="opacity-25"
-                            cx="12"
-                            cy="12"
-                            r="10"
-                            stroke="currentColor"
-                            strokeWidth="4"
+                          Add Skill
+                        </button>
+                      </div>
+                    </>
+                  )}
+
+                  {currentStep === 2 && (
+                    <>
+                      <div>
+                        <label className="block text-sm font-medium text-muted-foreground">
+                          Shift Supervisor Name*
+                        </label>
+                        <input
+                          type="text"
+                          className="mt-1 block w-full p-3 border border-border rounded-md focus:ring-2 focus:ring-ring"
+                          {...register("shiftSupervisorName", {
+                            required: "Shift supervisor name is required.",
+                          })}
+                        />
+                        {errors.shiftSupervisorName && (
+                          <p className="text-[12px] text-red-500">
+                            {errors.shiftSupervisorName.message}
+                          </p>
+                        )}
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                        <div>
+                          <label className="block text-sm font-medium text-muted-foreground">
+                            Shift Supervisor Position*
+                          </label>
+                          <input
+                            type="text"
+                            className="mt-1 block w-full p-3 border border-border rounded-md focus:ring-2 focus:ring-ring"
+                            {...register("shiftSupervisorPosition", {
+                              required: "Position is required.",
+                            })}
                           />
-                          <path
-                            className="opacity-75"
-                            fill="currentColor"
-                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                          {errors.shiftSupervisorPosition && (
+                            <p className="text-[12px] text-red-500">
+                              {errors.shiftSupervisorPosition.message}
+                            </p>
+                          )}
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-muted-foreground">
+                            Shift Supervisor Email*
+                          </label>
+                          <input
+                            type="email"
+                            className="mt-1 block w-full p-3 border border-border rounded-md focus:ring-2 focus:ring-ring"
+                            {...register("shiftSupervisorEmail", {
+                              required: "Email is required.",
+                            })}
                           />
-                        </svg>
-                      </span>
-                    ) : (
-                      "+ Schedule Shift"
+                          {errors.shiftSupervisorEmail && (
+                            <p className="text-[12px] text-red-500">
+                              {errors.shiftSupervisorEmail.message}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-muted-foreground">
+                          Shift Supervisor Phone Number*
+                        </label>
+                        <input
+                          type="tel"
+                          className="mt-1 block w-full p-3 border border-border rounded-md focus:ring-2 focus:ring-ring"
+                          {...register("shiftSupervisorPhoneNumber", {
+                            required: "Phone number is required.",
+                          })}
+                        />
+                        {errors.shiftSupervisorPhoneNumber && (
+                          <p className="text-[12px] text-red-500">
+                            {errors.shiftSupervisorPhoneNumber.message}
+                          </p>
+                        )}
+                      </div>
+                    </>
+                  )}
+
+                  <div className="flex justify-between mt-6">
+                    {currentStep > 1 && (
+                      <button
+                        type="button"
+                        className="bg-gray-300 px-4 py-2 rounded"
+                        onClick={handlePreviousStep}
+                      >
+                        Back
+                      </button>
                     )}
-                  </button>
+                    {currentStep < 2 ? (
+                      <button
+                        type="button"
+                        className="bg-blue-500 text-white px-4 py-2 rounded"
+                        onClick={handleNextStep}
+                      >
+                        Next
+                      </button>
+                    ) : (
+                      <button
+                        type="submit"
+                        className="bg-blue-500 text-white px-4 py-2 rounded"
+                        disabled={isSubmitting}
+                      >
+                        {isSubmitting ? "Posting..." : "Post Shift"}
+                      </button>
+                    )}
+                  </div>
                 </form>
               </Dialog>
             </header>

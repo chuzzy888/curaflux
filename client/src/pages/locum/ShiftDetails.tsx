@@ -1,14 +1,15 @@
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { shifts } from "./shiftData";
-import { FaMapMarkerAlt, FaTimes } from "react-icons/fa";
-import { HiCalendar } from "react-icons/hi";
+import { FaArrowCircleLeft, FaMapMarkerAlt, FaTimes } from "react-icons/fa";
 import Modal from "react-modal";
 import React from "react";
 import lg from "../../assets/images/hlg.png";
 import clk from "../../assets/images/clk.png";
 import jbt from "../../assets/images/jbt.png";
 import vct from "../../assets/images/vct.png";
+import cld from "../../assets/images/Calendar.png";
+import mapimg from "../../assets/images/Frame.png";
 import { ScreenLayout } from "../../components/layout/ScreenLayout";
 
 const ShiftDetails: React.FC = () => {
@@ -39,7 +40,10 @@ const ShiftDetails: React.FC = () => {
         <div className="p-6 space-y-4">
           {/* Header */}
           <div className="flex justify-between items-center mb-4">
-            <h1 className="text-2xl font-bold ">Shift Details</h1>
+            <h1 className="md:text-2xl md:font-bold flex items-center gap-2">
+              <FaArrowCircleLeft />
+              Shift Details
+            </h1>
             <div className="text-sm text-gray-500 ">Posted 7 mins ago</div>
           </div>
           <div className="border-b-2 border-gray-300"></div>
@@ -53,15 +57,15 @@ const ShiftDetails: React.FC = () => {
             {shift.name}
           </div>
           <div className="flex items-center text-gray-500 mb-4 text-sm md:text-[16px]">
-            <FaMapMarkerAlt className="mr-2" />
+            <FaMapMarkerAlt className="mr-2 text-blue-600 h-5" />
             {shift.location}
           </div>
           {/* Date and Time */}
           <div className="flex flex-wrap items-center justify-between mt-2 mb-4">
-            <div className="flex items-center text-gray-500">
-              <HiCalendar className="mr-2" /> {shift.date}
+            <div className="flex items-center gap-2 text-gray-500">
+              <img src={cld} alt="" className="h-5" /> {shift.date}
             </div>
-            <div className="flex items-center  bg-gray-100 px-5 p-1 rounded">
+            <div className="flex items-center  bg-[#D9F1FD] px-5 p-1 rounded-lg">
               {shift.duration}
             </div>
           </div>
@@ -72,12 +76,12 @@ const ShiftDetails: React.FC = () => {
           {/* Skills and Expertise */}
 
           <div className="mb-6">
-            <h3 className="font-semibold text-lg mb-2">Skills and Expertise</h3>
+            <h3 className="font-bold text-lg mb-2 ">Skills and Expertise -</h3>
             <div className="flex flex-wrap gap-2">
               {shift.skills.map((skill, index) => (
                 <span
                   key={index}
-                  className="px-3 py-1 bg-gray-100 rounded-full text-sm border border-gray-300"
+                  className="px-3 py-2  bg-[#D9F1FD] rounded-lg text-sm "
                 >
                   {skill}
                 </span>
@@ -88,8 +92,8 @@ const ShiftDetails: React.FC = () => {
 
           {/* Shift Details (Duration, Job Type, Payment) */}
 
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
-            <div className="flex items-center text-gray-600">
+          <div className="grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+            <div className="flex flex-col md:flex-row items-center text-gray-600">
               <img src={clk} alt="" className="h-8 mr-2" />
               <div className="flex flex-col">
                 <p className="text-sm sm:text-base">Duration</p>
@@ -97,7 +101,7 @@ const ShiftDetails: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex items-center text-gray-600">
+            <div className="flex flex-col md:flex-row  items-center text-gray-600">
               <img src={jbt} alt="" className="h-7 mr-2" />
               <div className="flex flex-col">
                 <p className="text-sm sm:text-base">Job Type</p>
@@ -105,7 +109,7 @@ const ShiftDetails: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex items-center text-gray-600">
+            <div className="flex flex-col md:flex-row  items-center text-gray-600">
               <img src={vct} alt="" className="h-7 mr-2" />
               <div className="flex flex-col">
                 <p className="text-sm sm:text-base">Payment</p>
@@ -113,6 +117,26 @@ const ShiftDetails: React.FC = () => {
               </div>
             </div>
           </div>
+
+          <div className="flex flex-col items-center space-y-4 bg-white p-6 shadow-md rounded-lg">
+            {/* Map Image */}
+            <img
+              src={mapimg}
+              alt="Map"
+              className="w-full h-64 object-cover rounded-lg"
+            />
+
+            {/* Address Text */}
+            <p className="text-gray-700 text-center text-lg">
+              23, Ozumba Mbadiwe Ave, Eti-Osa, Lagos, Nigeria
+            </p>
+
+            {/* Get Directions Button */}
+            <button className="bg-[#009FF5] text-white px-6 py-2 rounded-lg hover:bg-blue-600">
+              Get Directions
+            </button>
+          </div>
+
           {/* <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
             <div className="flex items-center text-gray-600">
               <img src={clk} alt="" className="h-8 mr-2" />
@@ -143,7 +167,7 @@ const ShiftDetails: React.FC = () => {
 
           {/* Special Requirements */}
           <div className="mb-6">
-            <h3 className="font-semibold text-lg mb-2">Special Requirements</h3>
+            <h3 className="font-bold text-lg mb-2">Special Requirements</h3>
             <p className="text-sm text-gray-700">
               Bring your health care license and work ID for verification.
             </p>
@@ -154,7 +178,7 @@ const ShiftDetails: React.FC = () => {
           </div>
           {/* Shift Supervisor */}
           <div className="mb-6">
-            <h3 className="font-semibold text-lg mb-2">Shift Supervisor</h3>
+            <h3 className="font-bold text-lg mb-2">Shift Supervisor</h3>
             <p className="text-sm text-gray-700">
               John Friday, Lead Physiotherapist
             </p>
@@ -171,7 +195,7 @@ const ShiftDetails: React.FC = () => {
             </button>
           </Link>
           <button
-            className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300"
+            className="bg-[#009FF5] text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300"
             onClick={openModal}
           >
             Accept Shift
