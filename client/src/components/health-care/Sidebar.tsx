@@ -45,7 +45,7 @@ export default function Sidebar() {
         </Link>
 
         <Link
-          to={""}
+          to={"/curaflux/healthcare/admin/applications"}
           className="flex items-center mx-3 py-2 px-4 text-gray-700 rounded-md hover:bg-gray-200"
         >
           <p className="mr-3">

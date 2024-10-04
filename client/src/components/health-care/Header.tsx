@@ -72,7 +72,7 @@ export default function Header() {
     window.location.href = "/login/healthcare";
   };
 
-  const handlePostShift: SubmitHandler<postShiftTypes> = async form => {
+  const handlePostShift: SubmitHandler<postShiftTypes> = async (form) => {
     try {
       const formData = {
         ...form,
@@ -123,26 +123,34 @@ export default function Header() {
   };
 
   const handleNextStep = () => {
-    setCurrentStep(prev => prev + 1);
+    setCurrentStep((prev) => prev + 1);
   };
 
   const handlePreviousStep = () => {
-    setCurrentStep(prev => prev - 1);
+    setCurrentStep((prev) => prev - 1);
   };
   const location = useLocation();
 
   const renderContent = () => {
     switch (location.pathname) {
-      case `/curaflux/${decode?.hospitalName}/admin/all-shift`:
+      case `/curaflux/healthcare/admin/all-shift`:
         return (
           <main className="bg-white shadow p-4">
             <p className="font-bold text-gray-800 text-xl">All Shift</p>
           </main>
         );
+
       case `/curaflux/healthcare/admin/shift-details/${shiftId}`:
         return (
           <main className="bg-white shadow p-4">
             <p className="font-bold text-gray-800 text-xl">Shift Details</p>
+          </main>
+        );
+
+      case `/curaflux/healthcare/admin/applications`:
+        return (
+          <main className="bg-white shadow p-4">
+            <p className="font-bold text-gray-800 text-xl">All Applications</p>
           </main>
         );
 
@@ -461,7 +469,7 @@ export default function Header() {
                               type="text"
                               className="mt-1 block w-full p-3 border border-border rounded-md focus:ring-2 focus:ring-ring"
                               value={skill}
-                              onChange={e =>
+                              onChange={(e) =>
                                 handleSkillChange(index, e.target.value)
                               }
                               placeholder="E.g., Emergency Care"

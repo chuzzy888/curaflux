@@ -4,7 +4,7 @@ import {
   TableBody,
   TableCaption,
   TableCell,
-  TableFooter,
+  // TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -53,9 +53,9 @@ const AllShifts = () => {
 
   // console.log(shiftsHealthcare?.yourShift); //do not remove. will change this flow later to socket io
 
-  const getRate = shiftsHealthcare?.yourShift
-    .map((r) => Number(r.payRate))
-    .reduce((acc, curr) => acc + curr, 0);
+  // const getRate = shiftsHealthcare?.yourShift
+  //   .map((r) => Number(r.payRate))
+  //   .reduce((acc, curr) => acc + curr, 0);
 
   return (
     <main className=" p-8 ml-64">
@@ -98,12 +98,12 @@ const AllShifts = () => {
             </TableRow>
           ))}
         </TableBody>
-        <TableFooter>
+        {/* <TableFooter>
           <TableRow>
             <TableCell colSpan={3}>Total</TableCell>
             <TableCell>${getRate}</TableCell>
           </TableRow>
-        </TableFooter>
+        </TableFooter> */}
       </Table>
     </main>
   );

@@ -37,6 +37,7 @@ import PageNotFound from "./pages/404/PageNotFound";
 import HealthCareShiftDetails from "./pages/Healthcare/Shift-details";
 import Help from "./pages/help/help";
 import AboutUs from "./pages/about-us/about-us";
+import ViewApplications from "./pages/Healthcare/view-applications";
 
 interface CustomJwtPayload extends JwtPayload {
   nickName: string;
@@ -148,6 +149,7 @@ function AppWrapper() {
             <Route path={`/curaflux/healthcare/admin`} element={<Admin />}>
               <Route index element={<Dashboard />} />
               <Route path="all-shift" element={<AllShifts />} />
+              <Route path="applications" element={<ViewApplications />} />
               <Route
                 path="shift-details/:shiftId"
                 element={<HealthCareShiftDetails />}
