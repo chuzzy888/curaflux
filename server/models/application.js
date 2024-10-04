@@ -16,6 +16,11 @@ const ApplicationSchema = new Schema({
     enum: ["pending", "accepted", "rejected"],
     default: "pending",
   },
+
+  hasApplied: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 export const Application = mongoose.model("Application", ApplicationSchema);

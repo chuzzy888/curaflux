@@ -6,7 +6,6 @@ import { format } from "timeago.js";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { jwtDecode, JwtPayload } from "jwt-decode";
-// import { useApplicationStore } from "../../redux/store/application";
 
 interface Shift {
   _id: string;
@@ -34,7 +33,7 @@ const ShiftForYou = () => {
   );
   const token = Cookies.get("locumToken");
 
-  // const { hasApplied, setHasApplied } = useApplicationStore();
+
 
   const decode = token ? jwtDecode<CustomJwtPayload>(token) : null;
 
@@ -47,7 +46,15 @@ const ShiftForYou = () => {
         }
       );
 
-      setShifts(data);
+      setShifts(data.Hospitals);
+
+      // Create a map of applied shifts
+      const appliedShiftsMap = data.appliedShift.reduce((acc: { [x: string]: boolean; }, application: { hospitalId: string | number; }) => {
+        acc[application.hospitalId] = true;
+        return acc;
+      }, {});
+      setAppliedShifts(appliedShiftsMap);
+      // console.log(data);
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);
@@ -66,18 +73,12 @@ const ShiftForYou = () => {
       fetchShifts();
     }, 5000);
 
-    // Load applied shifts from local storage
-    const storedAppliedShifts = localStorage.getItem("appliedShifts");
-    if (storedAppliedShifts) {
-      setAppliedShifts(JSON.parse(storedAppliedShifts));
-    }
-
     return () => clearInterval(getShiftInterval);
   }, []);
 
   const applyForShift = async (hospitalId: string) => {
     try {
-      await axios.post(
+     await axios.post(
         `${import.meta.env.VITE_BASE_URL}/shift/application`,
         { hospitalId: hospitalId, userId: decode?.userId },
         {
@@ -85,19 +86,10 @@ const ShiftForYou = () => {
         }
       );
 
-      // console.log(data);
-      // setHasApplied(true);
-
-      // Update the applied shifts state and store in local storage
-      const updatedAppliedShifts = { ...appliedShifts, [hospitalId]: true };
-      setAppliedShifts(updatedAppliedShifts);
-      localStorage.setItem(
-        "appliedShifts",
-        JSON.stringify(updatedAppliedShifts)
-      );
+      // Update the appliedShifts state
+      setAppliedShifts((prev) => ({ ...prev, [hospitalId]: true }));
     } catch (error) {
       console.log(error);
-      // setHasApplied(false);
     }
   };
 
@@ -107,11 +99,13 @@ const ShiftForYou = () => {
     return shiftDate === todayDate;
   });
 
-  const checkExactUpComingShiftDate = shifts.filter((shift) => {
+  const checkExactUpComingShiftDate = shifts?.filter((shift) => {
     const shiftDate = new Date(shift.date).toISOString().split("T")[0];
     const todayDate = new Date().toISOString().split("T")[0];
     return shiftDate !== todayDate;
   });
+
+  console.log(appliedShifts);
 
   if (loading)
     return (
@@ -125,7 +119,7 @@ const ShiftForYou = () => {
 
   const renderShiftList = (shiftList: Shift[]) => (
     <div className="space-y-4">
-      {shiftList.map((shift) => (
+      {shiftList?.map((shift) => (
         <div className="relative" key={shift._id}>
           <Link
             to={`/shifts/${shift._id}`}

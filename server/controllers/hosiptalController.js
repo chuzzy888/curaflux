@@ -1,3 +1,4 @@
+import { Application } from "../models/application.js";
 import { Hospital } from "../models/hospital.js";
 
 // POST: Create a new Hospital
@@ -52,13 +53,18 @@ export const createHospital = async (req, res) => {
 // GET: Retrieve all Hospitals
 export const getAllHospitals = async (req, res) => {
   try {
+    const appliedShift = await Application.find({ hasApplied: true });
+
     // Fetch all Hospitals from the database
     const Hospitals = await Hospital.find()
       .sort("-created")
       .populate("hospital", "-password");
 
     // Send back the Hospitals in the response
-    res.status(200).json(Hospitals);
+
+    // console.log(appliedShift);
+
+    res.status(200).json({ Hospitals, appliedShift });
   } catch (error) {
     res.status(500).json({ message: "Error retrieving Hospitals", error });
   }

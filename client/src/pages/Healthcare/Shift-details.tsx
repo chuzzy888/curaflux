@@ -89,7 +89,7 @@ const HealthCareShiftDetails = () => {
             <h3 className=" font-semibold">Required Skills:</h3>
 
             <div className="flex items-center gap-3 flex-wrap mt-2">
-              {shiftDetails?.skills.map((skill, i) => (
+              {shiftDetails?.skills?.map((skill, i) => (
                 <p key={i} className="text-sm bg-blue-200 p-2 rounded-lg">
                   {skill}
                 </p>
