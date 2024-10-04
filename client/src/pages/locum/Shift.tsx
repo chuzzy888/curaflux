@@ -186,7 +186,7 @@ function Shift() {
           <div className="flex gap-3 mt-4">
             <input
               type="text"
-              onChange={(e) => setLocation(e.target.value)}
+              onChange={e => setLocation(e.target.value)}
               value={location}
               placeholder="Enter Current Location Or Nearest Landmark.."
               className="md:w-1/2 w-full p-3 border border-gray-300 rounded-l-full focus:outline-none focus:ring-2 focus:ring-blue-600"
@@ -214,12 +214,12 @@ function Shift() {
                   {hospitalData.specialization} | Pay Rate:{" "}
                   {hospitalData.payRate}
                 </p>
-                <Link
+                {/* <Link
                   to={`/shift-details/${hospitalData.id}`}
                   className="inline-block mt-4 text-blue-500 underline"
                 >
                   View Details
-                </Link>
+                </Link> */}
               </div>
             )
           )}

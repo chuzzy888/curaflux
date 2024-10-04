@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { ScreenLayout } from "../../components/layout/ScreenLayout";
+import { Link } from "react-router-dom";
 interface Shift {
   id: number;
   payRate: string;
@@ -114,6 +115,8 @@ const ShiftForYou = () => {
                 <button className="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600">
                   Apply Now
                 </button>
+                {/* later you can remove the view details link and wrap on the card instead */}
+                <Link to={`/shifts/${shift.id}`}>view detail</Link>
               </div>
             </div>
           ))}

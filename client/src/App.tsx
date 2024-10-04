@@ -122,7 +122,8 @@ function AppWrapper() {
           {/* Protected routes for user */}
           <Route element={<User />}>
             <Route path="/shift" element={<Shift />} />
-            <Route path="/shift-details/:id" element={<ShiftDetails />} />
+            {/* <Route path="/shift-details/:id" element={<ShiftDetails />} /> */}
+            <Route path="/shifts/:id" element={<ShiftDetails />} />
             <Route
               path={`/profile/${decode?.nickName}`}
               element={<Profile />}
