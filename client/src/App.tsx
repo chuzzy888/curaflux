@@ -38,6 +38,7 @@ import HealthCareShiftDetails from "./pages/Healthcare/Shift-details";
 import Help from "./pages/help/help";
 import AboutUs from "./pages/about-us/about-us";
 import ViewApplications from "./pages/Healthcare/view-applications";
+import ApplicantProfile from "./pages/Healthcare/applicant-profile";
 
 interface CustomJwtPayload extends JwtPayload {
   nickName: string;
@@ -74,6 +75,7 @@ function AppWrapper() {
     location.pathname === "/forgot-password" ||
     location.pathname === "/curaflux/medixcare/admin" ||
     matchPath("/reset-password/:token", location.pathname) ||
+    matchPath("/shifts/:id", location.pathname) ||
     location.pathname === "/verify" ||
     location.pathname === "/shift" ||
     location.pathname === `/profile/${decode?.nickName}` ||
@@ -153,6 +155,10 @@ function AppWrapper() {
               <Route
                 path="shift-details/:shiftId"
                 element={<HealthCareShiftDetails />}
+              />
+              <Route
+                path={"applicant/profile/:userId"}
+                element={<ApplicantProfile />}
               />
             </Route>
           </Route>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { ScreenLayout } from "../../../components/layout/ScreenLayout";
 import { Label } from "../../../components/ui/label";
 import { Input } from "../../../components/ui/input";
@@ -11,6 +11,7 @@ import axios from "axios";
 import { jwtDecode, JwtPayload } from "jwt-decode";
 import Cookies from "js-cookie";
 import { Modal } from "../../../components/modals/Success-Modal";
+import { FaArrowLeft } from "react-icons/fa";
 
 type EditProfileType = {
   fullName: string;
@@ -143,6 +144,9 @@ const EditProfile = () => {
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
         />
+        <Link to={`/profile/${userInfo?.nickName}`} className=" absolute top-5">
+          <FaArrowLeft />
+        </Link>
         <h1 className="text-2xl font-bold">Edit Profile</h1>
 
         <form onSubmit={handleSubmit(handleEditProfile)}>

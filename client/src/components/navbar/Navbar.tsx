@@ -4,7 +4,7 @@ import { MdMenu, MdClose } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { ScreenLayout } from "../layout/ScreenLayout";
 import Cookies from "js-cookie";
-import { IoIosArrowForward } from "react-icons/io";
+// import { IoIosArrowForward } from "react-icons/io";
 
 const Navbar: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -34,7 +34,10 @@ const Navbar: React.FC = () => {
           >
             Home
           </Link>
-          <Link to={"/about-curaflux"} className="p-2 px-4 text-sm md:px-6 lg:px-8 xl:px-10 rounded-full font-medium">
+          <Link
+            to={"/about-curaflux"}
+            className="p-2 px-4 text-sm md:px-6 lg:px-8 xl:px-10 rounded-full font-medium"
+          >
             About Us
           </Link>
           <Link
@@ -123,12 +126,12 @@ const Navbar: React.FC = () => {
               {!isAuthenticated && (
                 <>
                   <li>
-                    <Link to="/login" className="text-sm">
+                    <Link to="/login-role" className="text-sm">
                       Login
                     </Link>
                   </li>
                   <li>
-                    <Link to="/register" className="text-sm">
+                    <Link to="/choose-role" className="text-sm">
                       Sign Up
                     </Link>
                   </li>
