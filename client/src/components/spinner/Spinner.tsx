@@ -1,5 +1,5 @@
-import {PropagateLoader} from "react-spinners"
+import { PulseLoader  } from "react-spinners";
 
 export const Spinner = () => {
-  return <PropagateLoader />;
+  return <PulseLoader  size={10} color="skyblue"/>;
 };

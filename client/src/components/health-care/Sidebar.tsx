@@ -1,8 +1,8 @@
 import logo from "../../assets/images/logo.png";
 import { MdSpaceDashboard } from "react-icons/md";
-import { TbBriefcaseFilled } from "react-icons/tb";
+// import { TbBriefcaseFilled } from "react-icons/tb";
 import { BiSolidMessageDetail } from "react-icons/bi";
-import { IoSettings } from "react-icons/io5";
+// import { IoSettings } from "react-icons/io5";
 import { SiCoderwall } from "react-icons/si";
 
 // import { MdLogout } from "react-icons/md";
@@ -34,7 +34,7 @@ export default function Sidebar() {
           Dashboard
         </Link>
 
-        <Link
+        {/* <Link
           to={"#"}
           className="flex items-center mx-3 py-2 px-4 text-gray-700 rounded-md hover:bg-gray-200"
         >
@@ -42,7 +42,7 @@ export default function Sidebar() {
             <TbBriefcaseFilled className="text-xl" />
           </p>
           Locums
-        </Link>
+        </Link> */}
 
         <Link
           to={"/curaflux/healthcare/admin/applications"}
@@ -62,7 +62,7 @@ export default function Sidebar() {
           </p>
           Shift Overview
         </Link>
-        <Link
+        {/* <Link
           to={"#"}
           className="flex items-center mx-3 py-2 px-4 text-gray-700 rounded-md hover:bg-gray-200"
         >
@@ -70,7 +70,7 @@ export default function Sidebar() {
             <IoSettings className="text-xl" />
           </p>
           Settings
-        </Link>
+        </Link> */}
       </nav>
       <div className="absolute bottom-0 left-0 w-full p-4"></div>
     </div>

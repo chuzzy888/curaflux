@@ -49,8 +49,6 @@ export const SidebarProfile = ({
     getAUserInfo();
   }, [userData?.userId]);
 
-  console.log(userInfo);
-
   return (
     <main
       className={`fixed top-0 right-0 h-full w-80 bg-gray-200 shadow-lg transition-transform transform animate_animated animate__fadeInRight ${

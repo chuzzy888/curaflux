@@ -44,6 +44,7 @@ const Login = () => {
       if (data.success === true) {
         setModalMessage("You have successfully logged in.");
         setIsModalOpen(true);
+        console.log(data);
 
         setTimeout(() => {
           navigate("/shift");

@@ -5,7 +5,7 @@ import {
   IoCardOutline,
   IoHelpCircleOutline,
   IoLinkOutline,
-  IoLockClosedOutline,
+  // IoLockClosedOutline,
   IoNotificationsOutline,
   IoSettings,
   IoSettingsOutline,
@@ -24,6 +24,7 @@ import { Modal } from "../modals/Success-Modal";
 import { jwtDecode, JwtPayload } from "jwt-decode";
 import { useLocation, useParams } from "react-router-dom";
 import { Button } from "../ui/button";
+import { useApplicationStore } from "../../redux/store/application";
 type postShiftTypes = {
   adsNote: string;
   date: string;
@@ -57,6 +58,12 @@ export default function Header() {
   const token = Cookies.get("healthcareToken");
   const decode = token ? jwtDecode<CustomJwtPayload>(token) : null;
 
+  const { applicants } = useApplicationStore();
+
+  const checkPendingApplication = applicants.filter(
+    (app) => app.status === "pending"
+  );
+
   const {
     handleSubmit,
     register,
@@ -64,7 +71,7 @@ export default function Header() {
     formState: { errors, isSubmitting },
   } = useForm<postShiftTypes>();
 
-  const { shiftId } = useParams();
+  const { shiftId, userId } = useParams();
 
   const handleLogout = () => {
     Cookies.remove("healthcareToken");
@@ -99,6 +106,8 @@ export default function Header() {
         }, 2000);
       }
     } catch (error) {
+      console.log(error);
+
       const axiosError = error as AxiosError<{ message: string }>;
       setModalMessage(
         axiosError?.response?.data?.message || "Failed to create shift"
@@ -147,10 +156,16 @@ export default function Header() {
           </main>
         );
 
+      case `/curaflux/healthcare/admin/applicant/profile/${userId}`:
+        return null;
+
       case `/curaflux/healthcare/admin/applications`:
         return (
           <main className="bg-white shadow p-4">
-            <p className="font-bold text-gray-800 text-xl">All Applications</p>
+            <p className="font-bold text-gray-800 text-xl max-w-[250px]">
+              Choose the{" "}
+              <span className=" text-blue-400">Ideal locum for Your Shift</span>
+            </p>
           </main>
         );
 
@@ -177,7 +192,7 @@ export default function Header() {
                 <span className="bg-blue-50 h-10 w-10 rounded-full flex justify-center items-center relative">
                   <FaBell className="text-xl" />
                   <Badge
-                    value="2"
+                    value={checkPendingApplication?.length}
                     className="absolute top-0 right-0 translate-x-1/2 -top-2 "
                   ></Badge>
                 </span>
@@ -215,13 +230,13 @@ export default function Header() {
                           </span>
                           <span>&gt;</span>
                         </li>
-                        <li className="flex justify-between items-center text-gray-700 cursor-pointer hover:bg-gray-100 p-2 rounded">
+                        {/* <li className="flex justify-between items-center text-gray-700 cursor-pointer hover:bg-gray-100 p-2 rounded">
                           <span className="flex items-center space-x-2">
                             <IoLockClosedOutline className="text-xl" />
                             <span>Security Settings</span>
                           </span>
                           <span>&gt;</span>
-                        </li>
+                        </li> */}
                         <li className="flex justify-between items-center text-gray-700 cursor-pointer hover:bg-gray-100 p-2 rounded">
                           <span className="flex items-center space-x-2">
                             <IoCardOutline className="text-xl" />

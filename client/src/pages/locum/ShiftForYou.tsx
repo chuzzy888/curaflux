@@ -6,6 +6,7 @@ import { format } from "timeago.js";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { jwtDecode, JwtPayload } from "jwt-decode";
+import { ShiftSkeleton } from "../../components/skeleton/shifts";
 
 interface Shift {
   _id: string;
@@ -15,6 +16,9 @@ interface Shift {
   date: string;
   createdAt: string;
   imageUrl: string;
+  hospital: {
+    _id: string;
+  };
 }
 
 interface CustomJwtPayload extends JwtPayload {
@@ -45,14 +49,15 @@ const ShiftForYou = () => {
       );
 
       setShifts(data.Hospitals);
+      console.log(data);
 
       // Create a map of applied shifts
       const appliedShiftsMap = data.appliedShift.reduce(
         (
           acc: { [x: string]: boolean },
-          application: { hospitalId: string | number }
+          application: { shiftId: string | number }
         ) => {
-          acc[application.hospitalId] = true;
+          acc[application.shiftId] = true;
           return acc;
         },
         {}
@@ -80,18 +85,18 @@ const ShiftForYou = () => {
     return () => clearInterval(getShiftInterval);
   }, []);
 
-  const applyForShift = async (hospitalId: string) => {
+  const applyForShift = async (shiftId: string) => {
     try {
       await axios.post(
         `${import.meta.env.VITE_BASE_URL}/shift/application`,
-        { hospitalId: hospitalId, userId: decode?.userId },
+        { shiftId: shiftId, userId: decode?.userId },
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
 
       // Update the appliedShifts state
-      setAppliedShifts((prev) => ({ ...prev, [hospitalId]: true }));
+      setAppliedShifts((prev) => ({ ...prev, [shiftId]: true }));
     } catch (error) {
       console.log(error);
     }
@@ -109,60 +114,55 @@ const ShiftForYou = () => {
     return shiftDate !== todayDate;
   });
 
-  console.log(appliedShifts);
-
-  if (loading)
-    return (
-      <div className="h-screen flex justify-center items-center">
-        <div className="loaders">
-          <div></div>
-        </div>
-      </div>
-    );
   if (error) return <div>Error: {error}</div>;
 
   const renderShiftList = (shiftList: Shift[]) => (
     <div className="space-y-4">
-      {shiftList?.map((shift) => (
-        <div className="relative" key={shift._id}>
-          <Link
-            to={`/shifts/${shift._id}`}
-            className="flex flex-col sm:flex-row items-start bg-white p-4 shadow-md rounded-lg hover:border-blue-400"
-          >
-            <div className="flex flex-col">
-              <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTg4fFT8h4q-vXnYeZqikC3UfbkHgmMtlUV6A&s"
-                alt=""
-                className="w-12 h-12 object-cover rounded-full mb-2"
-              />
-            </div>
-            <div className="flex-1 ml-4">
-              <p className="text-gray-500 text-sm mb-1">
-                Posted {format(shift.createdAt)}
-              </p>
-              <h3 className="text-lg font-semibold mb-1">Medix care</h3>
-              <p className="text-gray-600 mb-1">{shift.location}</p>
-              <p className="text-gray-700 mt-2">{shift.adsNote}</p>
-            </div>
-          </Link>
-          <div className="ml-auto absolute top-16 right-5">
-            <Button
-              className={`text-white px-4 py-2 rounded-full ${
-                appliedShifts[shift._id] && "cursor-not-allowed"
-              } ${
-                appliedShifts[shift._id]
-                  ? "bg-green-500 hover:bg-green-600"
-                  : "bg-blue-500 hover:bg-blue-600"
-              }`}
-              size="sm"
-              onClick={() => applyForShift(shift._id)}
-              disabled={appliedShifts[shift._id]}
+      {loading ? (
+        <ShiftSkeleton num={shiftList.length || 3} />
+      ) : (
+        shiftList?.map((shift) => (
+          <div className="relative" key={shift._id}>
+            {/* { console.log(shift.hospital._id)} */}
+            <Link
+              to={`/shifts/${shift._id}`}
+              className="flex flex-col sm:flex-row items-start bg-white p-4 shadow-md rounded-lg hover:border-blue-400"
             >
-              {appliedShifts[shift._id] ? "Applied" : "Apply Now"}
-            </Button>
+              <div className="flex flex-col">
+                <img
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTg4fFT8h4q-vXnYeZqikC3UfbkHgmMtlUV6A&s"
+                  alt=""
+                  className="w-12 h-12 object-cover rounded-full mb-2"
+                />
+              </div>
+              <div className="flex-1 ml-4">
+                <p className="text-gray-500 text-sm mb-1">
+                  Posted {format(shift.createdAt)}
+                </p>
+                <h3 className="text-lg font-semibold mb-1">Medix care</h3>
+                <p className="text-gray-600 mb-1">{shift.location}</p>
+                <p className="text-gray-700 mt-2">{shift.adsNote}</p>
+              </div>
+            </Link>
+            <div className="ml-auto absolute top-16 right-5">
+              <Button
+                className={`text-white px-4 py-2 rounded-full ${
+                  appliedShifts[shift?._id] && "cursor-not-allowed"
+                } ${
+                  appliedShifts[shift?._id]
+                    ? "bg-green-500 hover:bg-green-600"
+                    : "bg-blue-500 hover:bg-blue-600"
+                }`}
+                size="sm"
+                onClick={() => applyForShift(shift?._id)}
+                disabled={appliedShifts[shift?._id]}
+              >
+                {appliedShifts[shift?._id] ? "Applied" : "Apply Now"}
+              </Button>
+            </div>
           </div>
-        </div>
-      ))}
+        ))
+      )}
     </div>
   );
 
@@ -171,7 +171,7 @@ const ShiftForYou = () => {
       <div className="p-4">
         <div className="flex justify-center space-x-4 mb-4">
           <button
-            className={`px-4 py-2 rounded-t-lg border-b-4 ${
+            className={`px-4 py-2 rounded-t-lg border-b-4 text-sm ${
               activeTab === "available"
                 ? "border-blue-500 text-blue-500"
                 : "border-transparent text-gray-500"
@@ -181,7 +181,7 @@ const ShiftForYou = () => {
             Available Shifts
           </button>
           <button
-            className={`px-4 py-2 rounded-t-lg border-b-4 ${
+            className={`px-4 py-2 rounded-t-lg border-b-4 text-sm ${
               activeTab === "upcoming"
                 ? "border-blue-500 text-blue-500"
                 : "border-transparent text-gray-500"
