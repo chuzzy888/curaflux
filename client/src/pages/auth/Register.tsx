@@ -187,27 +187,14 @@ import { Step3 } from "../../components/auth/signup/Step3";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { InputTypes } from "../../types/types";
 import { useAuth } from "../../context/authContext";
-<<<<<<< HEAD
-import { useAppDispatch } from "../../hooks/hook";
-import { registerUser } from "../../redux/feature/authSlice";
-import { useToast } from "../../hooks/use-toast";
-=======
 import axios, { AxiosError } from "axios";
 import Cookies from "js-cookie";
->>>>>>> development
 
 const Register = () => {
   const [currentStep, setCurrentStep] = useState<number>(1);
   const { setEmail } = useAuth();
-<<<<<<< HEAD
-
-  const { toast } = useToast();
-
-  // console.log(error);
-=======
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
->>>>>>> development
 
   const {
     register,
@@ -217,22 +204,7 @@ const Register = () => {
     // reset,
   } = useForm<InputTypes>();
 
-<<<<<<< HEAD
-  const dispatch = useAppDispatch();
-
   const handleRegister: SubmitHandler<InputTypes> = async form => {
-    const result = await dispatch(registerUser(form));
-    setEmail(form.email);
-
-    if (result.meta.requestStatus === "rejected") {
-      return toast({
-        title: "Error Found",
-        description: result.payload as string,
-      });
-    } else {
-      nextStep(); // Move to the next step if successful
-=======
-  const handleRegister: SubmitHandler<InputTypes> = async (form) => {
     setEmail(form.email);
 
     try {
@@ -259,7 +231,6 @@ const Register = () => {
           "An error occurred during registration."
       );
       setIsModalOpen(true);
->>>>>>> development
     }
   };
 

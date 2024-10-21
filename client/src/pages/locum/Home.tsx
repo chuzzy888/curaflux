@@ -155,11 +155,7 @@ const Home: React.FC = () => {
                 <img
                   src={blc}
                   alt="Nurse working"
-<<<<<<< HEAD:client/src/pages/Home.tsx
-                  className="rounded-lg shadow-lg h-72 md:h-full w-96 object-cover "
-=======
                   className=" shadow-lg h-[400px] md:h-full "
->>>>>>> development:client/src/pages/locum/Home.tsx
                 />
               </div>
 

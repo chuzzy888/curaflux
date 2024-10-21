@@ -2,11 +2,6 @@ import { ScreenLayout } from "../../../components/layout/ScreenLayout";
 import { Input } from "../../../components/ui/input";
 import { Link } from "react-router-dom";
 import signin from "../../../assets/images/signin.png";
-<<<<<<< HEAD
-// import googleSignup from "../../../assets/images/googleSignup.png";
-=======
-
->>>>>>> development
 import AuthFooter from "../../../components/footer/AuthFooter";
 import { Label } from "../../ui/label";
 import { Button } from "../../ui/button";
@@ -97,17 +92,11 @@ export const Step1 = ({ nextStep, register, errors, isValid }: Step1Props) => {
               <div className="h-[1px] w-full my-7 bg-gray-300" />
             </div>
 
-<<<<<<< HEAD
-            {/* <div>
-              <img src={googleSignup} alt="google-signup" />
-            </div> */}
-=======
             {/* <button onClick={() => GoogleSignInButton()}>
            
             </button> */}
 
             <GoogleSignInButton />
->>>>>>> development
 
             <div className="h-[1px] w-full my-7 bg-gray-300" />
 

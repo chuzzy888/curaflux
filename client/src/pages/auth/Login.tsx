@@ -188,32 +188,12 @@ const Login = () => {
   } = useForm<loginType>();
 
   const [show, setShow] = useState(false);
-<<<<<<< HEAD
-  const dispatch = useAppDispatch();
-  const { status } = useAppSelector(state => state.auth);
-  const { toast } = useToast();
-
-  const handleLogin: SubmitHandler<loginType> = async form => {
-    try {
-      // Dispatch the login action and wait for it to complete
-      await dispatch(loginUser(form)).unwrap();
-      toast({
-        title: "Login Successful",
-        description: "You have successfully logged in.",
-      });
-    } catch (error) {
-      // Handle any errors returned by the thunk
-      toast({
-        title: "Error Found",
-        description: error as string,
-      });
-=======
 
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
 
-  const handleLogin: SubmitHandler<loginType> = async (form) => {
+  const handleLogin: SubmitHandler<loginType> = async form => {
     try {
       const { data } = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/auth/signin`,
@@ -240,7 +220,6 @@ const Login = () => {
           "An error occurred during registration."
       );
       setIsModalOpen(true);
->>>>>>> development
     }
   };
 

@@ -122,21 +122,6 @@ const Navbar: React.FC = () => {
                   Shift
                 </Link>
               </li>
-<<<<<<< HEAD:client/src/components/Navbar.tsx
-              <div className=" flex items-center flex-col gap-4 md:gap-6 lg:gap-8 font-medium">
-                {!isAuthenticated && (
-                  <>
-                    <Link to={"/login"}>Login</Link>
-                    <Link
-                      to={"/register"}
-                      className="bg-blue-400 text-white font-bold p-2 px-4 md:px-6 lg:px-8 hover:bg-blue-500 rounded-full"
-                    >
-                      Join Curaflux
-                    </Link>
-                  </>
-                )}
-              </div>
-=======
 
               {!isAuthenticated && (
                 <>
@@ -152,7 +137,6 @@ const Navbar: React.FC = () => {
                   </li>
                 </>
               )}
->>>>>>> development:client/src/components/navbar/Navbar.tsx
             </ul>
           </div>
         )}
