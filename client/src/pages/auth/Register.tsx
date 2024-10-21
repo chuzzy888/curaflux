@@ -187,26 +187,37 @@ import { Step3 } from "../../components/auth/signup/Step3";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { InputTypes } from "../../types/types";
 import { useAuth } from "../../context/authContext";
+<<<<<<< HEAD
 import { useAppDispatch } from "../../hooks/hook";
 import { registerUser } from "../../redux/feature/authSlice";
 import { useToast } from "../../hooks/use-toast";
+=======
+import axios, { AxiosError } from "axios";
+import Cookies from "js-cookie";
+>>>>>>> development
 
 const Register = () => {
   const [currentStep, setCurrentStep] = useState<number>(1);
   const { setEmail } = useAuth();
+<<<<<<< HEAD
 
   const { toast } = useToast();
 
   // console.log(error);
+=======
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+>>>>>>> development
 
   const {
     register,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isSubmitting },
     handleSubmit,
     control,
     // reset,
   } = useForm<InputTypes>();
 
+<<<<<<< HEAD
   const dispatch = useAppDispatch();
 
   const handleRegister: SubmitHandler<InputTypes> = async form => {
@@ -220,6 +231,35 @@ const Register = () => {
       });
     } else {
       nextStep(); // Move to the next step if successful
+=======
+  const handleRegister: SubmitHandler<InputTypes> = async (form) => {
+    setEmail(form.email);
+
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/auth/signup`,
+        form
+      );
+
+      if (data.success === true) {
+        setModalMessage("You have successfully been registered");
+        setIsModalOpen(true);
+
+        setTimeout(() => {
+          nextStep();
+        }, 2000);
+      }
+
+      Cookies.set("locumToken", data.locumToken);
+    } catch (error) {
+      const axiosError = error as AxiosError<{ message: string }>;
+
+      setModalMessage(
+        axiosError?.response?.data?.message ||
+          "An error occurred during registration."
+      );
+      setIsModalOpen(true);
+>>>>>>> development
     }
   };
 
@@ -252,6 +292,10 @@ const Register = () => {
           register={register}
           isValid={isValid}
           control={control}
+          isSubmitting={isSubmitting}
+          msg={modalMessage}
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
         />
       );
     case 3:

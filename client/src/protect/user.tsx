@@ -2,10 +2,10 @@ import Cookies from "js-cookie";
 import { Outlet, Navigate } from "react-router-dom";
 
 export const User = () => {
-  const token = Cookies.get("token");
-  const verified = Cookies.get("verified");
+  const locumToken = Cookies.get("locumToken");
+  const verified = Cookies.get("locumVerified");
 
-  const isAuthenticated = token && verified === "true";
+  const isAuthenticated = locumToken && verified === "true";
 
   return <main>{isAuthenticated ? <Outlet /> : <Navigate to="/login" />}</main>;
 };
