@@ -1,88 +1,50 @@
-# ![logo](https://github.com/user-attachments/assets/bdb6d475-f26e-469f-8c6d-3545a8d047f8)
+# React + TypeScript + Vite
 
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
+Currently, two official plugins are available:
 
-Welcome to **Curaflux**, a project crafted with care for the Enyata Buildathon, aiming to revolutionize the healthcare sector. Curaflux is a **locum app** designed to connect healthcare facilities with qualified locum professionals for temporary staffing needs.
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## 🚀 Features
+## Expanding the ESLint configuration
 
-- **Multi-step Registration**: Seamlessly guide users through registration.
-- **Shift Management**: Manage and accept shifts easily.
-- **Notifications**: Stay updated with timely alerts.
-- **User Profiles**: Personalized profiles for locum professionals.
-- **Location Services**: Integrated maps for easy navigation.
+If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
 
-## 🛠️ Tech Stack
+- Configure the top-level `parserOptions` property like this:
 
-Curaflux is built with a modern tech stack:
+```js
+export default tseslint.config({
+  languageOptions: {
+    // other options...
+    parserOptions: {
+      project: ['./tsconfig.node.json', './tsconfig.app.json'],
+      tsconfigRootDir: import.meta.dirname,
+    },
+  },
+})
+```
 
-- **Frontend**:
-  - React
-  - TypeScript
-  - JavaScript
-  - Shadcn
-  - Tailwind CSS
-  - PrimeReact
+- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
+- Optionally add `...tseslint.configs.stylisticTypeChecked`
+- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
 
-- **Backend**:
-  - Node.js
-  - Express.js
-  - MongoDB
+```js
+// eslint.config.js
+import react from 'eslint-plugin-react'
 
-- **State Management**:
-  - Zustand
-
-- **Authentication**:
-  - Firebase
-
-## 📦 Installation
-
-To get started with Curaflux, follow these steps:
-
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/yourusername/curaflux.git
-Navigate into the project directory:
-bash
-Copy code
-cd curaflux
-Install dependencies:
-bash
-Copy code
-npm install
-Start the development server:
-bash
-Copy code
-npm start
-🌐 Live Demo
-Check out the live demo of Curaflux here <!-- Replace with your live demo link -->
-
-🎨 Screenshots
-<!-- Replace with your screenshot links -->
-![Samsung-Galaxy-S20-localhost (1)](https://github.com/user-attachments/assets/f5914985-920d-4ae3-a467-ef9646371d49)
-![Macbook-Air-localhost](https://github.com/user-attachments/assets/adcff341-e170-4e49-b0b9-ce236162a5f1)
-![iPhone-13-PRO-MAX-localhost](https://github.com/user-attachments/assets/ca991947-634b-42c8-aef9-05c716c55852)
-
-
-
-
-🤝 Contributing
-We welcome contributions! If you'd like to help, please follow these steps:
-
-Fork the repository
-Create a new branch (git checkout -b feature/YourFeature)
-Make your changes
-Commit your changes (git commit -m 'Add some feature')
-Push to the branch (git push origin feature/YourFeature)
-Open a pull request
-📄 License
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-🙏 Acknowledgments
-Enyata Buildathon for the opportunity.
-Open-source community for their incredible tools and libraries.
-📬 Contact
-For any inquiries, feel free to reach out:
-
-Email: curaflux.ng.com
-LinkedIn: curaflux ng
+export default tseslint.config({
+  // Set the react version
+  settings: { react: { version: '18.3' } },
+  plugins: {
+    // Add the react plugin
+    react,
+  },
+  rules: {
+    // other rules...
+    // Enable its recommended rules
+    ...react.configs.recommended.rules,
+    ...react.configs['jsx-runtime'].rules,
+  },
+})
+```
