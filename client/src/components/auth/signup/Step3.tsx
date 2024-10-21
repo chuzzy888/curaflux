@@ -14,7 +14,7 @@ import {
 import { Checkbox } from "../../../components/ui/checkbox";
 import { IoArrowUndoSharp } from "react-icons/io5";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../context/authContext";
 import { useToast } from "../../../hooks/use-toast";
@@ -40,7 +40,7 @@ export const Step3 = ({ prevStep, currentStep }: Step3Props) => {
   const { email } = useAuth();
 
   // Timer state
-  const [timeLeft, setTimeLeft] = useState(300); // 300 seconds = 5 minutes
+  const [timeLeft, setTimeLeft] = useState(60);
 
   // useEffect to handle the countdown
   useEffect(() => {
@@ -60,13 +60,22 @@ export const Step3 = ({ prevStep, currentStep }: Step3Props) => {
   };
 
   const handleSubmitOtp: SubmitHandler<otpTypes> = async (form) => {
-    const { data } = await axios.post(
-      `${import.meta.env.VITE_BASE_URL}/auth/verify-otp`,
-      form
-    );
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/auth/verify-otp`,
+        form
+      );
 
-    if (data.success === true) {
-      navigate("/verify");
+      if (data.success === true) {
+        navigate("/verify");
+      }
+    } catch (error) {
+      const axiosError = error as AxiosError<{ error: string }>;
+
+      toast({
+        title: "OTP Error",
+        description: axiosError?.response?.data?.error || "Error verifying otp",
+      });
     }
   };
 
